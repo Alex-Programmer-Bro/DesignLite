@@ -27,7 +27,7 @@ jobs:
           if [ $REPOSITORY = "main" ]; then POSTFIX=''    ; else POSTFIX='PRE';    fi
           RELEASEBODY=$(awk -v RS='Release [0-9.]+:' '/[0-9.]+/ {print $0}' ChangeLog.h | sed 's/^[[:space:]]*Release [0-9.]\+-[^:]*:[[:space:]]*//')
           RELEASEBODY="${RELEASEBODY//'%'/'%25'}"
-          RELEASEBODY="${RELEASEBODY//$'\n'/'%0A'}"
+          # RELEASEBODY="${RELEASEBODY//$'\n'/'%0A'}"
           RELEASEBODY="${RELEASEBODY//$'\r'/'%0D'}"       
           echo "version: ${PACKAGE_VERSION}"
           echo "IS_PRERELEASE: ${IS_PRE}"
