@@ -47,8 +47,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: `v${process.env.PACKAGE_VERSION}`,
-              name: `App v${process.env.PACKAGE_VERSION}`,
-              body: ${{ steps.set_env_var.outputs.RELEASEBODY }},
+              name: `FPS v${process.env.PACKAGE_VERSION}`,
+              body: `${steps.set_env_var.outputs.RELEASEBODY}`,
               draft: true,
               prerelease: false
             })
