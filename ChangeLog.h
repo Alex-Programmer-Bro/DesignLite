@@ -1,3 +1,4 @@
 Release 0.0.1-alpla:
-	- abc
-  - def
+	- test1
+  - test2
+  - test3
