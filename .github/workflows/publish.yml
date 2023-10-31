@@ -45,8 +45,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: `v${process.env.PACKAGE_VERSION}`,
-              name: "hello",
-              body: `${{ env.RELEASEBODY }}`,
+              name: `FPS v${process.env.PACKAGE_VERSION}`,
+              body: "hello",
               draft: true,
               prerelease: false
             })
