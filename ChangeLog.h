@@ -1,3 +1,3 @@
-Release 0.0.1-alpla:  
+Release 0.0.1-alpla:
 	- abc
   - def
