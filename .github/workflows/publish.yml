@@ -36,7 +36,7 @@ jobs:
           echo "RELEASEBODY: ${RELEASEBODY}"
         env:
           REPOSITORY: ${{ github.event.repository.name }}
-          RELEASEBODY: ${RELEASEBODY}
+          RELEASEBODY: $RELEASEBODY
 
       - name: Print release body
         run: |
