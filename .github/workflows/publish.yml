@@ -18,7 +18,7 @@ jobs:
           node-version: 20
 
       - name: get version
-        run: echo "PACKAGE_VERSION=$(node -p "require('../package.json').version")" >> $GITHUB_ENV
+        run: echo "PACKAGE_VERSION=$(node -p "require('../../package.json').version")" >> $GITHUB_ENV
 
       - name: set Environment Variables
         id: set_env_var
