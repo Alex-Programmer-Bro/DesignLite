@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       release_id: ${{ steps.create-release.outputs.result }}
-      release_body: ${{ steps.set_env_var.outputs.RELEASEBODY }}
+      release_body: ${{ steps.set_env_var.env.RELEASEBODY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -36,6 +36,7 @@ jobs:
           echo "RELEASEBODY: ${RELEASEBODY}"
         env:
           REPOSITORY: ${{ github.event.repository.name }}
+          RELEASEBODY: ${RELEASEBODY}
 
       - name: Print release body
         run: |
