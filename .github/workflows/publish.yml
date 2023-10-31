@@ -25,7 +25,7 @@ jobs:
         run: |
           if [ $REPOSITORY = "main" ]; then IS_PRE='false'; else IS_PRE='true'; fi
           if [ $REPOSITORY = "main" ]; then POSTFIX=''    ; else POSTFIX='PRE';    fi
-          RELEASEBODY=$(awk -v RS='Release [0-9.]+:' '/[0-9.]+/ {print $0}' ChangeLog.h | sed 's/^[[:space:]]*//')
+          RELEASEBODY=$(awk -v RS='Release [0-9.]+:' '/[0-9.]+/ {sub(/^[[:space:]]+/, "", $0); sub(/^Release [0-9.]+:/, "", $0); print $0}' ChangeLog.h)
           RELEASEBODY="${RELEASEBODY//'%'/'%25'}"
           RELEASEBODY="${RELEASEBODY//$'\n'/'%0A'}"
           RELEASEBODY="${RELEASEBODY//$'\r'/'%0D'}"       
