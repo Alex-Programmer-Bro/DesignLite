@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       release_id: ${{ steps.create-release.outputs.result }}
-      release_body: ${{ steps.set_env_var.env.RELEASEBODY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -36,11 +35,6 @@ jobs:
           echo "RELEASEBODY: ${RELEASEBODY}"
         env:
           REPOSITORY: ${{ github.event.repository.name }}
-          RELEASEBODY: $RELEASEBODY
-
-      - name: Print release body
-        run: |
-          echo "Release Body: ${{ steps.create-release.outputs.release_body }}"
 
       - name: create release
         id: create-release
@@ -52,7 +46,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `v${process.env.PACKAGE_VERSION}`,
               name: `FPS v${process.env.PACKAGE_VERSION}`,
-              body: `${{ needs.create-release.outputs.release_body }}`,
+              body: ${process.env.RELEASEBODY}`,
               draft: true,
               prerelease: false
             })
