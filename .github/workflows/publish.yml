@@ -39,7 +39,6 @@ jobs:
       - name: create release
         id: create-release
         uses: actions/github-script@v6
-        run: echo "body:${env.RELEASEBODY}"
         with:
           script: |
             const { data } = await github.rest.repos.createRelease({
