@@ -39,13 +39,13 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(Buffer.from(process.env.RELEASEBODY_BASE64, 'base64').toString('utf-8').replace("\n+", '\n').replace(/\s+/g, ' '));
+            console.log(Buffer.from(process.env.RELEASEBODY_BASE64, 'base64').toString('utf-8').replace("\n+", '\n');
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: `v${process.env.PACKAGE_VERSION}`,
               name: `FPS v${process.env.PACKAGE_VERSION}`,
-              body: Buffer.from(process.env.RELEASEBODY_BASE64, 'base64').toString('utf-8').replace("\n+", '\n').replace(/\s+/g, ' '),
+              body: Buffer.from(process.env.RELEASEBODY_BASE64, 'base64').toString('utf-8').replace("\n+", '\n'),
               draft: true,
               prerelease: false
             })
