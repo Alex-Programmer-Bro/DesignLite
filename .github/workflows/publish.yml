@@ -37,6 +37,9 @@ jobs:
         env:
           REPOSITORY: ${{ github.event.repository.name }}
 
+      - name: Print release body
+        run: echo "Release Body: ${{ steps.create-release.outputs.release_body }}"  # Print the release body
+
       - name: create release
         id: create-release
         uses: actions/github-script@v6
@@ -47,7 +50,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `v${process.env.PACKAGE_VERSION}`,
               name: `FPS v${process.env.PACKAGE_VERSION}`,
-              body: `${ needs.create-release.outputs.release_body }`,
+              body: `${{ needs.create-release.outputs.release_body }}`,
               draft: true,
               prerelease: false
             })
