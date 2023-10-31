@@ -37,7 +37,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "fps",
+        "title": "FPS",
         "width": 1400,
         "height": 800
       }
