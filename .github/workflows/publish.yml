@@ -44,7 +44,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `v${process.env.PACKAGE_VERSION}`,
               name: `FPS v${process.env.PACKAGE_VERSION}`,
-              body: Buffer.from(process.env.RELEASEBODY_BASE64, 'base64').toString('utf-8')
+              body: Buffer.from(process.env.RELEASEBODY_BASE64, 'base64').toString('utf-8'),
               draft: true,
               prerelease: false
             })
