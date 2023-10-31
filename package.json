@@ -8,7 +8,8 @@
     "dev:web": "vite",
     "build": "tauri build",
     "build:web": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tauri": "tauri"
   },
   "dependencies": {
     "react": "^18.2.0",
