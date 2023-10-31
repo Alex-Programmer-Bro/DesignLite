@@ -23,14 +23,13 @@ jobs:
       - name: set Environment Variables
         id: set_env_var
         run: |
-          VERSION=$(cat package.json | jq -r .version)
           if [ $REPOSITORY = "main" ]; then IS_PRE='false'; else IS_PRE='true'; fi
           if [ $REPOSITORY = "main" ]; then POSTFIX=''    ; else POSTFIX='PRE';    fi
           RELEASEBODY=$(awk -v RS='Release [0-9.]+:' '/[0-9.]+/ {print $0}' ChangeLog.h)
           RELEASEBODY="${RELEASEBODY//'%'/'%25'}"
           RELEASEBODY="${RELEASEBODY//$'\n'/'%0A'}"
           RELEASEBODY="${RELEASEBODY//$'\r'/'%0D'}"       
-          echo "version: ${VERSION}"
+          echo "version: ${PACKAGE_VERSION}"
           echo "IS_PRERELEASE: ${IS_PRE}"
           echo "RELEASENAME_POSTFIX: ${POSTFIX}"
           echo "RELEASEBODY: ${RELEASEBODY}"
