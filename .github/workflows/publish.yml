@@ -25,12 +25,12 @@ jobs:
         run: |
           if [ $REPOSITORY = "main" ]; then IS_PRE='false'; else IS_PRE='true'; fi
           if [ $REPOSITORY = "main" ]; then POSTFIX=''    ; else POSTFIX='PRE';    fi
-          RELEASEBODY=$(awk -v RS='Release [0-9.]+:' '/[0-9.]+/ {print $0}' ChangeLog.h | sed 's/^[[:space:]]*Release [0-9.]\+-[^:]*:[[:space:]]*//')
+          RELEASEBODY=$(awk -v RS='Release [0-9.]+:' '/[0-9.]+/ {print $0}' ChangeLog.h | sed 's/  */ /g')
           echo "version: ${PACKAGE_VERSION}"
           echo "IS_PRERELEASE: ${IS_PRE}"
           echo "RELEASENAME_POSTFIX: ${POSTFIX}"
           echo "RELEASEBODY: ${RELEASEBODY}"
-          echo "RELEASEBODY=${RELEASEBODY}" >> $GITHUB_ENV
+          echo "RELEASEBODY_BASE64=$(echo -n "$RELEASEBODY" | base64)" >> $GITHUB_ENV
         env:
           REPOSITORY: ${{ github.event.repository.name }}
 
@@ -44,7 +44,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `v${process.env.PACKAGE_VERSION}`,
               name: `FPS v${process.env.PACKAGE_VERSION}`,
-              body: `${process.env.RELEASEBODY}`,
+              body: Buffer.from(process.env.RELEASEBODY_BASE64, 'base64').toString('utf-8')
               draft: true,
               prerelease: false
             })
