@@ -38,7 +38,8 @@ jobs:
           REPOSITORY: ${{ github.event.repository.name }}
 
       - name: Print release body
-        run: echo "Release Body: ${{ steps.create-release.outputs.release_body }}"  # Print the release body
+        run: |
+          echo "Release Body: ${{ steps.create-release.outputs.release_body }}"
 
       - name: create release
         id: create-release
