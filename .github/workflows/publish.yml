@@ -60,9 +60,9 @@ jobs:
 
       - uses: oven-sh/setup-bun@v1
       - name: install frontend dependencies
-        run: bun install
         with:
           bun-version: latest
+        run: bun install
 
       # - name: install frontend dependencies
       #   run: bun install
