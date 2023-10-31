@@ -1,4 +1,5 @@
 Release 0.0.1-alpla:
-	- test1
-  - test2
-  - test3
+  - 界面基础布局
+  - 工具栏
+    - 方形绘制
+    - 文本绘制
