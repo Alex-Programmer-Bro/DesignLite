@@ -27,7 +27,7 @@ jobs:
           if [ $REPOSITORY = "main" ]; then IS_PRE='false'; else IS_PRE='true'; fi
           if [ $REPOSITORY = "main" ]; then POSTFIX=''    ; else POSTFIX='PRE';    fi
           CHANGELOG_FILE=../../ChangeLog.h
-          RELEASEBODY=$(awk -v RS='Release ' '/'$VERSION':(.*)/ {print $0}' '$CHANGELOG_FILE')
+          RELEASEBODY=$(awk -v RS='Release ' '/'$VERSION':(.*)/ {print $0}' $CHANGELOG_FILE)
           RELEASEBODY="${RELEASEBODY//'%'/'%25'}"
           RELEASEBODY="${RELEASEBODY//$'\n'/'%0A'}"
           RELEASEBODY="${RELEASEBODY//$'\r'/'%0D'}"       
