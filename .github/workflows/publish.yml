@@ -39,6 +39,7 @@ jobs:
       - name: create release
         id: create-release
         uses: actions/github-script@v6
+        run: echo "body:${env.RELEASEBODY}"
         with:
           script: |
             const { data } = await github.rest.repos.createRelease({
@@ -50,7 +51,6 @@ jobs:
               draft: true,
               prerelease: false
             })
-            console.log(env.RELEASEBODY);
             return data.id
 
   # build-tauri:
