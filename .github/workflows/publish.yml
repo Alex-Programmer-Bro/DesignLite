@@ -39,6 +39,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            console.log(Buffer.from(process.env.RELEASEBODY_BASE64, 'base64').toString('utf-8'));
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
