@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/react";
 import { useAtom } from "jotai";
 import { selectedDrawTypeAtom } from "../../store/toolbar";
 import { DrawType } from "../../store/toolbar/type";
@@ -17,13 +18,14 @@ export const Toolbar = () => {
     {
       options.map(type => {
         const selected = selectedDrawType === type;
-        return <div
+        return <Button
           key={type}
-          className={item({ selected })}
+          className={item()}
           onClick={() => setSelectedDrawType(type as DrawType)}
+          variant={selected ? 'faded' : 'light'}
         >
           {type}
-        </div>
+        </Button>
       })
     }
   </div>;
