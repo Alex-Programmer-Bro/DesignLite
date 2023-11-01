@@ -1,12 +1,15 @@
-import { Button } from "@nextui-org/react";
+import { Canvas } from "./component/canvas";
+import { Designer } from "./component/designer";
+import { Toolbar } from './component/toolbar';
 
 function App() {
   return (
-    <div className="container">
-      <h1 className="font-bold">Welcome to Tauri!</h1>
-      <Button color="primary" variant="shadow">
-        Button
-      </Button>
+    <div className="flex h-full">
+      <div className="h-full flex-1 border-r-1 border-solid border-[#ddd]">
+        <Toolbar />
+        <Canvas />
+      </div>
+      <Designer />
     </div>
   );
 }
