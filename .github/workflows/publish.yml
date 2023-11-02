@@ -14,6 +14,11 @@ jobs:
       release_id: ${{ steps.create-release.outputs.result }}
 
     steps:
+      - name: Set UTF-8 encoding
+      run: |
+        export LANG=en_US.UTF-8
+        export LC_ALL=en_US.UTF-8
+
       - uses: actions/checkout@v4
       - name: setup node
         uses: actions/setup-node@v4
