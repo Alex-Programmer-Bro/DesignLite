@@ -39,8 +39,8 @@ jobs:
           echo "RELEASENAME_POSTFIX: ${POSTFIX}"
           echo "RELEASEBODY: ${RELEASEBODY}"
           {
-            echo 'JSON_RESPONSE<<EOF'
-            echo "RELEASEBODY_BASE64=$(echo -n "$RELEASEBODY" | base64)"
+            echo 'RELEASEBODY_BASE64<<EOF'
+            echo "$(echo -n "$RELEASEBODY" | base64)"
             echo EOF
           } >> $GITHUB_ENV
         env:
