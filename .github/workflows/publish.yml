@@ -38,7 +38,11 @@ jobs:
           echo "IS_PRERELEASE: ${IS_PRE}"
           echo "RELEASENAME_POSTFIX: ${POSTFIX}"
           echo "RELEASEBODY: ${RELEASEBODY}"
-          echo "RELEASEBODY_BASE64=$(echo -n "$RELEASEBODY" | base64)" >> $GITHUB_ENV
+          {
+            echo 'JSON_RESPONSE<<EOF'
+            echo "RELEASEBODY_BASE64=$(echo -n "$RELEASEBODY" | base64)"
+            echo EOF
+          } >> $GITHUB_ENV
         env:
           REPOSITORY: ${{ github.event.repository.name }}
 
