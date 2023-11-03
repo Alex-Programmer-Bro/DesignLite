@@ -4,6 +4,7 @@ import { TextEditor } from "../textEditor";
 export const SchemaRender = (schema: Schema) => {
   const render = {
     [SchemaType.Text]: <TextEditor
+      style={schema.style}
       text={schema.content || ''}
       onChange={text => {
         console.log(text);

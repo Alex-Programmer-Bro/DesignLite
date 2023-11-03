@@ -1,6 +1,6 @@
 import { atomWithStorage } from 'jotai/utils'
 import { SchemaCacheKey } from '../constant'
-import { Schema } from '../types/schema'
+import { Schema, SchemaType } from '../types/schema'
 import { atom } from 'jotai';
 import { selectedDrawTypeAtom } from './toolbar';
 import { v1 } from 'uuid'
@@ -15,6 +15,16 @@ export const createSchemaAtom = atom(null, (get, set) => {
     type: drawType,
     style: {
       display: 'inline-block'
+    }
+  }
+
+  if (drawType === SchemaType.Text) {
+    newSchema.style = {
+      ...newSchema.style,
+      lineHeight: 1,
+      outline: '2px solid transparent',
+      minWidth: '30px',
+      padding: '0.25rem'
     }
   }
 
