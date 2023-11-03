@@ -1,4 +1,4 @@
 import { atom } from 'jotai';
-import { DrawType } from './type';
+import { SchemaType } from '../../types/schema';
 
-export const selectedDrawTypeAtom = atom<DrawType>(DrawType.rect);
+export const selectedDrawTypeAtom = atom<SchemaType>(SchemaType.Text);

@@ -1,1 +1,1 @@
-export const SchemaCacheKey = 'FPS_SCHEMA_KEY'
+export const SchemaCacheKey = 'FPS_SCHEMAS'
