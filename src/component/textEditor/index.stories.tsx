@@ -4,7 +4,10 @@ import { TextEditor } from ".";
 const meta = {
   title: "内置组件/TextEditor",
   component: TextEditor,
-  tags: ['autodocs']
+  tags: ['autodocs'],
+  parameters: {
+    layout: "centered",
+  },
 } satisfies Meta<typeof TextEditor>;
 
 export default meta;
