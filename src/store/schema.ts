@@ -49,3 +49,8 @@ export const createSchemaAtom = atom(null, (get, set) => {
   set(drawingSchemaIdAtom, newSchema.id);
   set(schemasAtom, pre => [...pre, newSchema]);
 });
+
+export const resetAtom = atom(null, (_, set) => {
+  set(schemasAtom, []);
+  set(drawingSchemaIdAtom, '');
+})

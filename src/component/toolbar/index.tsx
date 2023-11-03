@@ -3,7 +3,7 @@ import { useAtom, useSetAtom } from "jotai";
 import { selectedDrawTypeAtom } from "../../store/toolbar";
 import { styles } from './index.tv';
 import { SchemaType } from "../../types/schema";
-import { createSchemaAtom } from "../../store/schema";
+import { createSchemaAtom, resetAtom } from "../../store/schema";
 
 const options: string[] = Object.values(SchemaType);
 
@@ -12,6 +12,7 @@ const { container, item } = styles();
 export const Toolbar = () => {
   const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
   const createSchema = useSetAtom(createSchemaAtom);
+  const reset = useSetAtom(resetAtom);
 
   return <div className={container()}>
     {
@@ -28,6 +29,9 @@ export const Toolbar = () => {
         </Button>
       })
     }
-    <Button onClick={createSchema} variant="shadow" color="primary" size="sm" className="ml-auto">添加</Button>
+    <div className="ml-auto">
+      <Button onClick={createSchema} variant="shadow" color="primary" size="sm" >添加</Button>
+      <Button onClick={reset} variant="shadow" size="sm" className="ml-2">重置</Button>
+    </div>
   </div>;
 };
