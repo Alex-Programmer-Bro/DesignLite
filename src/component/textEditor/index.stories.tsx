@@ -13,4 +13,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<Meta<typeof TextEditor>>;
 
-export const Primary: Story = {}
+export const Primary: Story = {
+  args: {
+    text: 'hello world',
+    onChange: text => {
+      console.log(text);
+    }
+  }
+}

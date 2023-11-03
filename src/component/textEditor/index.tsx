@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 
-export const TextEditor = () => {
-  const [html, setHtml] = useState('')
+export interface TextEditorProps {
+  text: string;
+  onChange: (text: string) => void;
+}
+
+export const TextEditor = ({ text, onChange }: TextEditorProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    text && (containerRef.current!.innerHTML = text);
+  }, [])
 
   return <div
-    className="leading-[1] p-1 outline-none min-w-[30px] inline-block border-1 border-solid border-[#000000]"
+    ref={containerRef}
+    className="leading-[1] p-1 outline-none min-w-[30px] inline-block"
     contentEditable
-    dangerouslySetInnerHTML={{ __html: html }}
     onInput={e => {
-      setHtml((e.target as HTMLDivElement).innerHTML);
+      onChange((e.target as HTMLDivElement).innerHTML);
     }}
   />;
 };
