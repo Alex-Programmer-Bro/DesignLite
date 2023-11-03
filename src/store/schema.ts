@@ -1,11 +1,29 @@
 import { atomWithStorage } from 'jotai/utils'
-import { SchemaCacheKey } from '../constant'
+import { DrawingSchemaKey, SchemaCacheKey } from '../constant'
 import { Schema, SchemaType } from '../types/schema'
 import { atom } from 'jotai';
 import { selectedDrawTypeAtom } from './toolbar';
 import { v1 } from 'uuid'
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
+
+export const drawingSchemaIdAtom = atomWithStorage<string>(DrawingSchemaKey, '');
+
+export const getDrawingSchema = atom(get => {
+  const id = get(drawingSchemaIdAtom);
+  if (id) {
+    const schemas = get(schemasAtom);
+    const target = schemas.find(item => item.id === id);
+
+    if (!target) {
+      console.warn(`loss drawing schema about drawingSchema'id ${id} and ${schemas}`);
+    }
+
+    return target;
+  } else {
+    return undefined;
+  }
+})
 
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
@@ -28,5 +46,6 @@ export const createSchemaAtom = atom(null, (get, set) => {
     }
   }
 
+  set(drawingSchemaIdAtom, newSchema.id);
   set(schemasAtom, pre => [...pre, newSchema]);
 });
