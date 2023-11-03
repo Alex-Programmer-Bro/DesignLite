@@ -1,7 +1,7 @@
 export enum SchemaType {
-  Image = '图片',
   Text = '文本',
-  Shape = '图形'
+  Shape = '图形',
+  Image = '图片',
 }
 
 export type Schema = {

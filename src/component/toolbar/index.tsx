@@ -5,11 +5,7 @@ import { styles } from './index.tv';
 import { SchemaType } from "../../types/schema";
 import { createSchemaAtom } from "../../store/schema";
 
-const options: SchemaType[] = [
-  SchemaType.Text,
-  SchemaType.Shape,
-  SchemaType.Image,
-];
+const options: string[] = Object.values(SchemaType);
 
 const { container, item } = styles();
 
@@ -25,7 +21,7 @@ export const Toolbar = () => {
           size="sm"
           key={type}
           className={item()}
-          onClick={() => setSelectedDrawType(type)}
+          onClick={() => setSelectedDrawType(type as SchemaType)}
           variant={selected ? 'faded' : 'light'}
         >
           {type}
