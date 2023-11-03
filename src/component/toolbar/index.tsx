@@ -1,32 +1,37 @@
 import { Button } from "@nextui-org/react";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { selectedDrawTypeAtom } from "../../store/toolbar";
-import { DrawType } from "../../store/toolbar/type";
 import { styles } from './index.tv';
+import { SchemaType } from "../../types/schema";
+import { createSchemaAtom } from "../../store/schema";
 
-const options: string[] = [
-  DrawType.rect,
-  DrawType.text
+const options: SchemaType[] = [
+  SchemaType.Text,
+  SchemaType.Shape,
+  SchemaType.Image,
 ];
 
 const { container, item } = styles();
 
 export const Toolbar = () => {
   const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
+  const createSchema = useSetAtom(createSchemaAtom);
 
   return <div className={container()}>
     {
       options.map(type => {
         const selected = selectedDrawType === type;
         return <Button
+          size="sm"
           key={type}
           className={item()}
-          onClick={() => setSelectedDrawType(type as DrawType)}
+          onClick={() => setSelectedDrawType(type)}
           variant={selected ? 'faded' : 'light'}
         >
           {type}
         </Button>
       })
     }
+    <Button onClick={createSchema} variant="shadow" color="primary" size="sm" className="ml-auto">添加</Button>
   </div>;
 };
