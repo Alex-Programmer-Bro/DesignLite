@@ -8,4 +8,5 @@ export type Schema = {
   id: string;
   type: SchemaType
   style: React.CSSProperties
+  content?: string;
 }
