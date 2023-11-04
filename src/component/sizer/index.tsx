@@ -1,7 +1,14 @@
 import { Input, Switch } from "@nextui-org/react";
 import { useState } from "react";
+import { Value } from "./type";
+import { resolveLock } from "./helper";
 
-interface SizerProps {
+type InputProps = {
+  value: Value;
+  onChange: (value: Value) => void;
+}
+
+export interface SizerProps extends InputProps {
   label: string;
   mode: 'simple' | 'complicated';
 }
@@ -11,8 +18,18 @@ const UnitSelector = () => <select className="outline-none">
   <option value="%">%</option>
 </select>
 
-const SimpleInput = ({ label }: { label: string }) => {
-  return <Input size="sm" labelPlacement="outside" variant="bordered" label={label} type="number" />
+const SimpleInput = ({ label, value, onChange }: { label: string } & InputProps) => {
+  return <Input
+    size="sm"
+    labelPlacement="outside"
+    variant="bordered"
+    label={label}
+    type="number"
+    value={value ? value.toString() : ''}
+    onChange={e => {
+      onChange(e.target.value)
+    }}
+  />
 }
 
 const ComplicatedInput = ({ label }: { label: string }) => {
@@ -24,12 +41,12 @@ const ComplicatedInput = ({ label }: { label: string }) => {
   </div>
 }
 
-export const Sizer = ({ label, mode }: SizerProps) => {
-  const [lock, setLock] = useState(false);
+export const Sizer = ({ label, mode, value, onChange }: SizerProps) => {
+  const [lock, setLock] = useState(resolveLock(value));
 
   if (mode === 'simple') {
     return <div className="flex items-center">
-      <SimpleInput label={label} />
+      <SimpleInput label={label} value={value} onChange={onChange} />
       <span className="ml-2 text-[12px]">
         <UnitSelector />
       </span>
@@ -51,7 +68,7 @@ export const Sizer = ({ label, mode }: SizerProps) => {
       </div>
       {
         lock ? <div className="flex items-center">
-          <SimpleInput label={label} />
+          <SimpleInput label={label} value={value} onChange={onChange} />
           <span className="ml-2 text-[12px]">
             <UnitSelector />
           </span>
