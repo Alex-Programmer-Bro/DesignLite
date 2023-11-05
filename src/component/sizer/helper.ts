@@ -13,3 +13,34 @@ export const resolveLock = (value: Value) => {
     }
   }
 }
+
+export const resolveUnit = (value: Value) => {
+  if (typeof value === 'number' || value.indexOf('px') !== -1) {
+    return 'px'
+  } else if (value.indexOf('auto') !== -1) {
+    return 'auto'
+  } else if (value.indexOf('%') !== -1) {
+    return '%';
+  } else {
+    throw new Error(`unknow unit of ${value}`);
+  }
+}
+
+export const resolveValue = (value: Value) => {
+  if (value === 'auto') {
+    return ''
+  } else {
+    const v = value.toString();
+    if (/\s/.test(v)) {
+      const resolved = v.split(' ');
+      if (resolved.length === 4) return v;
+      return [resolved[0], resolved[1], resolved[0], resolved[1]].join(' ');
+    } else {
+      return parseFloat(value.toString()).toString()
+    }
+  }
+}
+
+export const isComplicatedValue = (value: Value) => {
+  return /\s/.test(value.toString());
+}
