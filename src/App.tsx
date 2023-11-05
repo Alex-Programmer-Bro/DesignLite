@@ -1,12 +1,12 @@
 import { Canvas } from "./component/canvas";
 import { Designer } from "./component/designer";
-import { Toolbar } from './component/toolbar';
+import { Toolsbar } from "./component/toolsbar";
 
 function App() {
   return (
     <div className="flex h-full">
       <div className="h-full flex-1 border-r-1 border-solid border-[#ddd]">
-        <Toolbar />
+        <Toolsbar />
         <Canvas />
       </div>
       <Designer />
