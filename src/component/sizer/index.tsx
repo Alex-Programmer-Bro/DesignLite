@@ -31,9 +31,13 @@ export const Sizer = ({ label, mode, value: SourceValue, onChange: SourceOnChang
   }
 
   const unitSelector = <select role="unit-selector" className="outline-none" defaultValue={unit} onChange={e => {
-    setUnit(e.target.value);
-    if (e.target.value !== 'auto' && inputValue) {
-      SourceOnChange(inputValue + e.target.value);
+    const nextUnit = e.target.value;
+    setUnit(nextUnit);
+
+    if (inputValue) {
+      if (nextUnit !== 'auto') {
+        SourceOnChange(inputValue + e.target.value);
+      }
     }
   }}>
     <option value="px">px</option>

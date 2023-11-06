@@ -13,6 +13,7 @@ test('resolveUnit', () => {
   expect(resolveUnit(1)).toEqual('px');
   expect(resolveUnit('1px')).toEqual('px');
   expect(resolveUnit('1%')).toEqual('%');
+  expect(resolveUnit('')).toEqual('auto');
   expect(resolveUnit('auto')).toEqual('auto');
   expect(resolveUnit('auto auto')).toEqual('auto');
 })
