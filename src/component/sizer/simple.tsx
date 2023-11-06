@@ -9,7 +9,7 @@ export type SimpleProps = Omit<SizerProps, 'mode'> & {
 };
 
 export const SimpleSizer = ({ label, value: SourceValue, labelPlacement = 'outside', onChange: SourceOnChange }: SimpleProps) => {
-  const [value, setValue] = useState(resolveValue(SourceValue))
+  const [value, setValue] = useState(resolveValue(SourceValue) as string)
   const [unit, setUnit] = useState(resolveUnit(SourceValue));
 
   const disabled = unit === 'auto';
