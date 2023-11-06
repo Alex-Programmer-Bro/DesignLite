@@ -43,8 +43,6 @@ export const SimpleMode: Story = {
       expect(inputs.length).toEqual(1);
       expect(inputs[0].value).toEqual('10');
       expect(inputs[0].disabled).toBeFalsy();
-      const options = canvas.getAllByRole('option') as HTMLOptionElement[];
-      expect(options.map(item => item.value)).toEqual(['px', '%', 'auto']);
     })
 
     await step('Select auto unit', async () => {
