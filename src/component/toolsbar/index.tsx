@@ -1,7 +1,7 @@
 import React, { Key, ReactElement, useMemo, useState } from "react";
 import { styles } from "./index.tv";
-import { SelectIcon } from "../../assets/icons/SelectIcon";
-import { HandIcon } from "../../assets/icons/HandIcon";
+// import { SelectIcon } from "../../assets/icons/SelectIcon";
+// import { HandIcon } from "../../assets/icons/HandIcon";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { FrameIcon } from "../../assets/icons/FrameIcon";
 import { DownIcon } from "../../assets/icons/DownIcon";
@@ -93,12 +93,12 @@ export const Toolsbar: React.FC = () => {
         dropMenu: options.map((type) => ({ value: type, label: type })),
         onAction: (key) => setSelectedDrawType(key as SchemaType)
       },
-      {
-        name: "Select",
-        key: "select",
-        element: <SelectIcon fill="#fff" />
-      },
-      { name: "hanld Tools", key: "hand", element: <HandIcon fill="#fff" /> }
+      // {
+      //   name: "Select",
+      //   key: "select",
+      //   element: <SelectIcon fill="#fff" />
+      // },
+      // { name: "hanld Tools", key: "hand", element: <HandIcon fill="#fff" /> }
     ];
   }, [selectedDrawType]);
 
@@ -106,7 +106,7 @@ export const Toolsbar: React.FC = () => {
     <div className={wrap()}>
       <Buttons slots={slots} />
       <Button onClick={createSchema} variant="shadow" color="primary" size="sm" className="ml-auto">
-        添加
+        添加{selectedDrawType}
       </Button>
     </div>
   );
