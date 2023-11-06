@@ -21,15 +21,20 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
   });
   const { top, right, bottom, left } = values;
 
+  const onLock = (e: React.FormEvent<HTMLLabelElement>) => {
+    const lock = (e.target as HTMLInputElement).checked;
+    setLock(lock)
+
+    // TODO: make sure value
+  }
+
   return <div className='flex flex-col items-center'>
     <div className="w-full flex justify-between">
       <span className="text-[12px] font-medium">{lock ? '' : props.label}</span>
       <Switch
         className="mb-1"
         isSelected={lock}
-        onChange={e => {
-          setLock((e.target as HTMLInputElement).checked)
-        }}
+        onChange={onLock}
         size="sm"
         color="secondary"
       >
