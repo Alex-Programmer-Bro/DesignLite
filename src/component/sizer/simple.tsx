@@ -15,7 +15,11 @@ export const SimpleSizer = ({ label, value: SourceValue, labelPlacement = 'outsi
   const disabled = unit === 'auto';
 
   useEffect(() => {
-    SourceOnChange(value + unit);
+    if (unit === 'auto') {
+      SourceOnChange(unit);
+    } else {
+      SourceOnChange(value + unit);
+    }
   }, [value, unit]);
 
   return <div className="flex items-center">

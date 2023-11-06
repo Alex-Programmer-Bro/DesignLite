@@ -18,7 +18,7 @@ type Story = StoryObj<Meta<typeof ComplicatedSizer>>;
 export const ComplicatedMode: Story = {
   args: {
     label: 'margin',
-    value: 10
+    value: '10px'
   },
   decorators: [
     (story, config) => {
