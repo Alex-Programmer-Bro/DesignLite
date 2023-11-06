@@ -25,8 +25,6 @@ export const Primary: Story = {
   decorators: [
     (story, config) => {
       const [value, setValue] = useState<Value>(config.args.value);
-      console.log(value);
-      
       return story({
         args: {
           ...config.args,

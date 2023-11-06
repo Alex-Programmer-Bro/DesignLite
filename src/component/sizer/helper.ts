@@ -34,7 +34,7 @@ export const resolveValue = (value: Value) => {
     if (/\s/.test(v)) {
       const resolved = v.split(' ');
       if (resolved.length === 4) return v;
-      return [resolved[0], resolved[1], resolved[0], resolved[1]].join(' ');
+      return [resolved[0], resolved[1], resolved[0], resolved[1]];
     } else {
       return parseFloat(value.toString()).toString()
     }
@@ -42,5 +42,5 @@ export const resolveValue = (value: Value) => {
 }
 
 export const isComplicatedValue = (value: Value) => {
-  return /\s/.test(value.toString());
+  return /[\s,]/.test(value.toString());
 }

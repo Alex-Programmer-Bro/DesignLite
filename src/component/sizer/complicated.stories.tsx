@@ -15,7 +15,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<Meta<typeof ComplicatedSizer>>;
 
-export const ComplicatedMode: Story = {
+export const Primary: Story = {
   args: {
     label: 'margin',
     value: '10px'

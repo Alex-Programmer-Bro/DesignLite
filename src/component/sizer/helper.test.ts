@@ -10,6 +10,7 @@ test('resolveLock', () => {
 
 test('resolveUnit', () => {
   expect(resolveUnit('1px')).toEqual('px');
+  expect(resolveUnit('1px 1px 1px 1px')).toEqual('px');
   expect(resolveUnit('1%')).toEqual('%');
   expect(resolveUnit('auto')).toEqual('auto');
   expect(resolveUnit('auto auto')).toEqual('auto');
@@ -17,7 +18,7 @@ test('resolveUnit', () => {
 
 test('resolveValue', () => {
   expect(resolveValue('1px')).toEqual('1');
-  expect(resolveValue('10px 20px')).toEqual('10px 20px 10px 20px');
+  expect(resolveValue('10px 20px')).toEqual(['10px', '20px', '10px', '20px']);
   expect(resolveValue('1%')).toEqual('1');
   expect(resolveValue('auto')).toEqual('');
 })
