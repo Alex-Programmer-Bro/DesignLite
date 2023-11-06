@@ -9,7 +9,7 @@ export const ComplicatedSizer = ({ label, value: SourceValue, onChange: SourceOn
   const value = resolveValue(SourceValue);
   const [unit, setUnit] = useState(resolveUnit(SourceValue));
   const [lock, setLock] = useState(resolveLock(value));
-  const ref = useRef<Value>(0);
+  const ref = useRef<Value>('');
   const disabled = unit === 'auto';
   const inputValue = disabled ? '' : (ref.current ? ref.current.toString() : value);
   const [top, right, bottom, left] = inputValue.split(' ').map(resolveValue);

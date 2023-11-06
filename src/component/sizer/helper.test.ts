@@ -3,14 +3,12 @@ import { resolveLock, resolveUnit, resolveValue } from './helper'
 
 
 test('resolveLock', () => {
-  expect(resolveLock(1)).toBeTruthy();
   expect(resolveLock('1px 1px 1px 1px')).toBeTruthy();
   expect(resolveLock('1px 2px 1px 1px')).toBeFalsy();
   expect(resolveLock('auto')).toBeTruthy();
 });
 
 test('resolveUnit', () => {
-  expect(resolveUnit(1)).toEqual('px');
   expect(resolveUnit('1px')).toEqual('px');
   expect(resolveUnit('1%')).toEqual('%');
   expect(resolveUnit('auto')).toEqual('auto');

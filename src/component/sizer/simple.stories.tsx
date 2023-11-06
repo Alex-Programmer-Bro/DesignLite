@@ -2,7 +2,7 @@ import { StoryObj, type Meta } from "@storybook/react";
 import { SimpleSizer } from "./simple";
 import { useState } from '@storybook/preview-api';
 import { Value } from "./type";
-import { within, userEvent } from '@storybook/testing-library';
+import { userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest'
 
 const meta = {
@@ -17,10 +17,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<Meta<typeof SimpleSizer>>;
 
-export const SimpleMode: Story = {
+export const Primary: Story = {
   args: {
     label: 'width',
-    value: 10
+    value: '10px'
   },
   decorators: [
     (story, config) => {
@@ -35,8 +35,8 @@ export const SimpleMode: Story = {
     },
   ],
   play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-    const unitSelector = canvas.getByRole('unit-selector');
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const unitSelector = canvasElement.querySelector('select')!;
 
     await step('Simple ui', async () => {
       const inputs = canvasElement.querySelectorAll('input');

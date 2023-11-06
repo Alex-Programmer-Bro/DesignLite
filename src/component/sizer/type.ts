@@ -1,4 +1,4 @@
-export type Value = number | string;
+export type Value = string;
 
 export interface SizerProps {
   label: string;
