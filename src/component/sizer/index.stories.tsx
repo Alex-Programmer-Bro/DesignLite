@@ -24,13 +24,17 @@ export default meta;
 type Story = StoryObj<Meta<typeof Sizer>>;
 
 export const SimpleMode: Story = {
+  args: {
+    label: 'width',
+    mode: 'simple',
+    value: 10
+  },
   decorators: [
-    (story) => {
-      const [value, setValue] = useState<Value>('10px');
+    (story, config) => {
+      const [value, setValue] = useState<Value>(config.args.value);
       return story({
         args: {
-          label: 'width',
-          mode: 'simple',
+          ...config.args,
           value: value,
           onChange: setValue,
         },
@@ -63,13 +67,17 @@ export const SimpleMode: Story = {
 };
 
 export const PercentUnit: Story = {
+  args: {
+    label: 'width',
+    mode: 'simple',
+    value: '12%'
+  },
   decorators: [
-    (story) => {
-      const [value, setValue] = useState<Value>('12%');
+    (story, config) => {
+      const [value, setValue] = useState<Value>(config.args.value);
       return story({
         args: {
-          label: 'width',
-          mode: 'simple',
+          ...config.args,
           value: value,
           onChange: setValue,
         },
@@ -79,13 +87,17 @@ export const PercentUnit: Story = {
 }
 
 export const DisabledSimple: Story = {
+  args: {
+    label: 'width',
+    mode: 'simple',
+    value: 'auto'
+  },
   decorators: [
-    (story) => {
-      const [value, setValue] = useState<Value>('auto');
+    (story, config) => {
+      const [value, setValue] = useState<Value>(config.args.value);
       return story({
         args: {
-          label: 'width',
-          mode: 'simple',
+          ...config.args,
           value: value,
           onChange: setValue,
         },
@@ -95,13 +107,17 @@ export const DisabledSimple: Story = {
 }
 
 export const ComplicatedMode: Story = {
+  args: {
+    label: 'margin',
+    mode: 'complicated',
+    value: 10
+  },
   decorators: [
-    (story) => {
-      const [value, setValue] = useState<Value>(10);
+    (story, config) => {
+      const [value, setValue] = useState<Value>(config.args.value);
       return story({
         args: {
-          label: 'margin',
-          mode: 'complicated',
+          ...config.args,
           value: value,
           onChange: setValue,
         },
@@ -111,13 +127,17 @@ export const ComplicatedMode: Story = {
 }
 
 export const ComplicatedValue: Story = {
+  args: {
+    label: 'margin',
+    mode: 'complicated',
+    value: '10px 20px'
+  },
   decorators: [
-    (story) => {
-      const [value, setValue] = useState<Value>('10px 20px');
+    (story, config) => {
+      const [value, setValue] = useState<Value>(config.args.value);
       return story({
         args: {
-          label: 'margin',
-          mode: 'complicated',
+          ...config.args,
           value: value,
           onChange: setValue,
         },
