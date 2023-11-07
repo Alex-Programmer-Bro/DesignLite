@@ -12,7 +12,7 @@ interface State {
 
 interface TextEditorProps {
   state: State,
-  onChangeBefore: (state: State) => void;
+  onChangeBefore?: (state: State) => void;
   onChange: (update: State | ((prevState: State) => State)) => void;
 }
 
@@ -26,7 +26,7 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
           ...pre,
           [key]: value
         }
-        onChangeBefore(result);
+        onChangeBefore && onChangeBefore(result);
         return result;
       })
     }
