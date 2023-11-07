@@ -9,7 +9,7 @@ export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
 schemasAtom.debugLabel = '画布上所有的 Schema';
 
 export const drawingSchemaIdAtom = atomWithStorage<string>(DrawingSchemaKey, '');
-drawingSchemaIdAtom.debugLabel = '选中了哪个 Schema Id'
+drawingSchemaIdAtom.debugLabel = '选中了哪个 Schema Id';
 
 export const getDrawingSchema = atom(get => {
   const id = get(drawingSchemaIdAtom);
@@ -26,7 +26,7 @@ export const getDrawingSchema = atom(get => {
     return undefined;
   }
 });
-getDrawingSchema.debugLabel = '正在绘制的元素'
+getDrawingSchema.debugLabel = '正在绘制的元素';
 
 const updateSchema = (set: Setter, { id, schema }: { id: string; schema: Partial<Schema> }) => {
   set(schemasAtom, pre => {

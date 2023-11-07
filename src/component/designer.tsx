@@ -68,8 +68,18 @@ export const Designer = () => {
         fontSize: textState.size,
         color: textState.color,
       }
-    })
+    });
   }, [textState]);
+
+  useEffect(() => {
+    if (!drawingSchema) return;
+    setTextState(pre => {
+      return {
+        ...pre,
+        content: drawingSchema.content!
+      }
+    })
+  }, [drawingSchema]);
 
   return <Card className="w-[400px] m-4">
     <CardHeader className="flex gap-3">
