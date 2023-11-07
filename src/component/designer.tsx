@@ -1,18 +1,22 @@
 import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
 import { useAtomValue } from "jotai";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { selectedDrawTypeAtom } from "../store/toolbar";
 import { SchemaType } from "../types/schema";
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from "./textEditor";
+import { useSetAtom } from 'jotai'
+import { setDrawingSchemaAtom } from "../store/schema";
 
 export const Designer = () => {
   const drawType = useAtomValue(selectedDrawTypeAtom);
+  const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
+
   const [textState, setTextState] = useState({
-    content: 'hello world',
-    size: '12px',
+    content: '',
+    size: '14px',
     color: '#000000'
-  })
+  });
 
   const [state, setState] = useState({
     width: '0px',
@@ -64,7 +68,17 @@ export const Designer = () => {
           </label>
         </>
     }
-  }, [drawType]);
+  }, [drawType, textState]);
+
+  useEffect(() => {
+    setDrawingSchema({
+      content: textState.content,
+      style: {
+        fontSize: textState.size,
+        color: textState.color,
+      }
+    })
+  }, [textState]);
 
   return <Card className="w-[400px] m-4">
     <CardHeader className="flex gap-3">

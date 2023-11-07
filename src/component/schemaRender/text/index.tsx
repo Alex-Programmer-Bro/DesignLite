@@ -18,7 +18,7 @@ export const TextRender = ({ id, style, text, onChange }: TextRenderProps) => {
 
   useEffect(() => {
     text && (containerRef.current!.innerHTML = text);
-  }, []);
+  }, [text]);
 
   useEffect(() => {
     if (drawingSchemaId === id) {

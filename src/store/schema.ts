@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atom, Setter } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
@@ -6,8 +6,10 @@ import { Schema, SchemaType } from '../types/schema';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
+schemasAtom.debugLabel = '画布上所有的 Schema';
 
 export const drawingSchemaIdAtom = atomWithStorage<string>(DrawingSchemaKey, '');
+drawingSchemaIdAtom.debugLabel = '选中了哪个 Schema Id'
 
 export const getDrawingSchema = atom(get => {
   const id = get(drawingSchemaIdAtom);
@@ -23,7 +25,34 @@ export const getDrawingSchema = atom(get => {
   } else {
     return undefined;
   }
-})
+});
+
+const updateSchema = (set: Setter, { id, schema }: { id: string; schema: Partial<Schema> }) => {
+  set(schemasAtom, pre => {
+    return pre.map(item => {
+      if (item.id === id) {
+        const result = {
+          ...item,
+          ...schema
+        }
+
+        console.log(result);
+
+        return result;
+      }
+      return item;
+    })
+  });
+}
+
+export const setDrawingSchemaAtom = atom(null, (get, set, schema: Partial<Schema> = {}) => {
+  const id = get(drawingSchemaIdAtom);
+  updateSchema(set, { id, schema });
+});
+
+export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; schema: Partial<Schema> }) => {
+  updateSchema(set, { id, schema });
+});
 
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
