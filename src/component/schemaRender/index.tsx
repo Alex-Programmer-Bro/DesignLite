@@ -4,7 +4,6 @@ import { TextRender } from "./text";
 export const SchemaRender = (schema: Schema) => {
   const render = {
     [SchemaType.Text]: <TextRender
-      id={schema.id}
       style={schema.style}
       text={schema.content || ''}
     />,
