@@ -1,15 +1,15 @@
 import { useAtomValue } from "jotai";
 import { useEffect, useRef } from "react";
-import { drawingSchemaIdAtom } from "../../store/schema";
+import { drawingSchemaIdAtom } from "../../../store/schema";
 
-export interface TextEditorProps {
+export interface TextRenderProps {
   id: string;
   style: React.CSSProperties;
   text: string;
   onChange: (text: string) => void;
 }
 
-export const TextEditor = ({ id, style, text, onChange }: TextEditorProps) => {
+export const TextRender = ({ id, style, text, onChange }: TextRenderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const drawingSchemaId = useAtomValue(drawingSchemaIdAtom);
 

@@ -1,17 +1,17 @@
 import { StoryObj, type Meta } from "@storybook/react";
-import { TextEditor } from ".";
+import { TextRender } from ".";
 
 const meta = {
   title: "内置组件/TextEditor",
-  component: TextEditor,
+  component: TextRender,
   tags: ['autodocs'],
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof TextEditor>;
+} satisfies Meta<typeof TextRender>;
 
 export default meta;
-type Story = StoryObj<Meta<typeof TextEditor>>;
+type Story = StoryObj<Meta<typeof TextRender>>;
 
 export const Primary: Story = {
   args: {
