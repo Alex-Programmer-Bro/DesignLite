@@ -1,33 +1,23 @@
 import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
-import { useAtomValue } from "jotai";
-import { useMemo, useState, useEffect } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useMemo, useEffect } from "react";
 import { selectedDrawTypeAtom } from "../store/toolbar";
 import { SchemaType } from "../types/schema";
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from "./textEditor";
 import { useSetAtom } from 'jotai'
-import { setDrawingSchemaAtom } from "../store/schema";
+import { getDrawingSchema, setDrawingSchemaAtom } from "../store/schema";
+import { baseStyleAtom, textStyleAtom } from "../store/designer";
 
 export const Designer = () => {
   const drawType = useAtomValue(selectedDrawTypeAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
-
-  const [textState, setTextState] = useState({
-    content: '',
-    size: '14px',
-    color: '#000000'
-  });
-
-  const [state, setState] = useState({
-    width: '0px',
-    height: '0px',
-    margin: '0px',
-    padding: '0px',
-    backgroundColor: 'transparent',
-  });
+  const [textState, setTextState] = useAtom(textStyleAtom);
+  const [state, setState] = useAtom(baseStyleAtom);
+  const drawingSchema = useAtomValue(getDrawingSchema);
 
   const stateAdaptor = (key: string) => {
-    return (v: string) => setState(pre => ({ ...pre, [key]: v }))
+    return (v: string) => setState(pre => ({ ...pre, [key]: v }));
   }
 
   const render = useMemo(() => {
@@ -74,6 +64,7 @@ export const Designer = () => {
     setDrawingSchema({
       content: textState.content,
       style: {
+        ...drawingSchema?.style,
         fontSize: textState.size,
         color: textState.color,
       }
