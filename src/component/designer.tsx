@@ -1,84 +1,30 @@
 import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
-import { useAtomValue } from "jotai";
-import { useMemo, useState, useEffect } from "react";
-import { selectedDrawTypeAtom } from "../store/toolbar";
-import { SchemaType } from "../types/schema";
+import { useAtom, useSetAtom } from "jotai";
+import { baseStyleAtom, textStyleAtom } from "../store/designer";
+import { setDrawingSchemaAtom } from "../store/schema";
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from "./textEditor";
-import { useSetAtom } from 'jotai'
-import { setDrawingSchemaAtom } from "../store/schema";
 
 export const Designer = () => {
-  const drawType = useAtomValue(selectedDrawTypeAtom);
+  const [baseState, setBaseState] = useAtom(baseStyleAtom);
+  const [textState, setTextState] = useAtom(textStyleAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
 
-  const [textState, setTextState] = useState({
-    content: '',
-    size: '14px',
-    color: '#000000'
-  });
-
-  const [state, setState] = useState({
-    width: '0px',
-    height: '0px',
-    margin: '0px',
-    padding: '0px',
-    backgroundColor: 'transparent',
-  });
-
   const stateAdaptor = (key: string) => {
-    return (v: string) => setState(pre => ({ ...pre, [key]: v }))
+    return (v: string) => setBaseState(pre => {
+      const result = { ...pre, [key]: v };
+      setDrawingSchema({
+        style: {
+          width: result.width,
+          height: result.height,
+          margin: result.margin,
+          padding: result.padding,
+          backgroundColor: result.backgroundColor
+        }
+      })
+      return result;
+    });
   }
-
-  const render = useMemo(() => {
-    switch (drawType) {
-      case SchemaType.Text:
-        return <TextEditor state={textState} onChange={setTextState} />
-      default:
-        return <>
-          <div className="grid grid-cols-2 gap-10 mb-10">
-            <SimpleSizer
-              labelPlacement="outside"
-              label={'width'}
-              value={state.width}
-              onChange={stateAdaptor('width')}
-            />
-            <SimpleSizer
-              labelPlacement="outside"
-              label={'height'}
-              value={state.height}
-              onChange={stateAdaptor('height')}
-            />
-            <ComplicatedSizer
-              label={'margin'}
-              value={state.margin}
-              onChange={stateAdaptor('margin')}
-            />
-            <ComplicatedSizer
-              label={'padding'}
-              value={state.padding}
-              onChange={stateAdaptor('padding')}
-            />
-          </div>
-          <label className="flex items-center">
-            <span className="text-[12px] font-bold mr-4">background</span>
-            <input type="color" value={state.backgroundColor} onChange={e => {
-              stateAdaptor('backgroundColor')(e.target.value);
-            }} />
-          </label>
-        </>
-    }
-  }, [drawType, textState]);
-
-  useEffect(() => {
-    setDrawingSchema({
-      content: textState.content,
-      style: {
-        fontSize: textState.size,
-        color: textState.color,
-      }
-    })
-  }, [textState]);
 
   return <Card className="w-[400px] m-4">
     <CardHeader className="flex gap-3">
@@ -86,7 +32,49 @@ export const Designer = () => {
     </CardHeader>
     <Divider />
     <CardBody className="my-4">
-      {render}
+      <div className="grid grid-cols-2 gap-10 mb-10">
+        <SimpleSizer
+          labelPlacement="outside"
+          label={'width'}
+          value={baseState.width}
+          onChange={stateAdaptor('width')}
+        />
+        <SimpleSizer
+          labelPlacement="outside"
+          label={'height'}
+          value={baseState.height}
+          onChange={stateAdaptor('height')}
+        />
+        <ComplicatedSizer
+          label={'margin'}
+          value={baseState.margin}
+          onChange={stateAdaptor('margin')}
+        />
+        <ComplicatedSizer
+          label={'padding'}
+          value={baseState.padding}
+          onChange={stateAdaptor('padding')}
+        />
+      </div>
+      <label className="flex items-center">
+        <span className="text-[12px] font-medium mr-4">background</span>
+        <input type="color" value={baseState.backgroundColor} onChange={e => {
+          stateAdaptor('backgroundColor')(e.target.value);
+        }} />
+      </label>
+      <Divider className="my-10" />
+      <TextEditor
+        state={textState}
+        onChangeBefore={state => {
+          setDrawingSchema({
+            content: state.content,
+            style: {
+              fontSize: state.size,
+              color: state.color
+            }
+          })
+        }}
+        onChange={setTextState} />
     </CardBody>
   </Card>
 };

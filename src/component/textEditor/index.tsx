@@ -1,8 +1,8 @@
 import { Button, ButtonGroup, Textarea } from "@nextui-org/react";
+import { debounce } from 'lodash-es';
+import { useCallback, useEffect, useState } from "react";
 import { SimpleSizer } from "../sizer";
 import { alignCenter, alignLeft, alignRight, bold, italic, underline } from "./icon";
-import { useCallback, useEffect, useState } from "react";
-import { debounce } from 'lodash-es'
 
 interface State {
   content: string;
@@ -12,20 +12,22 @@ interface State {
 
 interface TextEditorProps {
   state: State,
+  onChangeBefore: (state: State) => void;
   onChange: (update: State | ((prevState: State) => State)) => void;
 }
 
-
-export const TextEditor = ({ state, onChange }: TextEditorProps) => {
+export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps) => {
   const [color, setColor] = useState(state.color);
 
   const update = (key: keyof State) => {
     return (value: string) => {
       onChange((pre: State) => {
-        return {
+        const result = {
           ...pre,
           [key]: value
         }
+        onChangeBefore(result);
+        return result;
       })
     }
   }
@@ -60,7 +62,6 @@ export const TextEditor = ({ state, onChange }: TextEditorProps) => {
             type="color"
             value={color}
             onChange={e => setColor(e.target.value)}
-            onBlur={e => update('color')(e.target.value)}
           />
         </div>
       </Button>

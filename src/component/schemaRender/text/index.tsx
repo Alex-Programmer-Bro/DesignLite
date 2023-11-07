@@ -1,37 +1,26 @@
-import { useAtomValue } from "jotai";
-import { useEffect, useRef } from "react";
-import { drawingSchemaIdAtom } from "../../../store/schema";
+import { useSetAtom } from "jotai";
+import { useMemo, useRef } from "react";
+import { setSchemaAtom } from "../../../store/schema";
 
 export interface TextRenderProps {
-  id: string;
   style: React.CSSProperties;
   text: string;
-  onChange: (text: string) => void;
 }
 
 /** 
  * 在画布上呈现文本的渲染器
  */
-export const TextRender = ({ id, style, text, onChange }: TextRenderProps) => {
+export const TextRender = ({ style, text }: TextRenderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const drawingSchemaId = useAtomValue(drawingSchemaIdAtom);
+  const setSchema = useSetAtom(setSchemaAtom);
 
-  useEffect(() => {
-    text && (containerRef.current!.innerHTML = text);
-  }, [text]);
-
-  useEffect(() => {
-    if (drawingSchemaId === id) {
-      containerRef.current!.focus();
-    }
-  }, [drawingSchemaId, id]);
-
-  return <div
-    style={style}
-    ref={containerRef}
-    contentEditable
-    onInput={e => {
-      onChange((e.target as HTMLDivElement).innerHTML);
-    }}
-  />;
+  return useMemo(() => {
+    return <span
+      aria-label="schema"
+      style={style}
+      ref={containerRef}
+      contentEditable
+      dangerouslySetInnerHTML={{ __html: text }}
+    />
+  }, [style, setSchema]);
 };

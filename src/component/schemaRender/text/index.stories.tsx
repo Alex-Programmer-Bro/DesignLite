@@ -16,8 +16,5 @@ type Story = StoryObj<Meta<typeof TextRender>>;
 export const Primary: Story = {
   args: {
     text: 'hello world',
-    onChange: text => {
-      console.log(text);
-    }
   }
 }
