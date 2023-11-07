@@ -1,6 +1,6 @@
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useRef } from "react";
-import { drawingSchemaIdAtom } from "../../../store/schema";
+import { drawingSchemaIdAtom, setSchemaAtom } from "../../../store/schema";
 
 export interface TextRenderProps {
   id: string;
@@ -15,6 +15,7 @@ export interface TextRenderProps {
 export const TextRender = ({ id, style, text, onChange }: TextRenderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const drawingSchemaId = useAtomValue(drawingSchemaIdAtom);
+  const setSchema = useSetAtom(setSchemaAtom);
 
   useEffect(() => {
     text && (containerRef.current!.innerHTML = text);
@@ -25,6 +26,17 @@ export const TextRender = ({ id, style, text, onChange }: TextRenderProps) => {
       containerRef.current!.focus();
     }
   }, [drawingSchemaId, id]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      setSchema({
+        id,
+        schema: {
+          dom: containerRef.current as HTMLElement
+        }
+      })
+    }
+  }, [containerRef.current]);
 
   return <div
     style={style}

@@ -9,4 +9,5 @@ export type Schema = {
   type: SchemaType
   style: React.CSSProperties
   content?: string;
+  dom?: HTMLElement;
 }

@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atom, Setter } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
@@ -27,21 +27,32 @@ export const getDrawingSchema = atom(get => {
   }
 });
 
-export const setDrawingSchemaAtom = atom(null, (get, set, schema: Partial<Schema> = {}) => {
-  const id = get(drawingSchemaIdAtom);
-
+const updateSchema = (set: Setter, { id, schema }: { id: string; schema: Partial<Schema> }) => {
   set(schemasAtom, pre => {
     return pre.map(item => {
       if (item.id === id) {
-        return {
+        const result = {
           ...item,
           ...schema
         }
+
+        console.log(result);
+
+        return result;
       }
       return item;
     })
-  })
-})
+  });
+}
+
+export const setDrawingSchemaAtom = atom(null, (get, set, schema: Partial<Schema> = {}) => {
+  const id = get(drawingSchemaIdAtom);
+  updateSchema(set, { id, schema });
+});
+
+export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; schema: Partial<Schema> }) => {
+  updateSchema(set, { id, schema });
+});
 
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
