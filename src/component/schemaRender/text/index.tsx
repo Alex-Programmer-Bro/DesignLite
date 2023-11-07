@@ -9,6 +9,9 @@ export interface TextRenderProps {
   onChange: (text: string) => void;
 }
 
+/** 
+ * 在画布上呈现文本的渲染器
+ */
 export const TextRender = ({ id, style, text, onChange }: TextRenderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const drawingSchemaId = useAtomValue(drawingSchemaIdAtom);
