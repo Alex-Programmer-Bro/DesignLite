@@ -1,8 +1,8 @@
 import { Switch } from "@nextui-org/react";
-import { useState } from "react";
-import { SizerProps } from "./type";
-import { SimpleSizer } from './simple'
+import { useEffect, useState } from "react";
 import { isComplicatedValue, resolveLock, resolveValue } from "./helper";
+import { SimpleSizer } from './simple';
+import { SizerProps } from "./type";
 
 export type ComplicatedProps = Omit<SizerProps, 'mode'>
 
@@ -23,10 +23,24 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
 
   const onLock = (e: React.FormEvent<HTMLLabelElement>) => {
     const lock = (e.target as HTMLInputElement).checked;
-    setLock(lock)
 
-    // TODO: make sure value
+    if (lock === false) {
+      setValues({
+        top: props.value,
+        right: props.value,
+        bottom: props.value,
+        left: props.value,
+      })
+    }
+
+    setLock(lock);
   }
+
+  useEffect(() => {
+    if (lock === false) {
+      props.onChange(`${values.top} ${values.right} ${values.bottom}  ${values.left}`)
+    }
+  }, [lock, values])
 
   return <div className='flex flex-col items-center'>
     <div className="w-full flex justify-between">
