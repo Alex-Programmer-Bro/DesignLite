@@ -28,7 +28,7 @@ export const getDrawingSchema = atom(get => {
 });
 getDrawingSchema.debugLabel = '正在绘制的元素';
 
-const updateSchema = (set: Setter, { id, schema }: { id: string; schema: Partial<Schema> }) => {
+export const updateSchema = (set: Setter, { id, schema }: { id: string; schema: Partial<Schema> }) => {
   set(schemasAtom, pre => {
     return pre.map(item => {
       if (item.id === id) {

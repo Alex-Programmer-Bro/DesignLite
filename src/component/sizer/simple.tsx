@@ -1,14 +1,14 @@
 import { Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { SizerProps, } from "./type";
 import { resolveUnit, resolveValue } from "./helper";
-import { UnitSelector } from './unit'
+import { SizerProps, } from "./type";
+import { UnitSelector } from './unit';
 
 export type SimpleProps = Omit<SizerProps, 'mode'> & {
   labelPlacement: 'outside' | 'inside';
 };
 
-export const SimpleSizer = ({ label, value: SourceValue, labelPlacement = 'outside', onChange: SourceOnChange }: SimpleProps) => {
+export const SimpleSizer = ({ label, value: SourceValue, labelPlacement = 'outside', onChange: SourceOnChange, onFocus }: SimpleProps) => {
   const [value, setValue] = useState(resolveValue(SourceValue) as string)
   const [unit, setUnit] = useState(resolveUnit(SourceValue));
 
@@ -32,6 +32,7 @@ export const SimpleSizer = ({ label, value: SourceValue, labelPlacement = 'outsi
       type="number"
       value={disabled ? '' : value}
       onChange={e => setValue(e.target.value)}
+      onFocus={onFocus}
     />
     <span className="ml-2 text-[12px]">
       <UnitSelector value={unit} onChange={setUnit} />
