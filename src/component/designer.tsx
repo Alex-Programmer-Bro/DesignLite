@@ -4,9 +4,15 @@ import { useMemo, useState } from "react";
 import { selectedDrawTypeAtom } from "../store/toolbar";
 import { SchemaType } from "../types/schema";
 import { ComplicatedSizer, SimpleSizer } from './sizer';
+import { TextEditor } from "./textEditor";
 
 export const Designer = () => {
   const drawType = useAtomValue(selectedDrawTypeAtom);
+  const [textState, setTextState] = useState({
+    content: 'hello world',
+    size: '12px',
+    color: '#000000'
+  })
 
   const [state, setState] = useState({
     width: '0px',
@@ -23,7 +29,7 @@ export const Designer = () => {
   const render = useMemo(() => {
     switch (drawType) {
       case SchemaType.Text:
-        return <div>123</div>
+        return <TextEditor state={textState} onChange={setTextState} />
       default:
         return <>
           <div className="grid grid-cols-2 gap-10 mb-10">
