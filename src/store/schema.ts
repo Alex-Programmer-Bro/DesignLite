@@ -6,8 +6,10 @@ import { Schema, SchemaType } from '../types/schema';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
+schemasAtom.debugLabel = '画布上所有的 Schema';
 
 export const drawingSchemaIdAtom = atomWithStorage<string>(DrawingSchemaKey, '');
+drawingSchemaIdAtom.debugLabel = '选中了哪个 Schema Id'
 
 export const getDrawingSchema = atom(get => {
   const id = get(drawingSchemaIdAtom);
@@ -23,6 +25,22 @@ export const getDrawingSchema = atom(get => {
   } else {
     return undefined;
   }
+});
+
+export const setDrawingSchemaAtom = atom(null, (get, set, schema: Partial<Schema> = {}) => {
+  const id = get(drawingSchemaIdAtom);
+
+  set(schemasAtom, pre => {
+    return pre.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          ...schema
+        }
+      }
+      return item;
+    })
+  })
 })
 
 export const createSchemaAtom = atom(null, (get, set) => {
