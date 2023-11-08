@@ -61,28 +61,32 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
       value={state.content}
       onChange={e => update('content')(e.target.value)}
     />
-    <SimpleSizer
-      labelPlacement="outside"
-      label="size"
-      value={state.size}
-      onChange={update('size')}
-    />
-    <ButtonGroup isIconOnly className="justify-start" variant="bordered" size="sm">
-      <Popover placement="left-end" className="p-0" isOpen={open}>
-        <PopoverTrigger>
-          <Button onClick={openColorPicker} style={{ backgroundColor: color }}>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <PhotoshopPicker color={color} onChange={v => setColor(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
-        </PopoverContent>
-      </Popover>
-      <Button>{alignLeft}</Button>
-      <Button>{alignCenter}</Button>
-      <Button>{alignRight}</Button>
-      <Button>{bold}</Button>
-      <Button>{underline}</Button>
-      <Button>{italic}</Button>
-    </ButtonGroup>
+    <div className="flex">
+      <div className="max-w-[100px]">
+        <SimpleSizer
+          labelPlacement="outside"
+          label="font"
+          value={state.size}
+          onChange={update('size')}
+        />
+      </div>
+      <ButtonGroup isIconOnly className="justify-start" variant="bordered" size="sm">
+        <Popover placement="left-end" className="p-0" isOpen={open}>
+          <PopoverTrigger>
+            <Button onClick={openColorPicker} style={{ backgroundColor: color }}>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PhotoshopPicker color={color} onChange={v => setColor(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
+          </PopoverContent>
+        </Popover>
+        <Button>{alignLeft}</Button>
+        <Button>{alignCenter}</Button>
+        <Button>{alignRight}</Button>
+        <Button>{bold}</Button>
+        <Button>{underline}</Button>
+        <Button>{italic}</Button>
+      </ButtonGroup>
+    </div>
   </div>;
 };
