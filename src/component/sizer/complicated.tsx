@@ -59,7 +59,7 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
         <SimpleSizer value={top} onChange={v => setValues(pre => ({ ...pre, top: v }))} label="Top" labelPlacement="inside" />
         <SimpleSizer value={right} onChange={v => setValues(pre => ({ ...pre, right: v }))} label="Right" labelPlacement="inside" />
         <SimpleSizer value={bottom} onChange={v => setValues(pre => ({ ...pre, bottom: v }))} label="Bottom" labelPlacement="inside" />
-        <SimpleSizer value={left} onChange={v => setValues(pre => ({ ...pre, left: v }))} label="Bottom" labelPlacement="inside" />
+        <SimpleSizer value={left} onChange={v => setValues(pre => ({ ...pre, left: v }))} label="Left" labelPlacement="inside" />
       </div>
     }
   </div>

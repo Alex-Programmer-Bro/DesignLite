@@ -3,7 +3,7 @@ import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
 import { Schema, SchemaType } from '../types/schema';
-import { baseStyleAtom, textStyleAtom } from './designer';
+import { baseStyleAtom, ImageURLAtom, textStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -29,6 +29,15 @@ export const getDrawingSchema = atom(get => {
 });
 getDrawingSchema.debugLabel = '正在绘制的元素';
 
+export const getActionSchemaTypeAtom = atom(get => {
+  const drawingSchema = get(getDrawingSchema);
+  if (drawingSchema) {
+    return drawingSchema.type;
+  }
+  return get(selectedDrawTypeAtom);
+});
+getActionSchemaTypeAtom.debugLabel = '准备添加或正在编辑的 SchemaType'
+
 export const updateSchema = (set: Setter, { id, schema }: { id: string; schema: Partial<Schema> }) => {
   set(schemasAtom, pre => {
     return pre.map(item => {
@@ -39,7 +48,8 @@ export const updateSchema = (set: Setter, { id, schema }: { id: string; schema: 
           style: {
             ...item.style,
             ...schema.style
-          }
+          },
+          content: schema.content || item.content
         }
         return result;
       }
@@ -61,13 +71,12 @@ export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
   const textStyle = get(textStyleAtom);
   const baseStyle = get(baseStyleAtom);
+  const imageURL = get(ImageURLAtom);
 
   const newSchema: Schema = {
     id: v1(),
     type: drawType,
-    style: {
-      display: 'inline-block'
-    }
+    style: {}
   }
 
   if (drawType === SchemaType.Text) {
@@ -85,6 +94,8 @@ export const createSchemaAtom = atom(null, (get, set) => {
       textAlign: textStyle.align,
     }
     newSchema.content = textStyle.content;
+  } else if (drawType === SchemaType.Image) {
+    newSchema.content = imageURL;
   }
 
   set(drawingSchemaIdAtom, newSchema.id);
