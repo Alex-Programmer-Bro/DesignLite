@@ -68,7 +68,7 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
       onChange={update('size')}
     />
     <ButtonGroup isIconOnly className="justify-start" variant="bordered" size="sm">
-      <Popover placement="bottom" className="p-0" isOpen={open}>
+      <Popover placement="left-end" className="p-0" isOpen={open}>
         <PopoverTrigger>
           <Button onClick={openColorPicker} style={{ backgroundColor: color }}>
           </Button>
