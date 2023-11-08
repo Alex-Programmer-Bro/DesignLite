@@ -1,6 +1,6 @@
 import React, { Key, ReactElement, useMemo, useState } from "react";
+import { SelectIcon } from "../../assets/icons/SelectIcon";
 import { styles } from "./index.tv";
-// import { SelectIcon } from "../../assets/icons/SelectIcon";
 // import { HandIcon } from "../../assets/icons/HandIcon";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { useAtom, useSetAtom } from "jotai";
@@ -8,7 +8,7 @@ import { DownIcon } from "../../assets/icons/DownIcon";
 import { FrameIcon } from "../../assets/icons/FrameIcon";
 import { UpIcon } from "../../assets/icons/UpIcon";
 import { createSchemaAtom, resetAtom } from "../../store/schema";
-import { selectedDrawTypeAtom } from "../../store/toolbar";
+import { allowSelectAtom, selectedDrawTypeAtom } from "../../store/toolbar";
 import { SchemaType } from "../../types/schema";
 
 const { wrap } = styles();
@@ -82,6 +82,7 @@ const Buttons = ({ slots }: { slots: Slot[] }) => {
 export const Toolsbar: React.FC = () => {
   const options: string[] = Object.values(SchemaType);
   const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
+  const setAllowSelect = useSetAtom(allowSelectAtom);
   const createSchema = useSetAtom(createSchemaAtom);
   const resetSchema = useSetAtom(resetAtom);
 
@@ -94,11 +95,13 @@ export const Toolsbar: React.FC = () => {
         dropMenu: options.map((type) => ({ value: type, label: type })),
         onAction: (key) => setSelectedDrawType(key as SchemaType)
       },
-      // {
-      //   name: "Select",
-      //   key: "select",
-      //   element: <SelectIcon fill="#fff" />
-      // },
+      {
+        name: "Select",
+        key: "select",
+        element: <SelectIcon fill="#fff" />,
+        onActive: () => setAllowSelect(true),
+        onInactive: () => setAllowSelect(false)
+      }
       // { name: "hanld Tools", key: "hand", element: <HandIcon fill="#fff" /> }
     ];
   }, [selectedDrawType]);

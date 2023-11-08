@@ -1,13 +1,32 @@
-import { useAtomValue } from "jotai";
-import { schemasAtom } from "../store/schema";
+import { useAtomValue, useSetAtom } from "jotai";
+import React from "react";
+import { drawingSchemaIdAtom, schemasAtom } from "../store/schema";
+import { allowSelectAtom } from "../store/toolbar";
 import { SchemaRender } from "./schemaRender";
 
 export const Canvas = () => {
   const schemas = useAtomValue(schemasAtom);
+  const setDrawingScheamId = useSetAtom(drawingSchemaIdAtom);
+  const allowSelect = useAtomValue(allowSelectAtom);
 
-  return <div>
-    {
-      schemas.map(item => <SchemaRender key={item.id} {...item} />)
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!allowSelect) return;
+    const elements = document.getElementsByClassName("schema-active");
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].classList.remove("schema-active");
     }
-  </div>
+    const element = event.target as HTMLDivElement;
+    if (element.id) {
+      element.className = "schema-active";
+      setDrawingScheamId(element.id);
+    }
+  };
+
+  return (
+    <div onClick={handleClick}>
+      {schemas.map((item) => (
+        <SchemaRender key={item.id} {...item} />
+      ))}
+    </div>
+  );
 };
