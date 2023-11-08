@@ -1,15 +1,16 @@
 import { Button, ButtonGroup, Popover, PopoverContent, PopoverTrigger, Textarea } from "@nextui-org/react";
+import type { } from 'csstype';
 import { debounce } from 'lodash-es';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PhotoshopPicker } from 'react-color';
 import { SimpleSizer } from "../sizer";
 import { alignCenter, alignLeft, alignRight, bold, italic, underline } from "./icon";
 
-interface State {
+export interface State {
   content: string;
   size: string;
   color: string;
-  align: string;
+  align: Pick<React.CSSProperties, 'textAlign'>['textAlign'];
   bold: boolean;
   underline: boolean;
   italic: boolean;
