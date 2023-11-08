@@ -1,5 +1,7 @@
-import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Divider, Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
 import { useAtom, useSetAtom } from "jotai";
+import { useRef, useState } from 'react';
+import { PhotoshopPicker } from 'react-color';
 import { baseStyleAtom, textStyleAtom } from "../store/designer";
 import { setDrawingSchemaAtom } from "../store/schema";
 import { ComplicatedSizer, SimpleSizer } from './sizer';
@@ -9,6 +11,8 @@ export const Designer = () => {
   const [baseState, setBaseState] = useAtom(baseStyleAtom);
   const [textState, setTextState] = useAtom(textStyleAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
+  const [open, setOpen] = useState(false);
+  const currentColor = useRef(baseState.backgroundColor);
 
   const stateAdaptor = (key: string) => {
     return (v: string) => setBaseState(pre => {
@@ -24,6 +28,17 @@ export const Designer = () => {
       })
       return result;
     });
+  }
+
+
+  const openColorPicker = () => {
+    currentColor.current = baseState.backgroundColor;
+    setOpen(true);
+  }
+
+  const onCancel = () => {
+    setOpen(false);
+    stateAdaptor('backgroundColor')(currentColor.current);
   }
 
   return <Card className="w-[400px] m-4">
@@ -58,9 +73,15 @@ export const Designer = () => {
       </div>
       <label className="flex items-center">
         <span className="text-[12px] font-medium mr-4">background</span>
-        <input type="color" value={baseState.backgroundColor} onChange={e => {
-          stateAdaptor('backgroundColor')(e.target.value);
-        }} />
+        <Popover placement="left-end" className="p-0" isOpen={open}>
+          <PopoverTrigger>
+            <Button size="sm" variant="bordered" onClick={openColorPicker} style={{ backgroundColor: baseState.backgroundColor }}>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PhotoshopPicker color={baseState.backgroundColor} onChange={v => stateAdaptor('backgroundColor')(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
+          </PopoverContent>
+        </Popover>
       </label>
       <Divider className="my-10" />
       <TextEditor
