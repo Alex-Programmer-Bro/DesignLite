@@ -7,7 +7,7 @@ import { useAtom, useSetAtom } from "jotai";
 import { DownIcon } from "../../assets/icons/DownIcon";
 import { FrameIcon } from "../../assets/icons/FrameIcon";
 import { UpIcon } from "../../assets/icons/UpIcon";
-import { createSchemaAtom, exportAssetsAtom, resetAtom, useTemplateAtom } from "../../store/schema";
+import { createSchemaAtom, exportAssetsAtom, importConfigAtom, resetAtom, useTemplateAtom } from "../../store/schema";
 import { selectedDrawTypeAtom } from "../../store/toolbar";
 import { SchemaType } from "../../types/schema";
 
@@ -86,6 +86,7 @@ export const Toolsbar: React.FC = () => {
   const resetSchema = useSetAtom(resetAtom);
   const useTemplate = useSetAtom(useTemplateAtom);
   const exportAssets = useSetAtom(exportAssetsAtom);
+  const importConfig = useSetAtom(importConfigAtom);
 
   const slots = useMemo<Slot[]>(() => {
     return [
@@ -121,6 +122,9 @@ export const Toolsbar: React.FC = () => {
           </Button>
           <Button onClick={exportAssets} size="sm">
             导出资源
+          </Button>
+          <Button onClick={importConfig} size="sm">
+            导入配置
           </Button>
         </ButtonGroup>
         <Button onClick={() => window.open('/preview', 'blank')} size="sm" className="ml-2">

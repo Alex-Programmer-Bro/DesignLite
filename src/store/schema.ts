@@ -2,7 +2,7 @@ import { atom, Setter } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
-import { resolveCSS, resolveHTML } from '../tool';
+import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
 import { baseStyleAtom, ImageURLAtom, textStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
@@ -171,6 +171,7 @@ export const getCodeAtom = atom((get) => {
 });
 
 export const exportAssetsAtom = atom(null, async (get) => {
+  const schemas = get(schemasAtom);
   let { html, css } = get(getCodeAtom);
   const { default: JSZip } = await import('jszip');
   const zip = new JSZip();
@@ -192,6 +193,7 @@ export const exportAssetsAtom = atom(null, async (get) => {
 
   zip.file("index.html", html);
   zip.file("index.css", css);
+  zip.file("fps.json", JSON.stringify(schemas));
 
   const content = await zip.generateAsync({ type: "blob" });
   const a = document.createElement("a");
@@ -201,4 +203,9 @@ export const exportAssetsAtom = atom(null, async (get) => {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(a.href);
+});
+
+export const importConfigAtom = atom(null, async (_, set) => {
+  const json = await uploadAndReadJSON();
+  set(schemasAtom, json);
 });
