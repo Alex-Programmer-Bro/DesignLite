@@ -1,6 +1,7 @@
-import { Button, ButtonGroup, Textarea } from "@nextui-org/react";
+import { Button, ButtonGroup, Popover, PopoverContent, PopoverTrigger, Textarea } from "@nextui-org/react";
 import { debounce } from 'lodash-es';
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { PhotoshopPicker } from 'react-color';
 import { SimpleSizer } from "../sizer";
 import { alignCenter, alignLeft, alignRight, bold, italic, underline } from "./icon";
 
@@ -18,6 +19,8 @@ interface TextEditorProps {
 
 export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps) => {
   const [color, setColor] = useState(state.color);
+  const [open, setOpen] = useState(false);
+  const currentColor = useRef(state.color);
 
   const update = (key: keyof State) => {
     return (value: string) => {
@@ -35,6 +38,16 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
   const watchColor = useCallback(debounce((color: string) => {
     update('color')(color);
   }, 30), []);
+
+  const openColorPicker = () => {
+    currentColor.current = color;
+    setOpen(true);
+  }
+
+  const onCancel = () => {
+    setOpen(false);
+    setColor(currentColor.current);
+  }
 
   useEffect(() => {
     watchColor(color);
@@ -55,16 +68,15 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
       onChange={update('size')}
     />
     <ButtonGroup isIconOnly className="justify-start" variant="bordered" size="sm">
-      <Button>
-        <div className="w-full h-full" style={{ backgroundColor: color }}>
-          <input
-            className="border-none outline-none w-full h-full opacity-0"
-            type="color"
-            value={color}
-            onChange={e => setColor(e.target.value)}
-          />
-        </div>
-      </Button>
+      <Popover placement="bottom" className="p-0" isOpen={open}>
+        <PopoverTrigger>
+          <Button onClick={openColorPicker} style={{ backgroundColor: color }}>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <PhotoshopPicker color={color} onChange={v => setColor(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
+        </PopoverContent>
+      </Popover>
       <Button>{alignLeft}</Button>
       <Button>{alignCenter}</Button>
       <Button>{alignRight}</Button>

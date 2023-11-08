@@ -16,3 +16,7 @@ select {
   appearance: none;
   cursor: pointer;
 }
+
+.photoshop-picker>div:last-child {
+  padding: 15px !important;
+}
