@@ -9,7 +9,7 @@ interface UnitSelectorProps {
  * 单位选择器
  */
 export const UnitSelector: FC<UnitSelectorProps> = ({ value, onChange }) => {
-  return <select role="unit-selector" className="outline-none" defaultValue={value} onChange={e => {
+  return <select role="unit-selector" className="outline-none bg-transparent" defaultValue={value} onChange={e => {
     onChange(e.target.value);
   }}>
     <option value="px">px</option>

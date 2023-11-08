@@ -4,13 +4,15 @@ import { Toolsbar } from "./component/toolsbar";
 
 function App() {
   return (
-    <div className="flex h-full">
-      <div className="h-full flex-1 border-r-1 border-solid border-[#ddd]">
+    <>
+      <div className="flex h-full flex-col">
         <Toolsbar />
         <Canvas />
       </div>
-      <Designer />
-    </div>
+      <div className="fixed right-0 top-8">
+        <Designer />
+      </div>
+    </>
   );
 }
 

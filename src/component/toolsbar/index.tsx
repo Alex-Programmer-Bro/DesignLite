@@ -3,11 +3,11 @@ import { styles } from "./index.tv";
 // import { SelectIcon } from "../../assets/icons/SelectIcon";
 // import { HandIcon } from "../../assets/icons/HandIcon";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import { FrameIcon } from "../../assets/icons/FrameIcon";
-import { DownIcon } from "../../assets/icons/DownIcon";
-import { UpIcon } from "../../assets/icons/UpIcon";
 import { useAtom, useSetAtom } from "jotai";
-import { createSchemaAtom } from "../../store/schema";
+import { DownIcon } from "../../assets/icons/DownIcon";
+import { FrameIcon } from "../../assets/icons/FrameIcon";
+import { UpIcon } from "../../assets/icons/UpIcon";
+import { createSchemaAtom, resetAtom } from "../../store/schema";
 import { selectedDrawTypeAtom } from "../../store/toolbar";
 import { SchemaType } from "../../types/schema";
 
@@ -83,6 +83,7 @@ export const Toolsbar: React.FC = () => {
   const options: string[] = Object.values(SchemaType);
   const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
   const createSchema = useSetAtom(createSchemaAtom);
+  const resetSchema = useSetAtom(resetAtom);
 
   const slots = useMemo<Slot[]>(() => {
     return [
@@ -105,9 +106,14 @@ export const Toolsbar: React.FC = () => {
   return (
     <div className={wrap()}>
       <Buttons slots={slots} />
-      <Button onClick={createSchema} variant="shadow" color="primary" size="sm" className="ml-auto">
-        添加{selectedDrawType}
-      </Button>
+      <div className="ml-auto">
+        <Button onClick={createSchema} variant="shadow" color="primary" size="sm" className="ml-auto">
+          添加{selectedDrawType}
+        </Button>
+        <Button onClick={resetSchema} size="sm" className="ml-2">
+          重置
+        </Button>
+      </div>
     </div>
   );
 };
