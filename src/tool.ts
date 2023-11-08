@@ -3,7 +3,7 @@ import { Schema, SchemaType } from "./types/schema";
 export const resolveHTML = (schema: Schema) => {
   switch (schema.type) {
     case SchemaType.Image:
-      return `<img class="${schema.id}" src={${schema.content}} alt="" />`
+      return `<img class="${schema.id}" src=${schema.content} alt="" />`
     case SchemaType.Text:
       return `<span class="${schema.id}">${schema.content}</span>`
   }

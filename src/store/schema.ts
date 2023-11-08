@@ -111,7 +111,7 @@ export const resetAtom = atom(null, (_, set) => {
 export const useTemplateAtom = atom(null, (_, set) => {
   set(schemasAtom, [
     {
-      id: '1',
+      id: 'hello-text',
       type: SchemaType.Text,
       content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
       <br />
@@ -134,33 +134,63 @@ export const useTemplateAtom = atom(null, (_, set) => {
         display: 'block',
         margin: '20px auto',
         padding: '20px',
-        width: 800,
-        height: 300,
+        width: '800px',
+        height: '300px',
         background: '#ddd',
-        borderRadius: 10,
+        borderRadius: '10px',
         boxShadow: '10px 10px 10px #ccc',
       }
     },
     {
-      id: '2',
+      id: 'hello-img',
       type: SchemaType.Image,
       content: 'https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0=',
       style: {
         display: 'block',
         margin: '40px auto',
-        width: 800,
+        width: '800px',
         height: 'auto'
       }
     }
   ]);
 });
 
-export const exportAssetsAtom = atom(null, (get) => {
+export const exportAssetsAtom = atom(null, async (get) => {
   const schemas = get(schemasAtom);
-  const { html, css } = schemas.reduce((result, item) => {
+
+  let { html, css } = schemas.reduce((result, item) => {
     result.html += resolveHTML(item);
     result.css += resolveCSS(item);
     return result;
   }, { html: '', css: '' });
-  console.log({ html, css });
+
+  const { default: JSZip } = await import('jszip');
+  const zip = new JSZip();
+
+  html = `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+    ${html}
+  </body>
+  </html>
+  `;
+  css = `* {margin:0;padding:0}` + css;
+
+  zip.file("index.html", html);
+  zip.file("index.css", css);
+
+  const content = await zip.generateAsync({ type: "blob" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(content);
+  a.download = "website.zip";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
 });
