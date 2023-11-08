@@ -126,6 +126,9 @@ export const Toolsbar: React.FC = () => {
             导出资源
           </Button>
         </ButtonGroup>
+        <Button onClick={() => window.open('/preview', 'blank')} size="sm" className="ml-2">
+          实时预览
+        </Button>
       </div>
     </div>
   );
