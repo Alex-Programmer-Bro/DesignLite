@@ -2,6 +2,7 @@ import { atom, Setter } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
+import { resolveCSS, resolveHTML } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
 import { baseStyleAtom, ImageURLAtom, textStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
@@ -156,5 +157,10 @@ export const useTemplateAtom = atom(null, (_, set) => {
 
 export const exportAssetsAtom = atom(null, (get) => {
   const schemas = get(schemasAtom);
-  console.log(schemas);
+  const { html, css } = schemas.reduce((result, item) => {
+    result.html += resolveHTML(item);
+    result.css += resolveCSS(item);
+    return result;
+  }, { html: '', css: '' });
+  console.log({ html, css });
 });
