@@ -9,6 +9,10 @@ interface State {
   content: string;
   size: string;
   color: string;
+  align: string;
+  bold: boolean;
+  underline: boolean;
+  italic: boolean;
 }
 
 interface TextEditorProps {
@@ -17,13 +21,15 @@ interface TextEditorProps {
   onChange: (update: State | ((prevState: State) => State)) => void;
 }
 
+const activeColor = 'rgb(217, 217, 217)';
+
 export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps) => {
   const [color, setColor] = useState(state.color);
   const [open, setOpen] = useState(false);
   const currentColor = useRef(state.color);
 
   const update = (key: keyof State) => {
-    return (value: string) => {
+    return (value: string | boolean) => {
       onChange((pre: State) => {
         const result = {
           ...pre,
@@ -80,12 +86,42 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
             <PhotoshopPicker color={color} onChange={v => setColor(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
           </PopoverContent>
         </Popover>
-        <Button>{alignLeft}</Button>
-        <Button>{alignCenter}</Button>
-        <Button>{alignRight}</Button>
-        <Button>{bold}</Button>
-        <Button>{underline}</Button>
-        <Button>{italic}</Button>
+        <Button
+          style={{ backgroundColor: state.align === 'left' ? activeColor : 'transparent' }}
+          onClick={() => update('align')('left')}
+        >
+          {alignLeft}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.align === 'center' ? activeColor : 'transparent' }}
+          onClick={() => update('align')('center')}
+        >
+          {alignCenter}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.align === 'right' ? activeColor : 'transparent' }}
+          onClick={() => update('align')('right')}
+        >
+          {alignRight}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.bold ? activeColor : 'transparent' }}
+          onClick={() => update('bold')(!state.bold)}
+        >
+          {bold}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.underline ? activeColor : 'transparent' }}
+          onClick={() => update('underline')(!state.underline)}
+        >
+          {underline}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.italic ? activeColor : 'transparent' }}
+          onClick={() => update('italic')(!state.italic)}
+        >
+          {italic}
+        </Button>
       </ButtonGroup>
     </div>
   </div>;
