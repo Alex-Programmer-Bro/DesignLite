@@ -1,8 +1,9 @@
 import { atom, Setter } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
+import { appStore } from '.';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
-import { resolveCSS, resolveHTML } from '../tool';
+import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
 import { baseStyleAtom, ImageURLAtom, textStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
