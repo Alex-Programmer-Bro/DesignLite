@@ -19,7 +19,6 @@ export const TextRender = ({ style, text }: TextRenderProps) => {
       aria-label="schema"
       style={style}
       ref={containerRef}
-      contentEditable
       dangerouslySetInnerHTML={{ __html: text }}
     />
   }, [style, setSchema]);
