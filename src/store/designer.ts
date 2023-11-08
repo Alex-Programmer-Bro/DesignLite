@@ -20,3 +20,6 @@ export const textStyleAtom = atom<TextEditorState>({
   italic: false
 });
 textStyleAtom.debugLabel = '当前元素的文本样式';
+
+export const ImageURLAtom = atom('');
+ImageURLAtom.debugLabel = 'Designer 上的图片地址';
