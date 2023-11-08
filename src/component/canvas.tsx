@@ -25,36 +25,37 @@ export const Canvas = () => {
     const { scale } = params.current;
 
     if (delta > 0) {
-      params.current.scale = scale - 0.01 < 0.5 ? 0.5 : scale - 0.01;
+      params.current.scale = scale - 0.01 < 0.1 ? 0.1 : scale - 0.01;
     } else {
-      params.current.scale = (scale + 0.01) % 3;
+      params.current.scale = scale + 0.01 > 3 ? 3 : scale + 0.01;
     }
   };
 
   const startDrag = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     setIsDrag(true);
+    const { scale } = params.current;
     let targetX = 0;
     let targetY = 0;
-    const targetElement = container.current;
-    if (targetElement) {
-      const targetRect = targetElement.getBoundingClientRect();
-      console.log(targetRect);
-      // targetX = targetRect.left;
-      // targetY = targetRect.top;
+    if (container.current) {
+      const target = container.current.getBoundingClientRect();
+      targetX = target.x;
+      targetY = target.y;
     }
 
-    params.current.startX = event.clientX - targetX;
-    params.current.startY = event.clientY - targetY;
+    const startX = event.clientX - targetX;
+    const startY = event.clientY - targetY;
+
+    params.current.startX = startX;
+    params.current.startY = startY;
   };
 
   const handleDrag = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     if (!isDrag) return;
-    const { scale, startX, startY } = params.current;
-
-    params.current.top = event.clientY - event.currentTarget.offsetTop - startX;
-    params.current.left = event.clientX - event.currentTarget.offsetLeft - startY;
+    const { startX, startY } = params.current;
+    params.current.top = event.clientY - startY - event.currentTarget.offsetTop;
+    params.current.left = event.clientX - startX - event.currentTarget.offsetLeft;
   };
 
   const stopDrag = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -72,7 +73,13 @@ export const Canvas = () => {
     requestAnimationFrame(animation);
   };
 
-  useEffect(animation, [params]);
+  useEffect(() => {
+    animation();
+    const scale = window.innerWidth / 1920 - 0.25;
+    params.current.scale = scale < 0.1 ? 0.1 : scale;
+    params.current.left = 30;
+    params.current.top = 30;
+  }, []);
 
   return (
     <div
@@ -83,7 +90,7 @@ export const Canvas = () => {
       onMouseLeave={stopDrag}
       onMouseMove={handleDrag}
     >
-      <div className=" absolute left-0 top-0 shadow-medium bg-white w-[1920px] min-h-[1080px]" ref={container}>
+      <div className=" absolute shadow-medium bg-white w-[1920px] min-h-[1080px] origin-top-left" ref={container}>
         {schemas.map((item) => (
           <SchemaRender key={item.id} {...item} />
         ))}
