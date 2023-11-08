@@ -172,12 +172,12 @@ export const getCodeAtom = atom((get) => {
   return {
     html,
     css
-  }
+  };
 });
 
 export const exportAssetsAtom = atom(null, async (get) => {
   let { html, css } = get(getCodeAtom);
-  const { default: JSZip } = await import('jszip');
+  const { default: JSZip } = await import("jszip");
   const zip = new JSZip();
 
   html = `<!DOCTYPE html>
@@ -219,15 +219,15 @@ appStore.sub(drawingSchemaIdAtom, () => {
     const { style, content } = target;
 
     appStore.set(baseStyleAtom, {
-      width: `${style.width}` || "0px",
-      height: `${style.height}` || "0px",
-      margin: `${style.margin}` || "0px",
-      padding: `${style.padding}` || "0px",
+      width: `${style.width || "0px"}`,
+      height: `${style.height || "0px"}`,
+      margin: `${style.margin || "0px"}`,
+      padding: `${style.padding || "0px"}`,
       backgroundColor: style.backgroundColor || "#ffffff"
     });
     appStore.set(textStyleAtom, {
       content: content || "",
-      size: `${style.fontSize}` || "14px",
+      size: `${style.fontSize || "14px"}` || "14px",
       color: style.color || "#000000",
       align: style.textAlign || "left",
       bold: style.fontWeight === 800,
