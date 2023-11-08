@@ -155,7 +155,7 @@ export const useTemplateAtom = atom(null, (_, set) => {
   ]);
 });
 
-export const exportAssetsAtom = atom(null, async (get) => {
+export const getCodeAtom = atom((get) => {
   const schemas = get(schemasAtom);
 
   let { html, css } = schemas.reduce((result, item) => {
@@ -164,6 +164,14 @@ export const exportAssetsAtom = atom(null, async (get) => {
     return result;
   }, { html: '', css: '' });
 
+  return {
+    html,
+    css
+  }
+});
+
+export const exportAssetsAtom = atom(null, async (get) => {
+  let { html, css } = get(getCodeAtom);
   const { default: JSZip } = await import('jszip');
   const zip = new JSZip();
 
