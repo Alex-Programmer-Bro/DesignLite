@@ -1,9 +1,10 @@
-import { Button, Card, CardBody, CardHeader, Divider, Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
-import { useAtom, useSetAtom } from "jotai";
+import { Button, Card, CardBody, CardHeader, Divider, Input, Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useRef, useState } from 'react';
 import { PhotoshopPicker } from 'react-color';
-import { baseStyleAtom, textStyleAtom } from "../store/designer";
-import { setDrawingSchemaAtom } from "../store/schema";
+import { ImageURLAtom, baseStyleAtom, textStyleAtom } from "../store/designer";
+import { getActionSchemaTypeAtom, setDrawingSchemaAtom } from "../store/schema";
+import { SchemaType } from "../types/schema";
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from "./textEditor";
 
@@ -13,6 +14,8 @@ export const Designer = () => {
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
   const [open, setOpen] = useState(false);
   const currentColor = useRef(baseState.backgroundColor);
+  const type = useAtomValue(getActionSchemaTypeAtom);
+  const [imageURL, setImageURL] = useAtom(ImageURLAtom);
 
   const stateAdaptor = (key: string) => {
     return (v: string) => setBaseState(pre => {
@@ -29,7 +32,6 @@ export const Designer = () => {
       return result;
     });
   }
-
 
   const openColorPicker = () => {
     currentColor.current = baseState.backgroundColor;
@@ -84,22 +86,27 @@ export const Designer = () => {
         </Popover>
       </label>
       <Divider className="my-10" />
-      <TextEditor
-        state={textState}
-        onChangeBefore={state => {
-          setDrawingSchema({
-            content: state.content,
-            style: {
-              fontSize: state.size,
-              color: state.color,
-              fontWeight: state.bold ? 800 : 400,
-              textDecoration: state.underline ? 'underline' : 'auto',
-              fontStyle: state.italic ? 'italic' : 'inherit',
-              textAlign: state.align,
-            }
-          })
-        }}
-        onChange={setTextState} />
+      {
+        type === SchemaType.Image ?
+          <Input type="url" label="Image URL" value={imageURL} onChange={e => setImageURL(e.target.value)} />
+          :
+          <TextEditor
+            state={textState}
+            onChangeBefore={state => {
+              setDrawingSchema({
+                content: state.content,
+                style: {
+                  fontSize: state.size,
+                  color: state.color,
+                  fontWeight: state.bold ? 800 : 400,
+                  textDecoration: state.underline ? 'underline' : 'auto',
+                  fontStyle: state.italic ? 'italic' : 'inherit',
+                  textAlign: state.align,
+                }
+              })
+            }}
+            onChange={setTextState} />
+      }
     </CardBody>
   </Card>
 };

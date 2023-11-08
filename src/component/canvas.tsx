@@ -15,6 +15,7 @@ export const Canvas = () => {
     for (let i = 0; i < elements.length; i++) {
       elements[i].classList.remove("schema-active");
     }
+
     const element = event.target as HTMLDivElement;
     if (element.id) {
       element.className = "schema-active";
@@ -23,7 +24,7 @@ export const Canvas = () => {
   };
 
   return (
-    <div onClick={handleClick}>
+    <div className="overflow-auto" style={{ height: "calc(100% - 40px)" }} onClick={handleClick}>
       {schemas.map((item) => (
         <SchemaRender key={item.id} {...item} />
       ))}

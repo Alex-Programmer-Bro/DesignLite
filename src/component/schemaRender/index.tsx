@@ -8,11 +8,9 @@ export const SchemaRender = (schema: Schema) => {
       style={schema.style}
       text={schema.content || ''}
     />,
-    [SchemaType.Shape]: <div  id={schema.id}>图形</div>,
-    [SchemaType.Image]: <div  id={schema.id}>图片</div>,
+    [SchemaType.Shape]: <div id={schema.id}>图形</div>,
+    [SchemaType.Image]: <img src={schema.content} style={schema.style} alt="" id={schema.id} />,
   }
 
-  return <div style={schema.style}>
-    {render[schema.type]}
-  </div>;
+  return render[schema.type];
 };
