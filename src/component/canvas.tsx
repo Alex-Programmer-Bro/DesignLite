@@ -34,7 +34,6 @@ export const Canvas = () => {
   const startDrag = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     setIsDrag(true);
-    const { scale } = params.current;
     let targetX = 0;
     let targetY = 0;
     if (container.current) {
