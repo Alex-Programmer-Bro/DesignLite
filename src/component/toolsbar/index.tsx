@@ -2,12 +2,12 @@ import React, { Key, ReactElement, useMemo, useState } from "react";
 import { styles } from "./index.tv";
 // import { SelectIcon } from "../../assets/icons/SelectIcon";
 // import { HandIcon } from "../../assets/icons/HandIcon";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { useAtom, useSetAtom } from "jotai";
 import { DownIcon } from "../../assets/icons/DownIcon";
 import { FrameIcon } from "../../assets/icons/FrameIcon";
 import { UpIcon } from "../../assets/icons/UpIcon";
-import { createSchemaAtom, resetAtom } from "../../store/schema";
+import { createSchemaAtom, exportAssetsAtom, resetAtom, useTemplateAtom } from "../../store/schema";
 import { selectedDrawTypeAtom } from "../../store/toolbar";
 import { SchemaType } from "../../types/schema";
 
@@ -84,6 +84,8 @@ export const Toolsbar: React.FC = () => {
   const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
   const createSchema = useSetAtom(createSchemaAtom);
   const resetSchema = useSetAtom(resetAtom);
+  const useTemplate = useSetAtom(useTemplateAtom);
+  const exportAssets = useSetAtom(exportAssetsAtom);
 
   const slots = useMemo<Slot[]>(() => {
     return [
@@ -113,6 +115,14 @@ export const Toolsbar: React.FC = () => {
         <Button onClick={resetSchema} size="sm" className="ml-2">
           重置
         </Button>
+        <ButtonGroup className="ml-2 text-white" variant="faded" >
+          <Button onClick={useTemplate} size="sm">
+            使用模版
+          </Button>
+          <Button onClick={exportAssets} size="sm">
+            导出资源
+          </Button>
+        </ButtonGroup>
       </div>
     </div>
   );

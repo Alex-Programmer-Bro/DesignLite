@@ -2,6 +2,7 @@ import { atom, Setter } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
+import { resolveCSS, resolveHTML } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
 import { baseStyleAtom, ImageURLAtom, textStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
@@ -105,4 +106,91 @@ export const createSchemaAtom = atom(null, (get, set) => {
 export const resetAtom = atom(null, (_, set) => {
   set(schemasAtom, []);
   set(drawingSchemaIdAtom, '');
-})
+});
+
+export const useTemplateAtom = atom(null, (_, set) => {
+  set(schemasAtom, [
+    {
+      id: 'hello-text',
+      type: SchemaType.Text,
+      content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
+      <br />
+      2 业精于勤，荒于嬉。—— 韩 愈《进学解》
+      <br />
+      3 一寸光阴一寸金，寸金难买寸光阴。——《增广贤文》
+      <br />
+      4 天行健，君子以自强不息。——《周易·乾·象》
+      <br />
+      5 志不强者智不达。——《墨子·修身》名言名句
+      <br />
+      6 青，取之于蓝而青于蓝；冰，水为之而寒于水。 ——《荀子·劝学》
+      <br />
+      7 志当存高远。—— 诸葛亮《诫外生书》
+      <br />
+      8 丈夫志四海，万里犹比邻。—— 曹 植《赠白马王彪》 
+      <br />
+      9 有志者事竟成。 ——《后汉书·耿 列传》`,
+      style: {
+        display: 'block',
+        margin: '20px auto',
+        padding: '20px',
+        width: '800px',
+        height: '300px',
+        background: '#ddd',
+        borderRadius: '10px',
+        boxShadow: '10px 10px 10px #ccc',
+      }
+    },
+    {
+      id: 'hello-img',
+      type: SchemaType.Image,
+      content: 'https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0=',
+      style: {
+        display: 'block',
+        margin: '40px auto',
+        width: '800px',
+        height: 'auto'
+      }
+    }
+  ]);
+});
+
+export const exportAssetsAtom = atom(null, async (get) => {
+  const schemas = get(schemasAtom);
+
+  let { html, css } = schemas.reduce((result, item) => {
+    result.html += resolveHTML(item);
+    result.css += resolveCSS(item);
+    return result;
+  }, { html: '', css: '' });
+
+  const { default: JSZip } = await import('jszip');
+  const zip = new JSZip();
+
+  html = `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+    ${html}
+  </body>
+  </html>
+  `;
+  css = `* {margin:0;padding:0}` + css;
+
+  zip.file("index.html", html);
+  zip.file("index.css", css);
+
+  const content = await zip.generateAsync({ type: "blob" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(content);
+  a.download = "website.zip";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+});
