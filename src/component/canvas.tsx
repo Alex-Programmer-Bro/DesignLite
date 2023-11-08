@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai";
+import { useEffect, useRef, useState } from "react";
 import { schemasAtom } from "../store/schema";
 import { SchemaRender } from "./schemaRender";
-import { useEffect, useRef, useState } from "react";
 
 interface CanvasParams {
   startX: number;
@@ -43,10 +43,6 @@ export const Canvas = () => {
       // targetX = targetRect.left;
       // targetY = targetRect.top;
     }
-    console.log({
-      targetX,
-      targetY
-    });
 
     params.current.startX = event.clientX - targetX;
     params.current.startY = event.clientY - targetY;
