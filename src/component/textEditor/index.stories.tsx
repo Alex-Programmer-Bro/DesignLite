@@ -1,6 +1,6 @@
+import { useState } from '@storybook/preview-api';
 import { StoryObj, type Meta } from "@storybook/react";
 import { TextEditor } from ".";
-import { useState } from '@storybook/preview-api';
 
 const meta = {
   title: "内置组件/TextEditor",
@@ -19,7 +19,11 @@ export const Primary: Story = {
     state: {
       content: 'hello world',
       size: '12px',
-      color: '#000000'
+      color: '#000000',
+      align: 'left',
+      bold: false,
+      underline: false,
+      italic: false
     }
   },
   decorators: [

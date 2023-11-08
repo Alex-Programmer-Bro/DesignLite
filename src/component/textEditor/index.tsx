@@ -1,14 +1,19 @@
 import { Button, ButtonGroup, Popover, PopoverContent, PopoverTrigger, Textarea } from "@nextui-org/react";
+import type { } from 'csstype';
 import { debounce } from 'lodash-es';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PhotoshopPicker } from 'react-color';
 import { SimpleSizer } from "../sizer";
 import { alignCenter, alignLeft, alignRight, bold, italic, underline } from "./icon";
 
-interface State {
+export interface State {
   content: string;
   size: string;
   color: string;
+  align: Pick<React.CSSProperties, 'textAlign'>['textAlign'];
+  bold: boolean;
+  underline: boolean;
+  italic: boolean;
 }
 
 interface TextEditorProps {
@@ -17,13 +22,15 @@ interface TextEditorProps {
   onChange: (update: State | ((prevState: State) => State)) => void;
 }
 
+const activeColor = 'rgb(217, 217, 217)';
+
 export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps) => {
   const [color, setColor] = useState(state.color);
   const [open, setOpen] = useState(false);
   const currentColor = useRef(state.color);
 
   const update = (key: keyof State) => {
-    return (value: string) => {
+    return (value: string | boolean) => {
       onChange((pre: State) => {
         const result = {
           ...pre,
@@ -61,28 +68,62 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
       value={state.content}
       onChange={e => update('content')(e.target.value)}
     />
-    <SimpleSizer
-      labelPlacement="outside"
-      label="size"
-      value={state.size}
-      onChange={update('size')}
-    />
-    <ButtonGroup isIconOnly className="justify-start" variant="bordered" size="sm">
-      <Popover placement="left-end" className="p-0" isOpen={open}>
-        <PopoverTrigger>
-          <Button onClick={openColorPicker} style={{ backgroundColor: color }}>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <PhotoshopPicker color={color} onChange={v => setColor(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
-        </PopoverContent>
-      </Popover>
-      <Button>{alignLeft}</Button>
-      <Button>{alignCenter}</Button>
-      <Button>{alignRight}</Button>
-      <Button>{bold}</Button>
-      <Button>{underline}</Button>
-      <Button>{italic}</Button>
-    </ButtonGroup>
+    <div className="flex">
+      <div className="max-w-[100px]">
+        <SimpleSizer
+          labelPlacement="outside"
+          label="font"
+          value={state.size}
+          onChange={update('size')}
+        />
+      </div>
+      <ButtonGroup isIconOnly className="justify-start" variant="bordered" size="sm">
+        <Popover placement="left-end" className="p-0" isOpen={open}>
+          <PopoverTrigger>
+            <Button onClick={openColorPicker} style={{ backgroundColor: color }}>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PhotoshopPicker color={color} onChange={v => setColor(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
+          </PopoverContent>
+        </Popover>
+        <Button
+          style={{ backgroundColor: state.align === 'left' ? activeColor : 'transparent' }}
+          onClick={() => update('align')('left')}
+        >
+          {alignLeft}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.align === 'center' ? activeColor : 'transparent' }}
+          onClick={() => update('align')('center')}
+        >
+          {alignCenter}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.align === 'right' ? activeColor : 'transparent' }}
+          onClick={() => update('align')('right')}
+        >
+          {alignRight}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.bold ? activeColor : 'transparent' }}
+          onClick={() => update('bold')(!state.bold)}
+        >
+          {bold}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.underline ? activeColor : 'transparent' }}
+          onClick={() => update('underline')(!state.underline)}
+        >
+          {underline}
+        </Button>
+        <Button
+          style={{ backgroundColor: state.italic ? activeColor : 'transparent' }}
+          onClick={() => update('italic')(!state.italic)}
+        >
+          {italic}
+        </Button>
+      </ButtonGroup>
+    </div>
   </div>;
 };

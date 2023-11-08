@@ -91,7 +91,11 @@ export const Designer = () => {
             content: state.content,
             style: {
               fontSize: state.size,
-              color: state.color
+              color: state.color,
+              fontWeight: state.bold ? 800 : 400,
+              textDecoration: state.underline ? 'underline' : 'auto',
+              fontStyle: state.italic ? 'italic' : 'inherit',
+              textAlign: state.align,
             }
           })
         }}

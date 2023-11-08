@@ -3,7 +3,7 @@ import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
 import { Schema, SchemaType } from '../types/schema';
-import { textStyleAtom } from './designer';
+import { baseStyleAtom, textStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -60,6 +60,7 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
   const textStyle = get(textStyleAtom);
+  const baseStyle = get(baseStyleAtom);
 
   const newSchema: Schema = {
     id: v1(),
@@ -72,12 +73,16 @@ export const createSchemaAtom = atom(null, (get, set) => {
   if (drawType === SchemaType.Text) {
     newSchema.style = {
       ...newSchema.style,
+      ...baseStyle,
       lineHeight: 1,
       outline: '2px solid transparent',
       minWidth: '30px',
-      padding: '0.25rem',
       fontSize: textStyle.size,
       color: textStyle.color,
+      fontWeight: textStyle.bold ? 800 : 400,
+      textDecoration: textStyle.underline ? 'underline' : 'auto',
+      fontStyle: textStyle.italic ? 'italic' : 'inherit',
+      textAlign: textStyle.align,
     }
     newSchema.content = textStyle.content;
   }
