@@ -105,4 +105,56 @@ export const createSchemaAtom = atom(null, (get, set) => {
 export const resetAtom = atom(null, (_, set) => {
   set(schemasAtom, []);
   set(drawingSchemaIdAtom, '');
-})
+});
+
+export const useTemplateAtom = atom(null, (_, set) => {
+  set(schemasAtom, [
+    {
+      id: '1',
+      type: SchemaType.Text,
+      content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
+      <br />
+      2 业精于勤，荒于嬉。—— 韩 愈《进学解》
+      <br />
+      3 一寸光阴一寸金，寸金难买寸光阴。——《增广贤文》
+      <br />
+      4 天行健，君子以自强不息。——《周易·乾·象》
+      <br />
+      5 志不强者智不达。——《墨子·修身》名言名句
+      <br />
+      6 青，取之于蓝而青于蓝；冰，水为之而寒于水。 ——《荀子·劝学》
+      <br />
+      7 志当存高远。—— 诸葛亮《诫外生书》
+      <br />
+      8 丈夫志四海，万里犹比邻。—— 曹 植《赠白马王彪》 
+      <br />
+      9 有志者事竟成。 ——《后汉书·耿 列传》`,
+      style: {
+        display: 'block',
+        margin: '20px auto',
+        padding: '20px',
+        width: 800,
+        height: 300,
+        background: '#ddd',
+        borderRadius: 10,
+        boxShadow: '10px 10px 10px #ccc',
+      }
+    },
+    {
+      id: '2',
+      type: SchemaType.Image,
+      content: 'https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0=',
+      style: {
+        display: 'block',
+        margin: '40px auto',
+        width: 800,
+        height: 'auto'
+      }
+    }
+  ]);
+});
+
+export const exportAssetsAtom = atom(null, (get) => {
+  const schemas = get(schemasAtom);
+  console.log(schemas);
+});
