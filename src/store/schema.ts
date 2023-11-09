@@ -34,7 +34,8 @@ export const getDrawingStyleAtom = atom(get => {
   } else {
     return null;
   }
-})
+});
+getDrawingStyleAtom.debugPrivate = true;
 
 export const getDrawingSchema = atom((get) => {
   const id = get(drawingSchemaIdAtom);
