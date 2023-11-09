@@ -17,23 +17,6 @@ select {
   cursor: pointer;
 }
 
-.photoshop-picker > div:last-child {
+.photoshop-picker>div:last-child {
   padding: 15px !important;
-}
-
-.schema-active {
-  box-shadow: 1px 1px 4px 1px , -1px -1px 4px 1px #00adb5;
-  animation: breath 1.5s infinite linear;
-}
-
-@keyframes breath {
-  0% {
-    box-shadow: 1px 1px 4px 1px #00adb5, -1px -1px 4px 1px #00adb5;
-  }
-  50% {
-    box-shadow: none;
-  }
-  100% {
-    box-shadow: 1px 1px 4px 1px #00adb5, -1px -1px 4px 1px #00adb5;
-  }
 }
