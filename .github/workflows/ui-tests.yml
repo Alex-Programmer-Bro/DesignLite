@@ -4,6 +4,8 @@ on: push
 
 jobs:
   interaction-and-accessibility:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: oven-sh/setup-bun@v1
