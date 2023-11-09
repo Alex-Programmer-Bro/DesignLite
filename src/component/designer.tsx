@@ -1,10 +1,10 @@
-import { Button, Card, CardBody, CardHeader, Divider, Input, Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Divider, Input, Popover, PopoverContent, PopoverTrigger, Spinner } from "@nextui-org/react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useRef, useState } from 'react';
-import { PhotoshopPicker } from 'react-color';
+import { Suspense } from "react";
 import { ImageURLAtom, baseStyleAtom, textStyleAtom } from "../store/designer";
 import { getActionSchemaTypeAtom, setDrawingSchemaAtom } from "../store/schema";
 import { SchemaType } from "../types/schema";
+import { ChromePicker } from "./colorPicker";
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from "./textEditor";
 
@@ -12,8 +12,6 @@ export const Designer = () => {
   const [baseState, setBaseState] = useAtom(baseStyleAtom);
   const [textState, setTextState] = useAtom(textStyleAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
-  const [open, setOpen] = useState(false);
-  const currentColor = useRef(baseState.backgroundColor);
   const type = useAtomValue(getActionSchemaTypeAtom);
   const [imageURL, setImageURL] = useAtom(ImageURLAtom);
 
@@ -31,16 +29,6 @@ export const Designer = () => {
       })
       return result;
     });
-  }
-
-  const openColorPicker = () => {
-    currentColor.current = baseState.backgroundColor;
-    setOpen(true);
-  }
-
-  const onCancel = () => {
-    setOpen(false);
-    stateAdaptor('backgroundColor')(currentColor.current);
   }
 
   return <Card className="w-[400px] m-4">
@@ -75,13 +63,15 @@ export const Designer = () => {
       </div>
       <label className="flex items-center">
         <span className="text-[12px] font-medium mr-4">background</span>
-        <Popover placement="left-end" className="p-0" isOpen={open}>
+        <Popover placement="left-end" className="p-0">
           <PopoverTrigger>
-            <Button size="sm" variant="bordered" onClick={openColorPicker} style={{ backgroundColor: baseState.backgroundColor }}>
+            <Button size="sm" variant="bordered" style={{ backgroundColor: baseState.backgroundColor }}>
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <PhotoshopPicker color={baseState.backgroundColor} onChange={v => stateAdaptor('backgroundColor')(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
+            <Suspense fallback={<Spinner />}>
+              <ChromePicker color={baseState.backgroundColor} onChange={v => stateAdaptor('backgroundColor')(v.hex)} />
+            </Suspense>
           </PopoverContent>
         </Popover>
       </label>
