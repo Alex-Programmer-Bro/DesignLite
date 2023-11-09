@@ -1,8 +1,8 @@
 import { Button, ButtonGroup, Popover, PopoverContent, PopoverTrigger, Textarea } from "@nextui-org/react";
 import type { } from 'csstype';
 import { debounce } from 'lodash-es';
-import { useCallback, useEffect, useRef, useState } from "react";
-import { PhotoshopPicker } from 'react-color';
+import { useCallback, useEffect, useState } from "react";
+import { ChromePicker } from 'react-color';
 import { SimpleSizer } from "../sizer";
 import { alignCenter, alignLeft, alignRight, bold, italic, underline } from "./icon";
 
@@ -26,8 +26,6 @@ const activeColor = 'rgb(217, 217, 217)';
 
 export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps) => {
   const [color, setColor] = useState(state.color);
-  const [open, setOpen] = useState(false);
-  const currentColor = useRef(state.color);
 
   const update = (key: keyof State) => {
     return (value: string | boolean) => {
@@ -45,16 +43,6 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
   const watchColor = useCallback(debounce((color: string) => {
     update('color')(color);
   }, 30), []);
-
-  const openColorPicker = () => {
-    currentColor.current = color;
-    setOpen(true);
-  }
-
-  const onCancel = () => {
-    setOpen(false);
-    setColor(currentColor.current);
-  }
 
   useEffect(() => {
     watchColor(color);
@@ -78,13 +66,13 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
         />
       </div>
       <ButtonGroup isIconOnly className="justify-start" variant="bordered" size="sm">
-        <Popover placement="left-end" className="p-0" isOpen={open}>
+        <Popover placement="left-end" className="p-0">
           <PopoverTrigger>
-            <Button onClick={openColorPicker} style={{ backgroundColor: color }}>
+            <Button style={{ backgroundColor: color }}>
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <PhotoshopPicker color={color} onChange={v => setColor(v.hex)} onAccept={() => setOpen(false)} onCancel={onCancel} />
+            <ChromePicker color={color} onChange={v => setColor(v.hex)} />
           </PopoverContent>
         </Popover>
         <Button
