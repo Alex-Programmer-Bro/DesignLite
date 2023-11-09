@@ -1,9 +1,10 @@
-import { Button, Card, CardBody, CardHeader, Divider, Input, Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Divider, Input, Popover, PopoverContent, PopoverTrigger, Spinner } from "@nextui-org/react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { ChromePicker } from 'react-color';
+import { Suspense } from "react";
 import { ImageURLAtom, baseStyleAtom, textStyleAtom } from "../store/designer";
 import { getActionSchemaTypeAtom, setDrawingSchemaAtom } from "../store/schema";
 import { SchemaType } from "../types/schema";
+import { ChromePicker } from "./colorPicker";
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from "./textEditor";
 
@@ -68,7 +69,9 @@ export const Designer = () => {
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <ChromePicker color={baseState.backgroundColor} onChange={v => stateAdaptor('backgroundColor')(v.hex)} />
+            <Suspense fallback={<Spinner />}>
+              <ChromePicker color={baseState.backgroundColor} onChange={v => stateAdaptor('backgroundColor')(v.hex)} />
+            </Suspense>
           </PopoverContent>
         </Popover>
       </label>

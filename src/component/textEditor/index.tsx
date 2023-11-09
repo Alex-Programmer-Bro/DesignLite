@@ -1,8 +1,7 @@
-import { Button, ButtonGroup, Popover, PopoverContent, PopoverTrigger, Textarea } from "@nextui-org/react";
-import type { } from 'csstype';
+import { Button, ButtonGroup, Popover, PopoverContent, PopoverTrigger, Spinner, Textarea } from "@nextui-org/react";
 import { debounce } from 'lodash-es';
-import { useCallback, useEffect, useState } from "react";
-import { ChromePicker } from 'react-color';
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { ChromePicker } from "../colorPicker";
 import { SimpleSizer } from "../sizer";
 import { alignCenter, alignLeft, alignRight, bold, italic, underline } from "./icon";
 
@@ -72,7 +71,9 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
             </Button>
           </PopoverTrigger>
           <PopoverContent>
-            <ChromePicker color={color} onChange={v => setColor(v.hex)} />
+            <Suspense fallback={<Spinner />}>
+              <ChromePicker color={color} onChange={v => setColor(v.hex)} />
+            </Suspense>
           </PopoverContent>
         </Popover>
         <Button
