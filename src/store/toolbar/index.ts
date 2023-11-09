@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { appStore } from "..";
 import { SchemaType } from "../../types/schema";
-import { drawingSchemaIdAtom } from "../schema";
+import { deleteSchameAtom, drawingSchemaIdAtom } from "../schema";
 
 export const selectedDrawTypeAtom = atom<SchemaType>(SchemaType.Text);
 selectedDrawTypeAtom.debugLabel = "准备添加的 Schema 类型";
@@ -15,5 +15,11 @@ appStore.sub(allowSelectAtom, () => {
   if (!allowSelect) {
     document.getElementById(drawingSchemaId)?.classList.remove("schema-active");
     appStore.set(drawingSchemaIdAtom, "");
+  }
+});
+
+window.addEventListener("keydown", (event: KeyboardEvent) => {
+  if (event.code === "Backspace" && appStore.get(allowSelectAtom)) {
+    appStore.get(drawingSchemaIdAtom) && appStore.set(deleteSchameAtom);
   }
 });

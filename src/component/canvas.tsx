@@ -8,14 +8,11 @@ export const Canvas = () => {
   const schemas = useAtomValue(schemasAtom);
   const setDrawingScheamId = useSetAtom(drawingSchemaIdAtom);
   const allowSelect = useAtomValue(allowSelectAtom);
-  const drawingScheamId = useAtomValue(drawingSchemaIdAtom);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!allowSelect) return;
     const element = event.target as HTMLDivElement;
     if (!element.id) return;
-    document.getElementById(drawingScheamId)?.classList.remove("schema-active");
-    element.className = "schema-active";
     setDrawingScheamId(element.id);
   };
 

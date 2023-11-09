@@ -3,11 +3,19 @@ import { SelectIcon } from "../../assets/icons/SelectIcon";
 import { styles } from "./index.tv";
 // import { HandIcon } from "../../assets/icons/HandIcon";
 import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DownIcon } from "../../assets/icons/DownIcon";
 import { FrameIcon } from "../../assets/icons/FrameIcon";
 import { UpIcon } from "../../assets/icons/UpIcon";
-import { createSchemaAtom, exportAssetsAtom, importConfigAtom, resetAtom, useTemplateAtom } from "../../store/schema";
+import {
+  createSchemaAtom,
+  deleteSchameAtom,
+  drawingSchemaIdAtom,
+  exportAssetsAtom,
+  importConfigAtom,
+  resetAtom,
+  useTemplateAtom
+} from "../../store/schema";
 import { allowSelectAtom, selectedDrawTypeAtom } from "../../store/toolbar";
 import { SchemaType } from "../../types/schema";
 
@@ -88,6 +96,8 @@ export const Toolsbar: React.FC = () => {
   const useTemplate = useSetAtom(useTemplateAtom);
   const exportAssets = useSetAtom(exportAssetsAtom);
   const importConfig = useSetAtom(importConfigAtom);
+  const deleteSchema = useSetAtom(deleteSchameAtom);
+  const drawingSchemaId = useAtomValue(drawingSchemaIdAtom);
 
   const slots = useMemo<Slot[]>(() => {
     return [
@@ -119,7 +129,12 @@ export const Toolsbar: React.FC = () => {
         <Button onClick={resetSchema} size="sm" className="ml-2">
           重置
         </Button>
-        <ButtonGroup className="ml-2 text-white" variant="faded" >
+        {drawingSchemaId && (
+          <Button onClick={deleteSchema} size="sm" className="ml-2">
+            删除
+          </Button>
+        )}
+        <ButtonGroup className="ml-2 text-white" variant="faded">
           <Button onClick={useTemplate} size="sm">
             使用模版
           </Button>
@@ -130,7 +145,7 @@ export const Toolsbar: React.FC = () => {
             导入配置
           </Button>
         </ButtonGroup>
-        <Button onClick={() => window.open('/preview', 'blank')} size="sm" className="ml-2">
+        <Button onClick={() => window.open("/preview", "blank")} size="sm" className="ml-2">
           实时预览
         </Button>
       </div>
