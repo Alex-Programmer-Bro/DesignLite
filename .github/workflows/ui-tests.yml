@@ -3,15 +3,14 @@ name: "UI Tests"
 on: push
 
 jobs:
-  interaction-and-accessibility:
+  Test:
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: setup node
-      - uses: actions/setup-node@v4
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -22,10 +21,8 @@ jobs:
       - name: install frontend dependencies
         run: bun install
 
-      - name: Build Storybook
-        run: yarn build-storybook --quiet
-      - name: Serve Storybook and run tests
+      - name: unit and e2e
         run: |
           npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-            "npx http-server storybook-static --port 6006 --silent" \
-            "npx wait-on tcp:6006 && yarn test-storybook"
+            "npm run storybook" \
+            "npx wait-on tcp:6006 && npm run test"
