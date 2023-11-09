@@ -49,6 +49,7 @@
     "@types/uuid": "^9.0.6",
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.16",
+    "chromatic": "^7.6.0",
     "jotai-devtools": "^0.7.0",
     "playwright": "^1.39.0",
     "postcss": "^8.4.31",
