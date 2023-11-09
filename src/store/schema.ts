@@ -1,12 +1,12 @@
-import { atom, Setter } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
-import { v1 } from 'uuid';
-import { appStore } from '.';
-import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
-import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
-import { Schema, SchemaType } from '../types/schema';
-import { baseStyleAtom, ImageURLAtom, textStyleAtom } from './designer';
-import { selectedDrawTypeAtom } from './toolbar';
+import { atom, Setter } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+import { v1 } from "uuid";
+import { appStore } from ".";
+import { DrawingSchemaKey, SchemaCacheKey } from "../constant";
+import { resolveCSS, resolveHTML, uploadAndReadJSON } from "../tool";
+import { Schema, SchemaType } from "../types/schema";
+import { baseStyleAtom, ImageURLAtom, textStyleAtom } from "./designer";
+import { selectedDrawTypeAtom } from "./toolbar";
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
 schemasAtom.debugLabel = "画布上所有的 Schema";
@@ -215,14 +215,32 @@ export const importConfigAtom = atom(null, async (_, set) => {
   set(schemasAtom, json);
 });
 
+export const deleteSchameAtom = atom(null, (get, set) => {
+  const id = get(drawingSchemaIdAtom);
+  if (id) {
+    set(
+      schemasAtom,
+      get(schemasAtom).filter((item) => item.id !== id)
+    );
+    set(drawingSchemaIdAtom, "");
+  }
+});
+
 appStore.sub(drawingSchemaIdAtom, () => {
   const id = appStore.get(drawingSchemaIdAtom);
   if (id) {
+    const elemnets = document.getElementsByClassName("schema-active");
+    for (let index = 0; index < elemnets.length; index++) {
+      elemnets[index].classList.remove("schema-active");
+    }
+    setTimeout(() => {
+      document.getElementById(id)?.classList.add("schema-active");
+    });
+
     const schemas = appStore.get(schemasAtom);
     const target = schemas.find((item) => item.id === id);
 
     if (!target) return;
-
     const { style, content } = target;
 
     appStore.set(baseStyleAtom, {
