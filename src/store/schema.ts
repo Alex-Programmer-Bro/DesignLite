@@ -229,14 +229,6 @@ export const deleteSchameAtom = atom(null, (get, set) => {
 appStore.sub(drawingSchemaIdAtom, () => {
   const id = appStore.get(drawingSchemaIdAtom);
   if (id) {
-    const elemnets = document.getElementsByClassName("schema-active");
-    for (let index = 0; index < elemnets.length; index++) {
-      elemnets[index].classList.remove("schema-active");
-    }
-    setTimeout(() => {
-      document.getElementById(id)?.classList.add("schema-active");
-    });
-
     const schemas = appStore.get(schemasAtom);
     const target = schemas.find((item) => item.id === id);
 
