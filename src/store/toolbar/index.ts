@@ -11,9 +11,7 @@ selectedDrawTypeAtom.debugLabel = "是否允许选择 Schema";
 
 appStore.sub(allowSelectAtom, () => {
   const allowSelect = appStore.get(allowSelectAtom);
-  const drawingSchemaId = appStore.get(drawingSchemaIdAtom);
   if (!allowSelect) {
-    document.getElementById(drawingSchemaId)?.classList.remove("schema-active");
     appStore.set(drawingSchemaIdAtom, "");
   }
 });

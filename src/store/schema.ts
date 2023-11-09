@@ -14,6 +14,28 @@ schemasAtom.debugLabel = "画布上所有的 Schema";
 export const drawingSchemaIdAtom = atomWithStorage<string>(DrawingSchemaKey, "");
 drawingSchemaIdAtom.debugLabel = "选中了哪个 Schema Id";
 
+export const getDrawingStyleAtom = atom(get => {
+  const id = get(drawingSchemaIdAtom);
+  const dom = document.getElementById(id);
+  if (!dom) return null;
+  const { width, height } = dom.getBoundingClientRect();
+  // 外框和元素的间距
+  const spacing = 4;
+  if (id) {
+    return {
+      width: width + spacing * 2,
+      height: height + spacing * 2,
+      left: dom.offsetLeft - spacing,
+      top: dom.offsetTop - spacing,
+      position: 'absolute',
+      border: '1px solid #7272ff',
+      pointerEvents: 'none',
+    } as React.CSSProperties;
+  } else {
+    return null;
+  }
+})
+
 export const getDrawingSchema = atom((get) => {
   const id = get(drawingSchemaIdAtom);
   if (id) {
@@ -229,14 +251,6 @@ export const deleteSchameAtom = atom(null, (get, set) => {
 appStore.sub(drawingSchemaIdAtom, () => {
   const id = appStore.get(drawingSchemaIdAtom);
   if (id) {
-    const elemnets = document.getElementsByClassName("schema-active");
-    for (let index = 0; index < elemnets.length; index++) {
-      elemnets[index].classList.remove("schema-active");
-    }
-    setTimeout(() => {
-      document.getElementById(id)?.classList.add("schema-active");
-    });
-
     const schemas = appStore.get(schemasAtom);
     const target = schemas.find((item) => item.id === id);
 
