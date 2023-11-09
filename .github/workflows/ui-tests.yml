@@ -25,10 +25,10 @@ jobs:
         run: npm run test:unit
 
       - name: Install Playwright
-        - run: npx playwright install --with-deps
-          if: steps.playwright-cache.outputs.cache-hit != 'true'
-        - run: npx playwright install-deps
-          if: steps.playwright-cache.outputs.cache-hit == 'true'
+      - run: npx playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+      - run: npx playwright install-deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
 
       - name: E2E Test
         run: |
