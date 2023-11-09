@@ -24,11 +24,13 @@ jobs:
       - name: Unit Test
         run: npm run test:unit
 
-      - name: Install Playwright
-      - run: npx playwright install --with-deps
+       - name: Install Playwright with dependencies
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-      - run: npx playwright install-deps
+        run: npx playwright install --with-deps
+
+      - name: Install Playwright's dependencies
         if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps
 
       - name: E2E Test
         run: |
