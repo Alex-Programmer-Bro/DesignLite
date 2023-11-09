@@ -16,10 +16,13 @@ jobs:
 
       - uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest
+          bun-version: 1.0
 
       - name: install frontend dependencies
         run: bun install
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
 
       - name: unit and e2e
         run: |
