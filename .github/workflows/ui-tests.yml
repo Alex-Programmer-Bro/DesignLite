@@ -25,9 +25,12 @@ jobs:
         run: npm run test:unit
 
       - name: Install Playwright
-        run: npx playwright install --with-deps
+        - run: npx playwright install --with-deps
+          if: steps.playwright-cache.outputs.cache-hit != 'true'
+        - run: npx playwright install-deps
+          if: steps.playwright-cache.outputs.cache-hit == 'true'
 
-      - name: unit and e2e
+      - name: E2E Test
         run: |
           npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
             "npm run storybook" \
