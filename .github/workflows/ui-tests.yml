@@ -1,0 +1,37 @@
+name: "UI Tests"
+
+on:
+  pull_request:
+    branches:
+      - v0.0.2-alpha
+
+jobs:
+  Test:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: install frontend dependencies
+        run: bun install
+
+      - name: Unit Test
+        run: npm run test:unit
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: E2E Test
+        run: |
+          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "npm run storybook" \
+            "npx wait-on tcp:6006 && npm run test:e2e"
