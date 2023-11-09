@@ -2,6 +2,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import React from "react";
 import { drawingSchemaIdAtom, schemasAtom } from "../store/schema";
 import { allowSelectAtom } from "../store/toolbar";
+import { SchemaMask } from "./schemaMask";
 import { SchemaRender } from "./schemaRender";
 
 export const Canvas = () => {
@@ -17,10 +18,11 @@ export const Canvas = () => {
   };
 
   return (
-    <div className="overflow-auto" style={{ height: "calc(100% - 40px)" }} onClick={handleClick}>
+    <div className="overflow-auto relative" style={{ height: "calc(100% - 40px)" }} onClick={handleClick}>
       {schemas.map((item) => (
         <SchemaRender key={item.id} {...item} />
       ))}
+      <SchemaMask />
     </div>
   );
 };
