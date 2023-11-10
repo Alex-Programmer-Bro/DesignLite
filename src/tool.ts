@@ -4,7 +4,7 @@ export const resolveHTML = (schema: Schema) => {
   switch (schema.type) {
     case SchemaType.Image:
       return `<img class="${schema.id}" src=${schema.content} alt="" />`
-    case SchemaType.Text:
+    case SchemaType.Block:
       return `<span class="${schema.id}">${schema.content}</span>`
   }
 }

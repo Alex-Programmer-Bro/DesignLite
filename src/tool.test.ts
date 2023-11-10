@@ -5,7 +5,7 @@ import { Schema, SchemaType } from './types/schema';
 describe('resolve schema', () => {
   const textSchema: Schema = {
     id: 'hello',
-    type: SchemaType.Text,
+    type: SchemaType.Block,
     style: {
       color: '#ffffff',
       backgroundColor: 'red'

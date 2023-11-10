@@ -1,17 +1,17 @@
 import { StoryObj, type Meta } from "@storybook/react";
-import { TextRender } from ".";
+import { BlockRender } from ".";
 
 const meta = {
-  title: "内置组件/TextRender",
-  component: TextRender,
+  title: "内置组件/BlockRender",
+  component: BlockRender,
   tags: ['autodocs'],
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof TextRender>;
+} satisfies Meta<typeof BlockRender>;
 
 export default meta;
-type Story = StoryObj<Meta<typeof TextRender>>;
+type Story = StoryObj<Meta<typeof BlockRender>>;
 
 export const Primary: Story = {
   args: {

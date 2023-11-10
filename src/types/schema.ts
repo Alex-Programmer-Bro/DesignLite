@@ -1,6 +1,5 @@
 export enum SchemaType {
-  Text = '文本',
-  Shape = '图形',
+  Block = '块',
   Image = '图片',
 }
 

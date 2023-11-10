@@ -104,7 +104,7 @@ export const createSchemaAtom = atom(null, (get, set) => {
     style: {}
   };
 
-  if (drawType === SchemaType.Text) {
+  if (drawType === SchemaType.Block) {
     newSchema.style = {
       ...newSchema.style,
       ...baseStyle,
@@ -136,7 +136,7 @@ export const useTemplateAtom = atom(null, (_, set) => {
   set(schemasAtom, [
     {
       id: "hello-text",
-      type: SchemaType.Text,
+      type: SchemaType.Block,
       content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
       <br />
       2 业精于勤，荒于嬉。—— 韩 愈《进学解》
