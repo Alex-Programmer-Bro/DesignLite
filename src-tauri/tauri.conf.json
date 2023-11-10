@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "fps",
-    "version": "0.0.1-alpha"
+    "version": "0.0.2-alpha"
   },
   "tauri": {
     "allowlist": {
