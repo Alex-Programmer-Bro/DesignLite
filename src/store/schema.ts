@@ -199,6 +199,9 @@ export const getCodeAtom = atom((get) => {
 });
 
 export const exportAssetsAtom = atom(null, async (get) => {
+  console.log(import.meta.env);
+  
+
   const schemas = get(schemasAtom);
   let { html, css } = get(getCodeAtom);
   const { default: JSZip } = await import("jszip");
