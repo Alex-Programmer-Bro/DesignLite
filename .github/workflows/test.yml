@@ -1,4 +1,4 @@
-name: "UI Tests"
+name: "Unit and E2E Test"
 
 on:
   pull_request:
