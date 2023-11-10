@@ -3,7 +3,7 @@ name: "Unit and E2E Test"
 on:
   pull_request:
     branches:
-      - v0.0.2-alpha
+      - 'v*'
 
 jobs:
   Test:
