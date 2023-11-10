@@ -2,16 +2,13 @@ import { useSetAtom } from "jotai";
 import { useMemo, useRef } from "react";
 import { setSchemaAtom } from "../../../store/schema";
 
-export interface TextRenderProps {
+export interface BlockRenderProps {
   style: React.CSSProperties;
   text: string;
   id: string;
 }
 
-/** 
- * 在画布上呈现文本的渲染器
- */
-export const TextRender = ({ style, text, id }: TextRenderProps) => {
+export const BlockRender = ({ style, text, id }: BlockRenderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const setSchema = useSetAtom(setSchemaAtom);
 

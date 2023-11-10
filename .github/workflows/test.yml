@@ -1,9 +1,9 @@
-name: "UI Tests"
+name: "Unit and E2E Test"
 
 on:
   pull_request:
     branches:
-      - v0.0.2-alpha
+      - 'v*'
 
 jobs:
   Test:
@@ -28,7 +28,7 @@ jobs:
         run: npm run test:unit
 
       - name: Install Playwright
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium
 
       - name: E2E Test
         run: |

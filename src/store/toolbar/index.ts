@@ -3,7 +3,7 @@ import { appStore } from "..";
 import { SchemaType } from "../../types/schema";
 import { deleteSchameAtom, drawingSchemaIdAtom } from "../schema";
 
-export const selectedDrawTypeAtom = atom<SchemaType>(SchemaType.Text);
+export const selectedDrawTypeAtom = atom<SchemaType>(SchemaType.Block);
 selectedDrawTypeAtom.debugLabel = "准备添加的 Schema 类型";
 
 export const allowSelectAtom = atom<boolean>(false);
