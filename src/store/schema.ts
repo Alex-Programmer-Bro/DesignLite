@@ -229,18 +229,23 @@ const generateAssetsAtom = atom((get) => {
 
 export const exportAssetsAtom = atom(null, async (get) => {
   const { html, schemas } = get(generateAssetsAtom);
-  const { default: JSZip } = await import("jszip");
-  const zip = new JSZip();
-  zip.file("index.html", html);
-  zip.file("fps.json", JSON.stringify(schemas));
-  const content = await zip.generateAsync({ type: "blob" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(content);
-  a.download = "website.zip";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(a.href);
+  if (isWeb) {
+    const { default: JSZip } = await import("jszip");
+    const zip = new JSZip();
+    zip.file("index.html", html);
+    zip.file("fps.json", JSON.stringify(schemas));
+    const content = await zip.generateAsync({ type: "blob" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(content);
+    a.download = "website.zip";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  } else {
+    const { invoke } = await import('@tauri-apps/api/tauri');
+    invoke('export_assets', { html, schemas });
+  }
 });
 
 export const importConfigAtom = atom(null, async (_, set) => {
