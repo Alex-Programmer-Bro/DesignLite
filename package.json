@@ -14,7 +14,7 @@
     "build-storybook": "storybook build",
     "test:unit": "vitest run",
     "test:e2e": "test-storybook",
-    "prettier": "npx prettier --write ."
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",
