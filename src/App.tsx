@@ -1,6 +1,6 @@
 import { Canvas } from './component/canvas';
 import { Designer } from './component/designer';
-import { Toolsbar } from "./component/toolsbar";
+import { Toolsbar } from './component/toolsbar';
 
 function App() {
   return (
