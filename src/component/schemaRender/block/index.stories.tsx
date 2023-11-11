@@ -1,12 +1,12 @@
-import { StoryObj, type Meta } from "@storybook/react";
-import { BlockRender } from ".";
+import { StoryObj, type Meta } from '@storybook/react';
+import { BlockRender } from '.';
 
 const meta = {
-  title: "内置组件/BlockRender",
+  title: '内置组件/BlockRender',
   component: BlockRender,
   tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof BlockRender>;
 
@@ -16,5 +16,5 @@ type Story = StoryObj<Meta<typeof BlockRender>>;
 export const Primary: Story = {
   args: {
     text: 'hello world',
-  }
-}
+  },
+};

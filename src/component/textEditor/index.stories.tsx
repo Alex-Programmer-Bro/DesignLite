@@ -1,13 +1,13 @@
 import { useState } from '@storybook/preview-api';
-import { StoryObj, type Meta } from "@storybook/react";
-import { TextEditor } from ".";
+import { StoryObj, type Meta } from '@storybook/react';
+import { TextEditor } from '.';
 
 const meta = {
-  title: "内置组件/TextEditor",
+  title: '内置组件/TextEditor',
   component: TextEditor,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof TextEditor>;
 
@@ -23,8 +23,8 @@ export const Primary: Story = {
       align: 'left',
       bold: false,
       underline: false,
-      italic: false
-    }
+      italic: false,
+    },
   },
   decorators: [
     (story, config) => {
@@ -32,9 +32,9 @@ export const Primary: Story = {
       return story({
         args: {
           state,
-          onChange: setValue
+          onChange: setValue,
         },
       });
     },
   ],
-}
+};

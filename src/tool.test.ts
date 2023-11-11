@@ -8,10 +8,10 @@ describe('resolve schema', () => {
     type: SchemaType.Block,
     style: {
       color: '#ffffff',
-      backgroundColor: 'red'
+      backgroundColor: 'red',
     },
     content: 'hello world',
-  }
+  };
 
   it('resolveHTML', () => {
     expect(resolveHTML(textSchema)).toMatchInlineSnapshot('"<span class=\\"hello\\">hello world</span>"');
@@ -23,5 +23,5 @@ describe('resolve schema', () => {
           color:#ffffff;background-color:red;
         }"
     `);
-  })
-})
+  });
+});

@@ -1,7 +1,7 @@
-import { useAtomValue } from "jotai";
-import { useEffect, useRef } from "react";
-import { useTitle } from "../hook/useTitle";
-import { getCodeAtom } from "../store/schema";
+import { useAtomValue } from 'jotai';
+import { useEffect, useRef } from 'react';
+import { useTitle } from '../hook/useTitle';
+import { getCodeAtom } from '../store/schema';
 
 export const Preview = () => {
   useTitle('FPS - Preview');
@@ -27,7 +27,7 @@ export const Preview = () => {
     return () => {
       styleTag.current.remove();
       htmlTag.current.remove();
-    }
+    };
   }, []);
 
   useEffect(() => {

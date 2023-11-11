@@ -1,16 +1,16 @@
-import { StoryObj, type Meta } from "@storybook/react";
-import { SimpleSizer } from "./simple";
+import { StoryObj, type Meta } from '@storybook/react';
+import { SimpleSizer } from './simple';
 import { useState } from '@storybook/preview-api';
-import { Value } from "./type";
+import { Value } from './type';
 import { userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest'
+import { expect } from '@storybook/jest';
 
 const meta = {
-  title: "内置组件/Simple-Sizer",
+  title: '内置组件/Simple-Sizer',
   component: SimpleSizer,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof SimpleSizer>;
 
@@ -20,7 +20,7 @@ type Story = StoryObj<Meta<typeof SimpleSizer>>;
 export const Primary: Story = {
   args: {
     label: 'width',
-    value: '10px'
+    value: '10px',
   },
   decorators: [
     (story, config) => {
@@ -35,7 +35,7 @@ export const Primary: Story = {
     },
   ],
   play: async ({ canvasElement, step }) => {
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     const unitSelector = canvasElement.querySelector('select')!;
 
     await step('Simple ui', async () => {
@@ -43,7 +43,7 @@ export const Primary: Story = {
       expect(inputs.length).toEqual(1);
       expect(inputs[0].value).toEqual('10');
       expect(inputs[0].disabled).toBeFalsy();
-    })
+    });
 
     await step('Select auto unit', async () => {
       await userEvent.selectOptions(unitSelector, 'auto');
@@ -52,14 +52,14 @@ export const Primary: Story = {
       expect(inputs[0].disabled).toBeTruthy();
       await userEvent.selectOptions(unitSelector, 'px');
       expect(inputs[0].value).toEqual('10');
-    })
+    });
   },
 };
 
 export const PercentUnit: Story = {
   args: {
     label: 'width',
-    value: '12%'
+    value: '12%',
   },
   decorators: [
     (story, config) => {
@@ -73,12 +73,12 @@ export const PercentUnit: Story = {
       });
     },
   ],
-}
+};
 
 export const DisabledSimple: Story = {
   args: {
     label: 'width',
-    value: 'auto'
+    value: 'auto',
   },
   decorators: [
     (story, config) => {
@@ -92,4 +92,4 @@ export const DisabledSimple: Story = {
       });
     },
   ],
-}
+};
