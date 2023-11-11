@@ -1,0 +1,10 @@
+.github
+public
+index.html
+*.md
+dist
+src-tauri
+dist-ssr
+node_modules
+*.config.js
+*.config.ts
