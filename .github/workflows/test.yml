@@ -24,6 +24,9 @@ jobs:
       - name: install frontend dependencies
         run: bun install
 
+      - name: fix code style
+        run: npx prettier . --write
+        
       - name: Unit Test
         run: npm run test:unit
 

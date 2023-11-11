@@ -13,7 +13,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test:unit": "vitest run",
-    "test:e2e": "test-storybook"
+    "test:e2e": "test-storybook",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",
@@ -50,9 +51,12 @@
     "@types/uuid": "^9.0.6",
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.16",
+    "husky": "^8.0.3",
     "jotai-devtools": "^0.7.0",
+    "lint-staged": "^15.0.2",
     "playwright": "^1.39.0",
     "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
     "storybook": "^7.5.3",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.0.2",
@@ -60,5 +64,8 @@
   },
   "resolutions": {
     "jackspeak": "2.1.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
