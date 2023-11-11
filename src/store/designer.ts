@@ -1,4 +1,4 @@
-import { atom } from "jotai";
+import { atom } from 'jotai';
 import { State as TextEditorState } from '../component/textEditor';
 
 export const baseStyleAtom = atom({
@@ -8,7 +8,7 @@ export const baseStyleAtom = atom({
   padding: '0px',
   backgroundColor: '#ffffff',
 });
-baseStyleAtom.debugLabel = '元素基础样式'
+baseStyleAtom.debugLabel = '元素基础样式';
 
 export const textStyleAtom = atom<TextEditorState>({
   content: '',
@@ -17,7 +17,7 @@ export const textStyleAtom = atom<TextEditorState>({
   align: 'left',
   bold: false,
   underline: false,
-  italic: false
+  italic: false,
 });
 textStyleAtom.debugLabel = '当前元素的文本样式';
 

@@ -1,5 +1,5 @@
-import { useAtomValue } from "jotai";
-import { getDrawingStyleAtom } from "../../store/schema";
+import { useAtomValue } from 'jotai';
+import { getDrawingStyleAtom } from '../../store/schema';
 
 export const SchemaMask = () => {
   const drawingStyle = useAtomValue(getDrawingStyleAtom);
@@ -8,4 +8,4 @@ export const SchemaMask = () => {
   } else {
     return null;
   }
-}
+};

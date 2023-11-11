@@ -1,6 +1,5 @@
-import { expect, test } from 'vitest'
-import { resolveLock, resolveUnit, resolveValue } from './helper'
-
+import { expect, test } from 'vitest';
+import { resolveLock, resolveUnit, resolveValue } from './helper';
 
 test('resolveLock', () => {
   expect(resolveLock('1px 1px 1px 1px')).toBeTruthy();
@@ -14,11 +13,11 @@ test('resolveUnit', () => {
   expect(resolveUnit('1%')).toEqual('%');
   expect(resolveUnit('auto')).toEqual('auto');
   expect(resolveUnit('auto auto')).toEqual('auto');
-})
+});
 
 test('resolveValue', () => {
   expect(resolveValue('1px')).toEqual('1');
   expect(resolveValue('10px 20px')).toEqual(['10px', '20px', '10px', '20px']);
   expect(resolveValue('1%')).toEqual('1');
   expect(resolveValue('auto')).toEqual('');
-})
+});

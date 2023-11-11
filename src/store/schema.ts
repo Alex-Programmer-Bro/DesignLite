@@ -1,20 +1,20 @@
-import { atom, Setter } from "jotai";
-import { atomWithStorage } from "jotai/utils";
-import { v1 } from "uuid";
-import { appStore } from ".";
-import { DrawingSchemaKey, SchemaCacheKey } from "../constant";
-import { resolveCSS, resolveHTML, uploadAndReadJSON } from "../tool";
-import { Schema, SchemaType } from "../types/schema";
-import { baseStyleAtom, ImageURLAtom, textStyleAtom } from "./designer";
-import { selectedDrawTypeAtom } from "./toolbar";
+import { atom, Setter } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
+import { v1 } from 'uuid';
+import { appStore } from '.';
+import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
+import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
+import { Schema, SchemaType } from '../types/schema';
+import { baseStyleAtom, ImageURLAtom, textStyleAtom } from './designer';
+import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
-schemasAtom.debugLabel = "画布上所有的 Schema";
+schemasAtom.debugLabel = '画布上所有的 Schema';
 
-export const drawingSchemaIdAtom = atomWithStorage<string>(DrawingSchemaKey, "");
-drawingSchemaIdAtom.debugLabel = "选中了哪个 Schema Id";
+export const drawingSchemaIdAtom = atomWithStorage<string>(DrawingSchemaKey, '');
+drawingSchemaIdAtom.debugLabel = '选中了哪个 Schema Id';
 
-export const getDrawingStyleAtom = atom(get => {
+export const getDrawingStyleAtom = atom((get) => {
   const id = get(drawingSchemaIdAtom);
   const dom = document.getElementById(id);
   if (!dom) return null;
@@ -52,7 +52,7 @@ export const getDrawingSchema = atom((get) => {
     return undefined;
   }
 });
-getDrawingSchema.debugLabel = "正在绘制的元素";
+getDrawingSchema.debugLabel = '正在绘制的元素';
 
 export const getActionSchemaTypeAtom = atom((get) => {
   const drawingSchema = get(getDrawingSchema);
@@ -61,7 +61,7 @@ export const getActionSchemaTypeAtom = atom((get) => {
   }
   return get(selectedDrawTypeAtom);
 });
-getActionSchemaTypeAtom.debugLabel = "准备添加或正在编辑的 SchemaType";
+getActionSchemaTypeAtom.debugLabel = '准备添加或正在编辑的 SchemaType';
 
 export const updateSchema = (set: Setter, { id, schema }: { id: string; schema: Partial<Schema> }) => {
   set(schemasAtom, (pre) => {
@@ -72,9 +72,9 @@ export const updateSchema = (set: Setter, { id, schema }: { id: string; schema: 
           ...schema,
           style: {
             ...item.style,
-            ...schema.style
+            ...schema.style,
           },
-          content: schema.content || item.content
+          content: schema.content || item.content,
         };
         return result;
       }
@@ -101,7 +101,7 @@ export const createSchemaAtom = atom(null, (get, set) => {
   const newSchema: Schema = {
     id: v1(),
     type: drawType,
-    style: {}
+    style: {},
   };
 
   if (drawType === SchemaType.Block) {
@@ -109,14 +109,14 @@ export const createSchemaAtom = atom(null, (get, set) => {
       ...newSchema.style,
       ...baseStyle,
       lineHeight: 1,
-      outline: "2px solid transparent",
-      minWidth: "30px",
+      outline: '2px solid transparent',
+      minWidth: '30px',
       fontSize: textStyle.size,
       color: textStyle.color,
       fontWeight: textStyle.bold ? 800 : 400,
-      textDecoration: textStyle.underline ? "underline" : "auto",
-      fontStyle: textStyle.italic ? "italic" : "inherit",
-      textAlign: textStyle.align
+      textDecoration: textStyle.underline ? 'underline' : 'auto',
+      fontStyle: textStyle.italic ? 'italic' : 'inherit',
+      textAlign: textStyle.align,
     };
     newSchema.content = textStyle.content;
   } else if (drawType === SchemaType.Image) {
@@ -129,13 +129,13 @@ export const createSchemaAtom = atom(null, (get, set) => {
 
 export const resetAtom = atom(null, (_, set) => {
   set(schemasAtom, []);
-  set(drawingSchemaIdAtom, "");
+  set(drawingSchemaIdAtom, '');
 });
 
 export const useTemplateAtom = atom(null, (_, set) => {
   set(schemasAtom, [
     {
-      id: "hello-text",
+      id: 'hello-text',
       type: SchemaType.Block,
       content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
       <br />
@@ -155,28 +155,28 @@ export const useTemplateAtom = atom(null, (_, set) => {
       <br />
       9 有志者事竟成。 ——《后汉书·耿 列传》`,
       style: {
-        display: "block",
-        margin: "20px auto",
-        padding: "20px",
-        width: "800px",
-        height: "300px",
-        background: "#ddd",
-        borderRadius: "10px",
-        boxShadow: "10px 10px 10px #ccc"
-      }
+        display: 'block',
+        margin: '20px auto',
+        padding: '20px',
+        width: '800px',
+        height: '300px',
+        background: '#ddd',
+        borderRadius: '10px',
+        boxShadow: '10px 10px 10px #ccc',
+      },
     },
     {
-      id: "hello-img",
+      id: 'hello-img',
       type: SchemaType.Image,
       content:
-        "https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0=",
+        'https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0=',
       style: {
-        display: "block",
-        margin: "40px auto",
-        width: "800px",
-        height: "auto"
-      }
-    }
+        display: 'block',
+        margin: '40px auto',
+        width: '800px',
+        height: 'auto',
+      },
+    },
   ]);
 });
 
@@ -189,12 +189,12 @@ export const getCodeAtom = atom((get) => {
       result.css += resolveCSS(item);
       return result;
     },
-    { html: "", css: "" }
+    { html: '', css: '' },
   );
 
   return {
     html,
-    css
+    css,
   };
 });
 
@@ -223,21 +223,21 @@ const generateAssetsAtom = atom((get) => {
   `;
   return {
     html,
-    schemas: JSON.stringify(schemas)
-  }
+    schemas: JSON.stringify(schemas),
+  };
 });
 
 export const exportAssetsAtom = atom(null, async (get) => {
   const { html, schemas } = get(generateAssetsAtom);
   if (isWeb) {
-    const { default: JSZip } = await import("jszip");
+    const { default: JSZip } = await import('jszip');
     const zip = new JSZip();
-    zip.file("index.html", html);
-    zip.file("fps.json", JSON.stringify(schemas));
-    const content = await zip.generateAsync({ type: "blob" });
-    const a = document.createElement("a");
+    zip.file('index.html', html);
+    zip.file('fps.json', JSON.stringify(schemas));
+    const content = await zip.generateAsync({ type: 'blob' });
+    const a = document.createElement('a');
     a.href = URL.createObjectURL(content);
-    a.download = "website.zip";
+    a.download = 'website.zip';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -258,9 +258,9 @@ export const deleteSchameAtom = atom(null, (get, set) => {
   if (id) {
     set(
       schemasAtom,
-      get(schemasAtom).filter((item) => item.id !== id)
+      get(schemasAtom).filter((item) => item.id !== id),
     );
-    set(drawingSchemaIdAtom, "");
+    set(drawingSchemaIdAtom, '');
   }
 });
 
@@ -274,20 +274,20 @@ appStore.sub(drawingSchemaIdAtom, () => {
     const { style, content } = target;
 
     appStore.set(baseStyleAtom, {
-      width: `${style.width || "0px"}`,
-      height: `${style.height || "0px"}`,
-      margin: `${style.margin || "0px"}`,
-      padding: `${style.padding || "0px"}`,
-      backgroundColor: style.backgroundColor || "#ffffff"
+      width: `${style.width || '0px'}`,
+      height: `${style.height || '0px'}`,
+      margin: `${style.margin || '0px'}`,
+      padding: `${style.padding || '0px'}`,
+      backgroundColor: style.backgroundColor || '#ffffff',
     });
     appStore.set(textStyleAtom, {
-      content: content || "",
-      size: `${style.fontSize || "14px"}` || "14px",
-      color: style.color || "#000000",
-      align: style.textAlign || "left",
+      content: content || '',
+      size: `${style.fontSize || '14px'}` || '14px',
+      color: style.color || '#000000',
+      align: style.textAlign || 'left',
       bold: style.fontWeight === 800,
-      underline: style.textDecoration === "underline",
-      italic: style.fontStyle === "italic"
+      underline: style.textDecoration === 'underline',
+      italic: style.fontStyle === 'italic',
     });
   }
 });

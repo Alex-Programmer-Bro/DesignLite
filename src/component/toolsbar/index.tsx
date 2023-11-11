@@ -1,12 +1,12 @@
-import React, { Key, ReactElement, useMemo, useState } from "react";
-import { SelectIcon } from "../../assets/icons/SelectIcon";
-import { styles } from "./index.tv";
+import React, { Key, ReactElement, useMemo, useState } from 'react';
+import { SelectIcon } from '../../assets/icons/SelectIcon';
+import { styles } from './index.tv';
 // import { HandIcon } from "../../assets/icons/HandIcon";
-import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { DownIcon } from "../../assets/icons/DownIcon";
-import { FrameIcon } from "../../assets/icons/FrameIcon";
-import { UpIcon } from "../../assets/icons/UpIcon";
+import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { DownIcon } from '../../assets/icons/DownIcon';
+import { FrameIcon } from '../../assets/icons/FrameIcon';
+import { UpIcon } from '../../assets/icons/UpIcon';
 import {
   createSchemaAtom,
   deleteSchameAtom,
@@ -14,10 +14,10 @@ import {
   exportAssetsAtom,
   importConfigAtom,
   resetAtom,
-  useTemplateAtom
-} from "../../store/schema";
-import { allowSelectAtom, selectedDrawTypeAtom } from "../../store/toolbar";
-import { SchemaType } from "../../types/schema";
+  useTemplateAtom,
+} from '../../store/schema';
+import { allowSelectAtom, selectedDrawTypeAtom } from '../../store/toolbar';
+import { SchemaType } from '../../types/schema';
 
 const { wrap } = styles();
 
@@ -52,19 +52,19 @@ const Buttons = ({ slots }: { slots: Slot[] }) => {
             <DropdownTrigger>
               <Button
                 key={key}
-                color={activeKey === key ? "primary" : "default"}
-                variant={activeKey === key ? undefined : "light"}
-                radius="none"
+                color={activeKey === key ? 'primary' : 'default'}
+                variant={activeKey === key ? undefined : 'light'}
+                radius='none'
               >
                 {element}
                 {activeKey === key ? (
-                  <UpIcon className="ml-1" fill="white" />
+                  <UpIcon className='ml-1' fill='white' />
                 ) : (
-                  <DownIcon className="ml-1" fill="white" />
+                  <DownIcon className='ml-1' fill='white' />
                 )}
               </Button>
             </DropdownTrigger>
-            <DropdownMenu aria-label="Static Actions" onAction={onAction}>
+            <DropdownMenu aria-label='Static Actions' onAction={onAction}>
               {dropMenu.map(({ value, label }) => (
                 <DropdownItem key={value}>{label}</DropdownItem>
               ))}
@@ -74,14 +74,14 @@ const Buttons = ({ slots }: { slots: Slot[] }) => {
           <Button
             isIconOnly
             key={key}
-            color={activeKey === key ? "primary" : "default"}
-            variant={activeKey === key ? undefined : "light"}
-            radius="none"
+            color={activeKey === key ? 'primary' : 'default'}
+            variant={activeKey === key ? undefined : 'light'}
+            radius='none'
             onClick={() => handleClick(key, onActive, onInactive)}
           >
             {element}
           </Button>
-        )
+        ),
       )}
     </>
   );
@@ -102,19 +102,19 @@ export const Toolsbar: React.FC = () => {
   const slots = useMemo<Slot[]>(() => {
     return [
       {
-        name: "Frame",
-        key: "frame",
-        element: <FrameIcon fill="#fff" />,
+        name: 'Frame',
+        key: 'frame',
+        element: <FrameIcon fill='#fff' />,
         dropMenu: options.map((type) => ({ value: type, label: type })),
-        onAction: (key) => setSelectedDrawType(key as SchemaType)
+        onAction: (key) => setSelectedDrawType(key as SchemaType),
       },
       {
-        name: "Select",
-        key: "select",
-        element: <SelectIcon fill="#fff" />,
+        name: 'Select',
+        key: 'select',
+        element: <SelectIcon fill='#fff' />,
         onActive: () => setAllowSelect(true),
-        onInactive: () => setAllowSelect(false)
-      }
+        onInactive: () => setAllowSelect(false),
+      },
       // { name: "hanld Tools", key: "hand", element: <HandIcon fill="#fff" /> }
     ];
   }, [selectedDrawType]);
@@ -122,30 +122,30 @@ export const Toolsbar: React.FC = () => {
   return (
     <div className={wrap()}>
       <Buttons slots={slots} />
-      <div className="ml-auto">
-        <Button onClick={createSchema} variant="shadow" color="primary" size="sm" className="ml-auto">
+      <div className='ml-auto'>
+        <Button onClick={createSchema} variant='shadow' color='primary' size='sm' className='ml-auto'>
           添加{selectedDrawType}
         </Button>
-        <Button onClick={resetSchema} size="sm" className="ml-2">
+        <Button onClick={resetSchema} size='sm' className='ml-2'>
           重置
         </Button>
         {drawingSchemaId && (
-          <Button onClick={deleteSchema} size="sm" className="ml-2">
+          <Button onClick={deleteSchema} size='sm' className='ml-2'>
             删除
           </Button>
         )}
-        <ButtonGroup className="ml-2 text-white" variant="faded">
-          <Button onClick={useTemplate} size="sm">
+        <ButtonGroup className='ml-2 text-white' variant='faded'>
+          <Button onClick={useTemplate} size='sm'>
             使用模版
           </Button>
-          <Button onClick={exportAssets} size="sm">
+          <Button onClick={exportAssets} size='sm'>
             导出资源
           </Button>
-          <Button onClick={importConfig} size="sm">
+          <Button onClick={importConfig} size='sm'>
             导入配置
           </Button>
         </ButtonGroup>
-        <Button onClick={() => window.open("/preview", "blank")} size="sm" className="ml-2">
+        <Button onClick={() => window.open('/preview', 'blank')} size='sm' className='ml-2'>
           实时预览
         </Button>
       </div>

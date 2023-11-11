@@ -5,7 +5,7 @@ export enum SchemaType {
 
 export type Schema = {
   id: string;
-  type: SchemaType
-  style: React.CSSProperties
+  type: SchemaType;
+  style: React.CSSProperties;
   content?: string;
-}
+};

@@ -1,24 +1,26 @@
-import { Schema, SchemaType } from "./types/schema";
+import { Schema, SchemaType } from './types/schema';
 
 export const resolveHTML = (schema: Schema) => {
   switch (schema.type) {
     case SchemaType.Image:
-      return `<img class="${schema.id}" src=${schema.content} alt="" />`
+      return `<img class="${schema.id}" src=${schema.content} alt="" />`;
     case SchemaType.Block:
-      return `<span class="${schema.id}">${schema.content}</span>`
+      return `<span class="${schema.id}">${schema.content}</span>`;
   }
-}
+};
 
 const transferCSS = (style: React.CSSProperties) => {
-  return Object.entries(style).map(([key, value]) => {
-    return `${key.replace(/([A-Z]+)/, '-$1').toLowerCase()}:${value};`
-  }).join('')
-}
+  return Object.entries(style)
+    .map(([key, value]) => {
+      return `${key.replace(/([A-Z]+)/, '-$1').toLowerCase()}:${value};`;
+    })
+    .join('');
+};
 export const resolveCSS = (schema: Schema) => {
   return `.${schema.id} {
     ${transferCSS(schema.style)}
-  }`
-}
+  }`;
+};
 
 export const uploadAndReadJSON = (): Promise<Schema[]> => {
   return new Promise((resolve, reject) => {
@@ -59,8 +61,7 @@ export const uploadAndReadJSON = (): Promise<Schema[]> => {
       }
     };
 
-
     document.body.appendChild(inputElement);
     inputElement.click();
   });
-}
+};

@@ -1,6 +1,6 @@
-import { useSetAtom } from "jotai";
-import { useMemo, useRef } from "react";
-import { setSchemaAtom } from "../../../store/schema";
+import { useSetAtom } from 'jotai';
+import { useMemo, useRef } from 'react';
+import { setSchemaAtom } from '../../../store/schema';
 
 export interface BlockRenderProps {
   style: React.CSSProperties;
@@ -13,12 +13,8 @@ export const BlockRender = ({ style, text, id }: BlockRenderProps) => {
   const setSchema = useSetAtom(setSchemaAtom);
 
   return useMemo(() => {
-    return <span
-      aria-label="schema"
-      style={style}
-      id={id}
-      ref={containerRef}
-      dangerouslySetInnerHTML={{ __html: text }}
-    />
+    return (
+      <span aria-label='schema' style={style} id={id} ref={containerRef} dangerouslySetInnerHTML={{ __html: text }} />
+    );
   }, [style, setSchema]);
 };
