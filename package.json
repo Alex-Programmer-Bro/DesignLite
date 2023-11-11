@@ -14,7 +14,8 @@
     "build-storybook": "storybook build",
     "test:unit": "vitest run",
     "test:e2e": "test-storybook",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",
