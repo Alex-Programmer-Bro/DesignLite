@@ -2,10 +2,10 @@ import { NextUIProvider } from '@nextui-org/react';
 import { Provider } from 'jotai';
 import { DevTools } from 'jotai-devtools';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Main } from './page/main';
 import { Preview } from './page/preview';
 import { appStore } from './store';
 import './styles.css';
-import { Main } from './page/main';
 
 export const App = () => (
   <BrowserRouter>
