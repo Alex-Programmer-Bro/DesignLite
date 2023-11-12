@@ -66,7 +66,7 @@ const Buttons = ({ slots }: { slots: Slot[] }) => {
             </DropdownTrigger>
             <DropdownMenu aria-label='Static Actions' onAction={onAction}>
               {dropMenu.map(({ value, label }) => (
-                <DropdownItem key={value}>{label}</DropdownItem>
+                <DropdownItem key={value.toString()}>{label}</DropdownItem>
               ))}
             </DropdownMenu>
           </Dropdown>
@@ -119,6 +119,16 @@ export const Toolsbar: React.FC = () => {
     ];
   }, [selectedDrawType]);
 
+  const onPreview = async () => {
+    if (isWeb) {
+      window.open('/preview', 'blank');
+    } else {
+      const { invoke } = await import('@tauri-apps/api/tauri');
+      const preview = new URL('/preview', location.origin);
+      await invoke('preview', { url: preview.toString() });
+    }
+  };
+
   return (
     <div className={wrap()}>
       <Buttons slots={slots} />
@@ -145,7 +155,13 @@ export const Toolsbar: React.FC = () => {
             导入配置
           </Button>
         </ButtonGroup>
-        <Button onClick={() => window.open('/preview', 'blank')} size='sm' className='ml-2'>
+        <Button
+          onClick={() => {
+            onPreview();
+          }}
+          size='sm'
+          className='ml-2'
+        >
           实时预览
         </Button>
       </div>
