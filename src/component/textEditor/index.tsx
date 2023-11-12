@@ -52,7 +52,7 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
 
   useEffect(() => {
     setColor(state.color);
-  }, [state]);
+  }, [state.color]);
 
   return (
     <div className='grid grid-cols-1 gap-10'>
