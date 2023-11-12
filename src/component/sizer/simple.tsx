@@ -20,13 +20,14 @@ export const SimpleSizer = ({
 
   const disabled = unit === 'auto';
 
-  useEffect(() => {
+  const onUnitChange = (unit: string) => {
     if (unit === 'auto') {
       SourceOnChange(unit);
     } else {
       SourceOnChange(value + unit);
     }
-  }, [value, unit]);
+    setUnit(unit);
+  };
 
   useEffect(() => {
     setValue(resolveValue(SourceValue) as string);
@@ -47,7 +48,7 @@ export const SimpleSizer = ({
         onFocus={onFocus}
       />
       <span className='ml-2 text-[12px]'>
-        <UnitSelector value={unit} onChange={setUnit} />
+        <UnitSelector value={unit} onChange={onUnitChange} />
       </span>
     </div>
   );

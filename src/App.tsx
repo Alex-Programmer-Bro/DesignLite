@@ -1,21 +1,22 @@
-import { motion } from 'framer-motion';
-import { useRef } from 'react';
-import { Canvas } from './component/canvas';
-import { Designer } from './component/designer';
-import { Toolsbar } from './component/toolsbar';
+import { NextUIProvider } from '@nextui-org/react';
+import { Provider } from 'jotai';
+import { DevTools } from 'jotai-devtools';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Main } from './page/main';
+import { Preview } from './page/preview';
+import { appStore } from './store';
+import './styles.css';
 
-function App() {
-  const constraints = useRef<HTMLDivElement | null>(null);
-
-  return (
-    <>
-      <motion.div className='flex h-full flex-col w-screen' ref={constraints}>
-        <Toolsbar />
-        <Canvas />
-      </motion.div>
-      <Designer constraints={constraints} />
-    </>
-  );
-}
-
-export default App;
+export const App = () => (
+  <BrowserRouter>
+    <NextUIProvider className='h-full'>
+      <Provider store={appStore}>
+        <Routes>
+          <Route path='/' element={<Main />} />
+          <Route path='/preview' element={<Preview />} />
+        </Routes>
+      </Provider>
+      <DevTools store={appStore} />
+    </NextUIProvider>
+  </BrowserRouter>
+);
