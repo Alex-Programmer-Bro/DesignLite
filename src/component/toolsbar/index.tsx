@@ -52,7 +52,7 @@ const Buttons = ({ slots }: { slots: Slot[] }) => {
             <DropdownTrigger>
               <Button
                 key={key}
-                color={activeKey === key ? 'primary' : 'default'}
+                color={activeKey === key ? 'secondary' : 'default'}
                 variant={activeKey === key ? undefined : 'light'}
                 radius='none'
               >
@@ -74,7 +74,7 @@ const Buttons = ({ slots }: { slots: Slot[] }) => {
           <Button
             isIconOnly
             key={key}
-            color={activeKey === key ? 'primary' : 'default'}
+            color={activeKey === key ? 'secondary' : 'default'}
             variant={activeKey === key ? undefined : 'light'}
             radius='none'
             onClick={() => handleClick(key, onActive, onInactive)}
@@ -133,7 +133,7 @@ export const Toolsbar: React.FC = () => {
     <div className={wrap()}>
       <Buttons slots={slots} />
       <div className='ml-auto'>
-        <Button onClick={createSchema} variant='shadow' color='primary' size='sm' className='ml-auto'>
+        <Button onClick={createSchema} variant='shadow' color='secondary' size='sm' className='ml-auto'>
           添加{selectedDrawType}
         </Button>
         <Button onClick={resetSchema} size='sm' className='ml-2'>
@@ -144,7 +144,7 @@ export const Toolsbar: React.FC = () => {
             删除
           </Button>
         )}
-        <ButtonGroup className='ml-2 text-white' variant='faded'>
+        <ButtonGroup className='ml-2' variant='faded'>
           <Button onClick={useTemplate} size='sm'>
             使用模版
           </Button>

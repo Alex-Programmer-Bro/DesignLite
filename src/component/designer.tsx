@@ -44,7 +44,7 @@ export const Designer = () => {
   };
 
   return (
-    <Card className='w-[400px] m-4'>
+    <Card className='w-full m-4'>
       <CardHeader className='flex gap-3'>Designer</CardHeader>
       <Divider />
       <CardBody className='my-4'>
