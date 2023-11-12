@@ -12,7 +12,7 @@ import {
 } from '@nextui-org/react';
 import { motion } from 'framer-motion';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { FC, RefObject, Suspense, useEffect, useRef, useState } from 'react';
 import { ImageURLAtom, baseStyleAtom, textStyleAtom } from '../store/designer';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
 import { SchemaType } from '../types/schema';
@@ -20,7 +20,7 @@ import { ChromePicker } from './colorPicker';
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from './textEditor';
 
-export const Designer = ({ constraints }: { constraints: any }) => {
+export const Designer: FC<{ constraints: RefObject<Element> }> = ({ constraints }) => {
   const [baseState, setBaseState] = useAtom(baseStyleAtom);
   const [textState, setTextState] = useAtom(textStyleAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
