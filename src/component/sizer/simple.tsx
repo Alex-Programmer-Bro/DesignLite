@@ -1,5 +1,5 @@
 import { Input } from '@nextui-org/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { resolveUnit, resolveValue } from './helper';
 import { SizerProps } from './type';
 import { UnitSelector } from './unit';
@@ -28,6 +28,11 @@ export const SimpleSizer = ({
     }
     setUnit(unit);
   };
+
+  useEffect(() => {
+    setValue(resolveValue(SourceValue) as string);
+    setUnit(resolveUnit(SourceValue));
+  }, [SourceValue]);
 
   return (
     <div className='flex items-center'>
