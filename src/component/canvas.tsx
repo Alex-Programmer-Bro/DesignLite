@@ -18,7 +18,7 @@ export const Canvas = () => {
   };
 
   return (
-    <div className='overflow-auto relative' style={{ height: 'calc(100% - 40px)' }} onClick={handleClick}>
+    <div className='overflow-auto relative flex-1' onClick={handleClick}>
       {schemas.map((item) => (
         <SchemaRender key={item.id} {...item} />
       ))}
