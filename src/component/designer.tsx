@@ -10,9 +10,9 @@ import {
   PopoverTrigger,
   Spinner,
 } from '@nextui-org/react';
-import { motion } from 'framer-motion';
+import { motion, useDragControls } from 'framer-motion';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { FC, RefObject, Suspense, useEffect, useRef, useState } from 'react';
+import { FC, RefObject, Suspense } from 'react';
 import { ImageURLAtom, baseStyleAtom, textStyleAtom } from '../store/designer';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
 import { SchemaType } from '../types/schema';
@@ -27,8 +27,7 @@ export const Designer: FC<{ constraints: RefObject<Element> }> = ({ constraints 
   const type = useAtomValue(getActionSchemaTypeAtom);
   const [imageURL, setImageURL] = useAtom(ImageURLAtom);
   const drawingSchemaId = useAtomValue(drawingSchemaIdAtom);
-  const container = useRef<HTMLDivElement | null>(null);
-  const [dragable, setDragable] = useState<boolean>(true);
+  const controls = useDragControls();
 
   const stateAdaptor = (key: string) => {
     return (v: string) =>
@@ -47,38 +46,24 @@ export const Designer: FC<{ constraints: RefObject<Element> }> = ({ constraints 
       });
   };
 
-  useEffect(() => {
-    if (container.current) {
-      const inputs = [
-        ...container.current.getElementsByTagName('input'),
-        ...container.current.getElementsByTagName('textarea'),
-      ];
-      inputs.forEach((item) => {
-        const focusHandler = item.onfocus;
-        const bulrHandler = item.onblur;
-        item.onfocus = (event) => {
-          focusHandler?.call(item, event);
-          setDragable(false);
-        };
-        item.onblur = (event) => {
-          bulrHandler?.call(item, event);
-          setDragable(true);
-        };
-      });
-    }
-  }, [container.current]);
+  const startDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    controls.start(event);
+  };
 
   return drawingSchemaId ? (
     <motion.div
       dragConstraints={constraints}
-      drag={dragable}
+      drag
       dragMomentum={false}
-      ref={container}
+      dragListener={false}
+      dragControls={controls}
       className='w-[400px] fixed top-6 right-0'
       onKeyDown={(e) => e.stopPropagation()}
     >
       <Card className='w-full m-4'>
-        <CardHeader className='flex gap-3'>Designer</CardHeader>
+        <motion.div onPointerDown={startDrag} className='cursor-move'>
+          <CardHeader className='flex gap-3'>Designer</CardHeader>
+        </motion.div>
         <Divider />
         <CardBody className='my-4'>
           <div className='grid grid-cols-2 gap-10 mb-10'>
