@@ -50,6 +50,10 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
     watchColor(color);
   }, [color]);
 
+  useEffect(() => {
+    setColor(state.color);
+  }, [state.color]);
+
   return (
     <div className='grid grid-cols-1 gap-10'>
       <Textarea

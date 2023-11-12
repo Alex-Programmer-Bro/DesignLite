@@ -1,16 +1,20 @@
+import { motion } from 'framer-motion';
+import { useRef } from 'react';
 import { Canvas } from './component/canvas';
 import { Designer } from './component/designer';
 import { Toolsbar } from './component/toolsbar';
 
 function App() {
+  const constraints = useRef<HTMLDivElement | null>(null);
+
   return (
-    <div className='flex h-full'>
-      <div className='h-full flex-1 border-r-1 border-solid border-[#ddd]'>
+    <>
+      <motion.div className='flex h-full flex-col w-screen' ref={constraints}>
         <Toolsbar />
         <Canvas />
-      </div>
-      <Designer />
-    </div>
+      </motion.div>
+      <Designer constraints={constraints} />
+    </>
   );
 }
 
