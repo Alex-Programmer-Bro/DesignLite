@@ -13,9 +13,7 @@ function App() {
         <Toolsbar />
         <Canvas />
       </motion.div>
-      <motion.div drag dragMomentum={false} dragConstraints={constraints} className='w-[400px] fixed top-6 right-0'>
-        <Designer />
-      </motion.div>
+      <Designer constraints={constraints} />
     </>
   );
 }

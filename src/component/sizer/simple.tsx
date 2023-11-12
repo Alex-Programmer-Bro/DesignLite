@@ -28,6 +28,11 @@ export const SimpleSizer = ({
     }
   }, [value, unit]);
 
+  useEffect(() => {
+    setValue(resolveValue(SourceValue) as string);
+    setUnit(resolveUnit(SourceValue));
+  }, [SourceValue]);
+
   return (
     <div className='flex items-center'>
       <Input
