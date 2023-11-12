@@ -1,9 +1,9 @@
-import { StoryObj, type Meta } from '@storybook/react';
-import { SimpleSizer } from './simple';
-import { useState } from '@storybook/preview-api';
-import { Value } from './type';
-import { userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
+import { useState } from '@storybook/preview-api';
+import { StoryObj, type Meta } from '@storybook/react';
+import { userEvent } from '@storybook/testing-library';
+import { SimpleSizer } from './simple';
+import { Value } from './type';
 
 const meta = {
   title: '内置组件/Simple-Sizer',
@@ -35,7 +35,7 @@ export const Primary: Story = {
     },
   ],
   play: async ({ canvasElement, step }) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 10));
     const unitSelector = canvasElement.querySelector('select')!;
 
     await step('Simple ui', async () => {

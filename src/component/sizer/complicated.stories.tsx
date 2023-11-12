@@ -34,7 +34,7 @@ export const Primary: Story = {
     },
   ],
   play: async ({ canvasElement, step }) => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 10));
     const switchTarget = canvasElement.querySelector('input[type="checkbox"]') as HTMLInputElement;
 
     await step('default ui', () => {

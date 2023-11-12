@@ -1,5 +1,5 @@
 import { Input } from '@nextui-org/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { resolveUnit, resolveValue } from './helper';
 import { SizerProps } from './type';
 import { UnitSelector } from './unit';
@@ -20,13 +20,14 @@ export const SimpleSizer = ({
 
   const disabled = unit === 'auto';
 
-  useEffect(() => {
+  const onUnitChange = (unit: string) => {
     if (unit === 'auto') {
       SourceOnChange(unit);
     } else {
       SourceOnChange(value + unit);
     }
-  }, [value, unit]);
+    setUnit(unit);
+  };
 
   return (
     <div className='flex items-center'>
@@ -42,7 +43,7 @@ export const SimpleSizer = ({
         onFocus={onFocus}
       />
       <span className='ml-2 text-[12px]'>
-        <UnitSelector value={unit} onChange={setUnit} />
+        <UnitSelector value={unit} onChange={onUnitChange} />
       </span>
     </div>
   );
