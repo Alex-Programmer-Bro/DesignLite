@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tauri dev",
     "dev:web": "vite",
+    "dev:e2e": "playwright open",
     "build": "tauri build",
     "build:web": "tsc && vite build",
     "preview": "vite preview",
@@ -13,7 +14,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test:unit": "vitest run",
-    "test:e2e": "test-storybook",
+    "test:e2e": "playwright test",
     "prettier": "prettier --write . --cache src",
     "prepare": "husky install"
   },
@@ -34,6 +35,8 @@
   },
   "devDependencies": {
     "@emotion/react": "^11.11.1",
+    "@playwright/experimental-ct-react": "^1.39.0",
+    "@playwright/test": "^1.39.0",
     "@storybook/addon-essentials": "^7.5.2",
     "@storybook/addon-interactions": "^7.5.2",
     "@storybook/addon-links": "^7.5.2",
@@ -46,6 +49,7 @@
     "@storybook/testing-library": "^0.2.2",
     "@tauri-apps/cli": "^1.5.0",
     "@types/lodash-es": "^4.17.10",
+    "@types/node": "^20.9.0",
     "@types/react": "^18.2.15",
     "@types/react-color": "^3.0.9",
     "@types/react-dom": "^18.2.7",
