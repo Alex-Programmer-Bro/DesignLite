@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 interface UnitSelectorProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: 'px' | '%' | 'auto';
+  onChange: (value: 'px' | '%' | 'auto') => void;
 }
 
 /**
@@ -15,7 +15,7 @@ export const UnitSelector: FC<UnitSelectorProps> = ({ value, onChange }) => {
       className='outline-none bg-transparent'
       defaultValue={value}
       onChange={(e) => {
-        onChange(e.target.value);
+        onChange(e.target.value as UnitType);
       }}
     >
       <option value='px'>px</option>

@@ -13,8 +13,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<Meta<typeof UnitSelector>>;
 
-export const Primary: Story = {
-  args: {
-    value: 'px',
-  },
-};
+export const Primary: Story = {};

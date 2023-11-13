@@ -25,7 +25,7 @@ describe('simple sizer', () => {
 
   it('should work when unit changed', async () => {
     const App = () => {
-      const [unit, setUnit] = useState('px');
+      const [unit, setUnit] = useState<UnitType>('px');
       return <UnitSelector value={unit} onChange={setUnit} />;
     };
 
