@@ -1,5 +1,5 @@
 import { Input } from '@nextui-org/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { resolveUnit, resolveValue } from './helper';
 import { SizerProps } from './type';
 import { UnitSelector } from './unit';
@@ -17,14 +17,21 @@ export const SimpleSizer = ({
 }: SimpleProps) => {
   const [value, setValue] = useState(resolveValue(SourceValue) as string);
   const [unit, setUnit] = useState(resolveUnit(SourceValue));
+  const cacheValue = useRef<typeof value | null>(null);
 
   const disabled = unit === 'auto';
 
   const onUnitChange = (unit: string) => {
     if (unit === 'auto') {
+      cacheValue.current = value;
       SourceOnChange(unit);
     } else {
-      SourceOnChange(value + unit);
+      if (cacheValue.current) {
+        SourceOnChange(cacheValue.current + unit);
+        cacheValue.current = null;
+      } else {
+        SourceOnChange(value + unit);
+      }
     }
     setUnit(unit);
   };

@@ -35,7 +35,7 @@ export const Primary: Story = {
     },
   ],
   play: async ({ canvasElement, step }) => {
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     const unitSelector = canvasElement.querySelector('select')!;
 
     await step('Simple ui', async () => {
