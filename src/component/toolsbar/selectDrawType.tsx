@@ -7,7 +7,8 @@ import {
   DropdownTrigger,
   Selection,
 } from '@nextui-org/react';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
+import { createSchemaAtom } from '../../store/schema';
 import { selectedDrawTypeAtom } from '../../store/toolbar';
 import { SchemaType } from '../../types/schema';
 
@@ -26,6 +27,7 @@ const descriptionsMap = {
 };
 
 export const SelectDrawType = () => {
+  const createSchema = useSetAtom(createSchemaAtom);
   const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
 
   const onSelectionChange = (keys: Selection) => {
@@ -33,9 +35,11 @@ export const SelectDrawType = () => {
   };
 
   return (
-    <ButtonGroup variant='flat'>
-      <Button>插入{selectedDrawType}</Button>
-      <Dropdown placement='bottom-end'>
+    <ButtonGroup variant='shadow' color='secondary' size='sm' className='w-full'>
+      <Button onClick={createSchema} className='text-[12px] flex-1'>
+        插入{selectedDrawType}
+      </Button>
+      <Dropdown placement='bottom-start'>
         <DropdownTrigger>
           <Button isIconOnly>
             <ChevronDownIcon />
@@ -43,14 +47,13 @@ export const SelectDrawType = () => {
         </DropdownTrigger>
         <DropdownMenu
           disallowEmptySelection
-          aria-label='Merge options'
+          aria-label='Select Draw Type'
           selectedKeys={new Set([selectedDrawType])}
           selectionMode='single'
           onSelectionChange={onSelectionChange}
           className='max-w-[300px]'
         >
           {Object.entries(SchemaType).map(([, key]) => {
-            console.log(key);
             return (
               <DropdownItem key={key} description={descriptionsMap[key]}>
                 {key}
