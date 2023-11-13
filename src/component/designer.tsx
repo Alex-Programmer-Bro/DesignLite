@@ -57,10 +57,10 @@ export const Designer: FC<{ constraints: RefObject<Element> }> = ({ constraints 
       dragMomentum={false}
       dragListener={false}
       dragControls={controls}
-      className='w-[400px] fixed top-6 right-0'
+      className='w-[400px] fixed top-6 right-0 p-4'
       onKeyDown={(e) => e.stopPropagation()}
     >
-      <Card className='w-full m-4'>
+      <Card className='w-full max-h-[90vh] overflow-auto'>
         <motion.div onPointerDown={startDrag} className='cursor-move'>
           <CardHeader className='flex gap-3'>Designer</CardHeader>
         </motion.div>
