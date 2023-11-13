@@ -1,5 +1,15 @@
-import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
-import { useState } from 'react';
+import {
+  Button,
+  ButtonGroup,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Selection,
+} from '@nextui-org/react';
+import { useAtom } from 'jotai';
+import { selectedDrawTypeAtom } from '../../store/toolbar';
+import { SchemaType } from '../../types/schema';
 
 export const ChevronDownIcon = () => (
   <svg fill='none' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'>
@@ -10,26 +20,21 @@ export const ChevronDownIcon = () => (
   </svg>
 );
 
+const descriptionsMap = {
+  [SchemaType.Block]: '插入文本或者图形色块儿',
+  [SchemaType.Image]: '插入一张图片',
+};
+
 export const SelectDrawType = () => {
-  const [selectedOption, setSelectedOption] = useState(new Set(['merge']));
+  const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
 
-  const descriptionsMap = {
-    merge: 'All commits from the source branch are added to the destination branch via a merge commit.',
-    squash: 'All commits from the source branch are added to the destination branch as a single commit.',
-    rebase: 'All commits from the source branch are added to the destination branch individually.',
+  const onSelectionChange = (keys: Selection) => {
+    setSelectedDrawType(Array.from(keys)[0] as SchemaType);
   };
-
-  const labelsMap = {
-    merge: 'Create a merge commit',
-    squash: 'Squash and merge',
-    rebase: 'Rebase and merge',
-  };
-
-  const selectedOptionValue = Array.from(selectedOption)[0];
 
   return (
     <ButtonGroup variant='flat'>
-      <Button>{labelsMap[selectedOptionValue]}</Button>
+      <Button>插入{selectedDrawType}</Button>
       <Dropdown placement='bottom-end'>
         <DropdownTrigger>
           <Button isIconOnly>
@@ -39,20 +44,19 @@ export const SelectDrawType = () => {
         <DropdownMenu
           disallowEmptySelection
           aria-label='Merge options'
-          selectedKeys={selectedOption}
+          selectedKeys={new Set([selectedDrawType])}
           selectionMode='single'
-          onSelectionChange={setSelectedOption}
+          onSelectionChange={onSelectionChange}
           className='max-w-[300px]'
         >
-          <DropdownItem key='merge' description={descriptionsMap['merge']}>
-            {labelsMap['merge']}
-          </DropdownItem>
-          <DropdownItem key='squash' description={descriptionsMap['squash']}>
-            {labelsMap['squash']}
-          </DropdownItem>
-          <DropdownItem key='rebase' description={descriptionsMap['rebase']}>
-            {labelsMap['rebase']}
-          </DropdownItem>
+          {Object.entries(SchemaType).map(([, key]) => {
+            console.log(key);
+            return (
+              <DropdownItem key={key} description={descriptionsMap[key]}>
+                {key}
+              </DropdownItem>
+            );
+          })}
         </DropdownMenu>
       </Dropdown>
     </ButtonGroup>
