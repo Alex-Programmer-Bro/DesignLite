@@ -54,7 +54,7 @@ export const SimpleSizer = ({
         onChange={(e) => onValueChange(e.target.value)}
         onFocus={onFocus}
       />
-      <span className='ml-2 text-[12px]'>
+      <span className={`ml-2 text-[12px]${labelPlacement === 'outside' ? ' mt-[22px]' : ''}`}>
         <UnitSelector value={unit} onChange={onUnitChange} />
       </span>
     </div>
