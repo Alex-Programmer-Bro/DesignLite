@@ -24,3 +24,7 @@ dist-ssr
 # Desktop
 src-tauri/fps.json
 src-tauri/index.html
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
