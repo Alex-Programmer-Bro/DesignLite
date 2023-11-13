@@ -63,7 +63,7 @@ export const TextEditor = ({ state, onChangeBefore, onChange }: TextEditorProps)
         value={state.content}
         onChange={(e) => update('content')(e.target.value)}
       />
-      <div className='flex'>
+      <div className='flex items-end'>
         <div className='max-w-[100px]'>
           <SimpleSizer labelPlacement='outside' label='font' value={state.size} onChange={update('size')} />
         </div>
