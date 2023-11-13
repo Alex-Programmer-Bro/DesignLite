@@ -1,5 +1,5 @@
 import { Input } from '@nextui-org/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { resolveUnit, resolveValue } from './helper';
 import { SizerProps } from './type';
 import { UnitSelector } from './unit';
@@ -26,20 +26,20 @@ export const SimpleSizer = ({
       cacheValue.current = value;
       SourceOnChange(unit);
     } else {
-      if (cacheValue.current) {
-        SourceOnChange(cacheValue.current + unit);
-        cacheValue.current = null;
-      } else {
-        SourceOnChange(value + unit);
-      }
+      onValueChange(value);
     }
     setUnit(unit);
   };
 
-  useEffect(() => {
-    setValue(resolveValue(SourceValue) as string);
-    setUnit(resolveUnit(SourceValue));
-  }, [SourceValue]);
+  const onValueChange = (inputValue: string) => {
+    if (cacheValue.current) {
+      SourceOnChange(cacheValue.current + unit);
+      cacheValue.current = null;
+    } else {
+      SourceOnChange(inputValue + unit);
+    }
+    value !== inputValue && setValue(inputValue);
+  };
 
   return (
     <div className='flex items-center'>
@@ -51,7 +51,7 @@ export const SimpleSizer = ({
         label={label}
         type='number'
         value={disabled ? '' : value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => onValueChange(e.target.value)}
         onFocus={onFocus}
       />
       <span className='ml-2 text-[12px]'>
