@@ -21,7 +21,7 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
   });
   const { top, right, bottom, left } = values;
 
-  const onLock = (e: React.FormEvent<HTMLLabelElement>) => {
+  const onLock = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lock = (e.target as HTMLInputElement).checked;
 
     if (lock === false) {
