@@ -6,4 +6,5 @@ export interface SizerProps {
   value: Value;
   onChange: (value: Value) => void;
   onFocus?: (e: React.FocusEvent<Element, Element>) => void;
+  key?:string
 }
