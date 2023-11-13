@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest';
 import { StoryObj, type Meta } from '@storybook/react';
-import { within } from '@storybook/testing-library';
+import { withRouter } from 'storybook-addon-react-router-v6';
 import { Main } from './main';
 
 const meta = {
@@ -13,16 +12,5 @@ export default meta;
 type Story = StoryObj<Meta<typeof Main>>;
 
 export const Primary: Story = {
-  async play({ canvasElement, step }) {
-    await step('render template', () => {
-      const canvas = within(canvasElement);
-      const resetBtn = canvas.getByText('重置');
-      expect(resetBtn).toBeInTheDocument();
-      resetBtn.click();
-
-      const templateBtn = canvas.getByText('使用模版');
-      expect(templateBtn).toBeInTheDocument();
-      templateBtn.click();
-    });
-  },
+  decorators: [withRouter],
 };

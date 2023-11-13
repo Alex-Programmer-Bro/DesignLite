@@ -1,123 +1,31 @@
-import React, { Key, ReactElement, useMemo, useState } from 'react';
-import { SelectIcon } from '../../assets/icons/SelectIcon';
-import { styles } from './index.tv';
-// import { HandIcon } from "../../assets/icons/HandIcon";
-import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { DownIcon } from '../../assets/icons/DownIcon';
-import { FrameIcon } from '../../assets/icons/FrameIcon';
-import { UpIcon } from '../../assets/icons/UpIcon';
 import {
-  createSchemaAtom,
-  deleteSchameAtom,
-  drawingSchemaIdAtom,
-  exportAssetsAtom,
-  importConfigAtom,
-  resetAtom,
-  useTemplateAtom,
-} from '../../store/schema';
-import { allowSelectAtom, selectedDrawTypeAtom } from '../../store/toolbar';
-import { SchemaType } from '../../types/schema';
-
-const { wrap } = styles();
-
-interface Slot {
-  name: string;
-  element: ReactElement;
-  key: string;
-  onActive?: Function;
-  onInactive?: Function;
-  dropMenu?: { label: string; value: string | number | bigint }[];
-  onAction?: (key: Key) => void;
-}
-
-const Buttons = ({ slots }: { slots: Slot[] }) => {
-  const [activeKey, setActiveKey] = useState<string | null>(null);
-
-  const handleClick = (key: string, onActive?: Function, onInactive?: Function) => {
-    if (activeKey !== key) {
-      onActive && onActive();
-      setActiveKey(key);
-    } else {
-      onInactive && onInactive();
-      setActiveKey(null);
-    }
-  };
-
-  return (
-    <>
-      {slots.map(({ key, element, dropMenu, onActive, onInactive, onAction }) =>
-        dropMenu ? (
-          <Dropdown onOpenChange={(value: boolean) => setActiveKey(value ? key : null)} key={key}>
-            <DropdownTrigger>
-              <Button
-                key={key}
-                color={activeKey === key ? 'secondary' : 'default'}
-                variant={activeKey === key ? undefined : 'light'}
-                radius='none'
-              >
-                {element}
-                {activeKey === key ? (
-                  <UpIcon className='ml-1' fill='white' />
-                ) : (
-                  <DownIcon className='ml-1' fill='white' />
-                )}
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label='Static Actions' onAction={onAction}>
-              {dropMenu.map(({ value, label }) => (
-                <DropdownItem key={value.toString()}>{label}</DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
-        ) : (
-          <Button
-            isIconOnly
-            key={key}
-            color={activeKey === key ? 'secondary' : 'default'}
-            variant={activeKey === key ? undefined : 'light'}
-            radius='none'
-            onClick={() => handleClick(key, onActive, onInactive)}
-          >
-            {element}
-          </Button>
-        ),
-      )}
-    </>
-  );
-};
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Code,
+  Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
+import { useAtom, useSetAtom } from 'jotai';
+import React from 'react';
+import { SelectIcon } from '../../assets/icons/SelectIcon';
+import { useDebug } from '../../hook/useDebug';
+import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, resetAtom, useTemplateAtom } from '../../store/schema';
+import { allowSelectAtom } from '../../store/toolbar';
+import { SelectDrawType } from './selectDrawType';
 
 export const Toolsbar: React.FC = () => {
-  const options: string[] = Object.values(SchemaType);
-  const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
-  const setAllowSelect = useSetAtom(allowSelectAtom);
-  const createSchema = useSetAtom(createSchemaAtom);
   const resetSchema = useSetAtom(resetAtom);
   const useTemplate = useSetAtom(useTemplateAtom);
   const exportAssets = useSetAtom(exportAssetsAtom);
   const importConfig = useSetAtom(importConfigAtom);
   const deleteSchema = useSetAtom(deleteSchameAtom);
-  const drawingSchemaId = useAtomValue(drawingSchemaIdAtom);
-
-  const slots = useMemo<Slot[]>(() => {
-    return [
-      {
-        name: 'Frame',
-        key: 'frame',
-        element: <FrameIcon fill='#fff' />,
-        dropMenu: options.map((type) => ({ value: type, label: type })),
-        onAction: (key) => setSelectedDrawType(key as SchemaType),
-      },
-      {
-        name: 'Select',
-        key: 'select',
-        element: <SelectIcon fill='#fff' />,
-        onActive: () => setAllowSelect(true),
-        onInactive: () => setAllowSelect(false),
-      },
-      // { name: "hanld Tools", key: "hand", element: <HandIcon fill="#fff" /> }
-    ];
-  }, [selectedDrawType]);
+  const [allowSelect, setAllowSelect] = useAtom(allowSelectAtom);
+  const debug = useDebug();
 
   const onPreview = async () => {
     if (isWeb) {
@@ -129,42 +37,94 @@ export const Toolsbar: React.FC = () => {
     }
   };
 
+  const SelectOptions = [
+    {
+      label: '实时预览',
+      describe: '提前预览绘制效果',
+      icon: '/icon/preview.svg',
+      onClick: onPreview,
+    },
+    {
+      label: '导出资源',
+      describe: '导出前端静态资源，以供部署上线',
+      icon: '/icon/export.svg',
+      onClick: exportAssets,
+    },
+    {
+      label: '导入配置',
+      describe: (
+        <>
+          导入 <Code size='sm'>fps.json</Code> 配置文件，继续绘制
+        </>
+      ),
+      icon: '/icon/import.svg',
+      onClick: importConfig,
+    },
+    {
+      label: '删除',
+      describe: '删除选中的元素',
+      icon: '/icon/delete.svg',
+      onClick: deleteSchema,
+    },
+    {
+      label: '使用模版',
+      describe: '代码内预制的模版',
+      icon: '/icon/template.svg',
+      onClick: useTemplate,
+    },
+    {
+      label: '重置',
+      describe: '清空所有状态数据',
+      icon: '/icon/reset.svg',
+      onClick: resetSchema,
+    },
+    {
+      label: debug ? '关闭调试' : '启动调试模式',
+      describe: debug ? '返回程序正常使用状态' : '查看程序各个状态数据，便于问题排查',
+      icon: debug ? '/icon/close-debug.svg' : '/icon/debug.svg',
+      onClick: () => {
+        const url = new URL(location.href);
+        if (debug) {
+          url.searchParams.delete('debug');
+        } else {
+          url.searchParams.set('debug', 'debug');
+        }
+        location.href = url.toString();
+      },
+    },
+  ];
+
   return (
-    <div className={wrap()}>
-      <Buttons slots={slots} />
-      <div className='ml-auto'>
-        <Button onClick={createSchema} variant='shadow' color='secondary' size='sm' className='ml-auto'>
-          添加{selectedDrawType}
+    <Card className='absolute z-10 left-4 top-4 w-[360px]'>
+      <CardHeader className='flex gap-3'>Toolbar</CardHeader>
+      <Divider />
+      <CardBody className='grid grid-cols-[1fr_1fr_80px] gap-3'>
+        <Dropdown placement='bottom-start'>
+          <DropdownTrigger>
+            <Button size='sm' variant='shadow' color='primary'>
+              操作
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu aria-label='ACME features'>
+            {SelectOptions.map((item) => {
+              return (
+                <DropdownItem
+                  key={item.label}
+                  description={item.describe}
+                  onClick={item.onClick}
+                  startContent={<img className='w-4' src={item.icon} />}
+                >
+                  {item.label}
+                </DropdownItem>
+              );
+            })}
+          </DropdownMenu>
+        </Dropdown>
+        <SelectDrawType />
+        <Button size='sm' variant={allowSelect ? 'bordered' : 'light'} onClick={() => setAllowSelect((pre) => !pre)}>
+          <SelectIcon />
         </Button>
-        <Button onClick={resetSchema} size='sm' className='ml-2'>
-          重置
-        </Button>
-        {drawingSchemaId && (
-          <Button onClick={deleteSchema} size='sm' className='ml-2'>
-            删除
-          </Button>
-        )}
-        <ButtonGroup className='ml-2' variant='faded'>
-          <Button onClick={useTemplate} size='sm'>
-            使用模版
-          </Button>
-          <Button onClick={exportAssets} size='sm'>
-            导出资源
-          </Button>
-          <Button onClick={importConfig} size='sm'>
-            导入配置
-          </Button>
-        </ButtonGroup>
-        <Button
-          onClick={() => {
-            onPreview();
-          }}
-          size='sm'
-          className='ml-2'
-        >
-          实时预览
-        </Button>
-      </div>
-    </div>
+      </CardBody>
+    </Card>
   );
 };
