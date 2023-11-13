@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { describe, it } from 'vitest';
 import { UnitSelector } from './unit';
 
-describe('simple sizer', () => {
+describe('unit selector', () => {
   it('should work', () => {
     render(<UnitSelector value='px' onChange={() => {}} />);
 
