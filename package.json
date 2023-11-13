@@ -14,7 +14,7 @@
     "build-storybook": "storybook build",
     "test:unit": "vitest run",
     "test:e2e": "test-storybook",
-    "prettier": "prettier --write .",
+    "prettier": "prettier --write . --cache src",
     "prepare": "husky install"
   },
   "dependencies": {
