@@ -2,7 +2,16 @@ import React, { Key, ReactElement, useMemo, useState } from 'react';
 import { SelectIcon } from '../../assets/icons/SelectIcon';
 import { styles } from './index.tv';
 // import { HandIcon } from "../../assets/icons/HandIcon";
-import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Navbar,
+  NavbarContent,
+  NavbarItem,
+} from '@nextui-org/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { DownIcon } from '../../assets/icons/DownIcon';
 import { FrameIcon } from '../../assets/icons/FrameIcon';
@@ -18,6 +27,7 @@ import {
 } from '../../store/schema';
 import { allowSelectAtom, selectedDrawTypeAtom } from '../../store/toolbar';
 import { SchemaType } from '../../types/schema';
+import { SelectDrawType } from './selectDrawType';
 
 const { wrap } = styles();
 
@@ -130,41 +140,17 @@ export const Toolsbar: React.FC = () => {
   };
 
   return (
-    <div className={wrap()}>
-      <Buttons slots={slots} />
-      <div className='ml-auto'>
-        <Button onClick={createSchema} variant='shadow' color='secondary' size='sm' className='ml-auto'>
-          添加{selectedDrawType}
-        </Button>
-        <Button onClick={resetSchema} size='sm' className='ml-2'>
-          重置
-        </Button>
-        {drawingSchemaId && (
-          <Button onClick={deleteSchema} size='sm' className='ml-2'>
-            删除
-          </Button>
-        )}
-        <ButtonGroup className='ml-2' variant='faded'>
-          <Button onClick={useTemplate} size='sm'>
-            使用模版
-          </Button>
-          <Button onClick={exportAssets} size='sm'>
-            导出资源
-          </Button>
-          <Button onClick={importConfig} size='sm'>
-            导入配置
-          </Button>
-        </ButtonGroup>
-        <Button
-          onClick={() => {
-            onPreview();
-          }}
-          size='sm'
-          className='ml-2'
-        >
-          实时预览
-        </Button>
-      </div>
-    </div>
+    <Navbar>
+      <NavbarContent className='hidden sm:flex gap-4' justify='center'>
+        <NavbarItem>
+          <SelectDrawType />
+        </NavbarItem>
+      </NavbarContent>
+      <NavbarContent justify='end'>
+        <NavbarItem className='hidden lg:flex'>
+          <span>help</span>
+        </NavbarItem>
+      </NavbarContent>
+    </Navbar>
   );
 };
