@@ -13,6 +13,7 @@ import {
 import { useAtom, useSetAtom } from 'jotai';
 import React from 'react';
 import { SelectIcon } from '../../assets/icons/SelectIcon';
+import { useDebug } from '../../hook/useDebug';
 import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, resetAtom, useTemplateAtom } from '../../store/schema';
 import { allowSelectAtom } from '../../store/toolbar';
 import { SelectDrawType } from './selectDrawType';
@@ -24,6 +25,7 @@ export const Toolsbar: React.FC = () => {
   const importConfig = useSetAtom(importConfigAtom);
   const deleteSchema = useSetAtom(deleteSchameAtom);
   const [allowSelect, setAllowSelect] = useAtom(allowSelectAtom);
+  const debug = useDebug();
 
   const onPreview = async () => {
     if (isWeb) {
@@ -75,6 +77,20 @@ export const Toolsbar: React.FC = () => {
       describe: '清空所有状态数据',
       icon: '/icon/reset.svg',
       onClick: resetSchema,
+    },
+    {
+      label: debug ? '关闭调试' : '启动调试模式',
+      describe: debug ? '返回程序正常使用状态' : '查看程序各个状态数据，便于问题排查',
+      icon: debug ? '/icon/close-debug.svg' : '/icon/debug.svg',
+      onClick: () => {
+        const url = new URL(location.href);
+        if (debug) {
+          url.searchParams.delete('debug');
+        } else {
+          url.searchParams.set('debug', 'debug');
+        }
+        location.href = url.toString();
+      },
     },
   ];
 
