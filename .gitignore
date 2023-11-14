@@ -29,3 +29,7 @@ coverage
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# e2e
+e2e/website.zip
+e2e/website
