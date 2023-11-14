@@ -11,11 +11,11 @@ fn export_assets(html: &str, schemas: &str) {
         .write_all(html.as_bytes())
         .expect("Unable to write to index.html");
 
-    // 创建或打开 fps.json 文件
-    let mut json_file = File::create("fps.json").expect("Unable to create fps.json");
+    // 创建或打开 designLite.json 文件
+    let mut json_file = File::create("designLite.json").expect("Unable to create designLite.json");
     json_file
         .write_all(schemas.as_bytes())
-        .expect("Unable to write to fps.json");
+        .expect("Unable to write to designLite.json");
 
     // 获取用户的下载目录
     if let Some(download_dir) = dirs::download_dir() {
@@ -39,7 +39,7 @@ fn export_assets(html: &str, schemas: &str) {
             .expect("Unable to write to zip archive");
 
         archive
-            .start_file("fps.json", options)
+            .start_file("designLite.json", options)
             .expect("Unable to start file in archive");
         archive
             .write_all(schemas.as_bytes())

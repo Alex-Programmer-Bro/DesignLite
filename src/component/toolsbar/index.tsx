@@ -54,7 +54,7 @@ export const Toolsbar: React.FC = () => {
       label: '导入配置',
       describe: (
         <>
-          导入 <Code size='sm'>fps.json</Code> 配置文件，继续绘制
+          导入 <Code size='sm'>designeLite.json</Code> 配置文件，继续绘制
         </>
       ),
       icon: '/icon/import.svg',
