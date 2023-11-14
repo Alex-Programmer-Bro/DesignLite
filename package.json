@@ -13,7 +13,7 @@
     "tauri": "tauri",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test:unit": "vitest run",
+    "test:unit": "vitest run --coverage",
     "test:e2e": "playwright test",
     "prettier": "prettier --write . --cache src",
     "prepare": "husky install"
@@ -57,6 +57,7 @@
     "@types/react-dom": "^18.2.7",
     "@types/uuid": "^9.0.6",
     "@vitejs/plugin-react": "^4.0.3",
+    "@vitest/coverage-v8": "^0.34.6",
     "autoprefixer": "^10.4.16",
     "husky": "^8.0.3",
     "jotai-devtools": "^0.7.0",
