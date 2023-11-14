@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::PathBuf;
+use std::process::Command;
 
 #[tauri::command]
 fn export_assets(html: &str, schemas: &str) {
@@ -51,6 +52,23 @@ fn export_assets(html: &str, schemas: &str) {
             "website.zip has been generated in the download directory: {:?}",
             target_path
         );
+
+        if cfg!(target_os = "windows") {
+            Command::new("explorer")
+                .arg(download_dir.to_str().unwrap())
+                .spawn()
+                .expect("Failed to open explorer");
+        } else if cfg!(target_os = "macos") {
+            Command::new("open")
+                .arg(download_dir.to_str().unwrap())
+                .spawn()
+                .expect("Failed to open Finder");
+        } else if cfg!(target_os = "linux") {
+            Command::new("xdg-open")
+                .arg(download_dir.to_str().unwrap())
+                .spawn()
+                .expect("Failed to open file manager");
+        }
     } else {
         eprintln!("Unable to determine the download directory");
     }
