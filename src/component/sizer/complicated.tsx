@@ -46,7 +46,14 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
     <div className='flex flex-col items-center'>
       <div className='w-full flex justify-between'>
         <span className='text-[12px] font-medium'>{lock ? '' : props.label}</span>
-        <Switch className='mb-1' isSelected={lock} onChange={onLock} size='sm' color='secondary'></Switch>
+        <Switch
+          aria-label='complicated-lock'
+          className='mb-1'
+          isSelected={lock}
+          onChange={onLock}
+          size='sm'
+          color='secondary'
+        ></Switch>
       </div>
       {lock ? (
         <SimpleSizer {...props} value={isComplicatedValue(props.value) ? top : props.value} labelPlacement='outside' />

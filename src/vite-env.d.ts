@@ -6,3 +6,5 @@ interface Window {
   isWeb: boolean;
   __TAURI__: Object;
 }
+
+declare type UnitType = 'px' | '%' | 'auto';

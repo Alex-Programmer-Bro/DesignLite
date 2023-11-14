@@ -21,7 +21,7 @@ export const SimpleSizer = ({
 
   const disabled = unit === 'auto';
 
-  const onUnitChange = (unit: string) => {
+  const onUnitChange = (unit: UnitType) => {
     if (unit === 'auto') {
       cacheValue.current = value;
       SourceOnChange(unit);
@@ -44,6 +44,7 @@ export const SimpleSizer = ({
   return (
     <div className='flex items-center'>
       <Input
+        aria-label='simple-sizer'
         disabled={disabled}
         size='sm'
         labelPlacement={labelPlacement}

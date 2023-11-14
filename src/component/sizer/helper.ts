@@ -14,7 +14,7 @@ export const resolveLock = (value: Value) => {
   }
 };
 
-export const resolveUnit = (value: Value) => {
+export const resolveUnit = (value: Value): UnitType => {
   if (typeof value === 'number' || value.indexOf('px') !== -1) {
     return 'px';
   } else if (value.indexOf('auto') !== -1) {
