@@ -12,7 +12,7 @@ export const UnitSelector: FC<UnitSelectorProps> = ({ value, onChange }) => {
   return (
     <select
       role='unit-selector'
-      className='outline-none bg-transparent'
+      className='outline-none bg-transparent text-[12px]'
       defaultValue={value}
       onChange={(e) => {
         onChange(e.target.value);
