@@ -22,7 +22,7 @@ dist-ssr
 *.sw?
 
 # Desktop
-src-tauri/fps.json
+src-tauri/designLite.json
 src-tauri/index.html
 /test-results/
 /playwright-report/

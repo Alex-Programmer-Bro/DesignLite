@@ -233,7 +233,7 @@ export const exportAssetsAtom = atom(null, async (get) => {
     const { default: JSZip } = await import('jszip');
     const zip = new JSZip();
     zip.file('index.html', html);
-    zip.file('fps.json', JSON.stringify(schemas));
+    zip.file('desingeLite.json', JSON.stringify(schemas));
     const content = await zip.generateAsync({ type: 'blob' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(content);

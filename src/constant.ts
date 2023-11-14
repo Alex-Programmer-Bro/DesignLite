@@ -1,3 +1,3 @@
-export const SchemaCacheKey = 'FPS_SCHEMAS';
+export const SchemaCacheKey = 'DESIGN_LITE_SCHEMAS';
 
-export const DrawingSchemaKey = 'FPS_DRAWING_SCHEMA';
+export const DrawingSchemaKey = 'DESIGN_LITE_DRAWING_SCHEMA';
