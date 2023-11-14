@@ -25,6 +25,7 @@ dist-ssr
 src-tauri/designLite.json
 src-tauri/index.html
 /test-results/
+coverage
 /playwright-report/
 /blob-report/
 /playwright/.cache/
