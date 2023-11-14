@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tauri dev",
     "dev:web": "vite",
-    "dev:e2e": "playwright open",
+    "dev:e2e": "playwright test --ui",
     "build": "tauri build",
     "build:web": "tsc && vite build",
     "preview": "vite preview",

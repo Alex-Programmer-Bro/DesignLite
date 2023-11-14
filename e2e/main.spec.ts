@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-test('test', async ({ page }) => {
+test('main progress', async ({ page }) => {
   await page.goto('http://localhost:1420/');
   await page.getByRole('button', { name: '操作' }).click();
   await page.getByText('使用模版').click();
