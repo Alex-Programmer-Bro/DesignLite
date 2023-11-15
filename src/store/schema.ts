@@ -5,7 +5,7 @@ import { appStore } from '.';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
-import { baseStyleAtom, ImageURLAtom, textStyleAtom } from './designer';
+import { baseStyleAtom, ImageURLAtom, resetStyleAtom, textStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -289,5 +289,7 @@ appStore.sub(drawingSchemaIdAtom, () => {
       underline: style.textDecoration === 'underline',
       italic: style.fontStyle === 'italic',
     });
+  } else {
+    appStore.set(resetStyleAtom);
   }
 });
