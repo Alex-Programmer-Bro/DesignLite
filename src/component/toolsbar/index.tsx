@@ -12,7 +12,6 @@ import {
 } from '@nextui-org/react';
 import { useAtom, useSetAtom } from 'jotai';
 import React from 'react';
-import { SelectIcon } from '../../assets/icons/SelectIcon';
 import { useDebug } from '../../hook/useDebug';
 import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, resetAtom, useTemplateAtom } from '../../store/schema';
 import { allowSelectAtom } from '../../store/toolbar';
@@ -122,7 +121,7 @@ export const Toolsbar: React.FC = () => {
         </Dropdown>
         <SelectDrawType />
         <Button size='sm' variant={allowSelect ? 'bordered' : 'light'} onClick={() => setAllowSelect((pre) => !pre)}>
-          <SelectIcon />
+          <img src='/icon/select.svg' alt='' />
         </Button>
       </CardBody>
     </Card>
