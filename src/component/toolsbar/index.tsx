@@ -10,9 +10,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
+import hotkeys from 'hotkeys-js';
 import { useAtom, useSetAtom } from 'jotai';
 import React from 'react';
 import { useDebug } from '../../hook/useDebug';
+import { resetStyleAtom } from '../../store/designer';
 import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, resetAtom, useTemplateAtom } from '../../store/schema';
 import { allowSelectAtom } from '../../store/toolbar';
 import { SelectDrawType } from './selectDrawType';
@@ -25,6 +27,7 @@ export const Toolsbar: React.FC = () => {
   const deleteSchema = useSetAtom(deleteSchameAtom);
   const [allowSelect, setAllowSelect] = useAtom(allowSelectAtom);
   const debug = useDebug();
+  const resetStyle = useSetAtom(resetStyleAtom);
 
   const onPreview = async () => {
     if (isWeb) {
@@ -35,6 +38,13 @@ export const Toolsbar: React.FC = () => {
       await invoke('preview', { url: preview.toString() });
     }
   };
+
+  hotkeys('Backspace', function (event, _) {
+    event.preventDefault();
+    if (!allowSelect) return;
+    deleteSchema();
+    resetStyle();
+  });
 
   const SelectOptions = [
     {
