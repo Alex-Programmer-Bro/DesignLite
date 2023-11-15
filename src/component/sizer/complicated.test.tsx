@@ -28,9 +28,55 @@ describe('complicated sizer', () => {
       lock.click();
     });
 
-    const inputs = screen.getAllByLabelText('simple-sizer') as HTMLInputElement[];
+    let inputs = screen.getAllByLabelText('simple-sizer') as HTMLInputElement[];
     expect(inputs.length).toEqual(4);
     expect(lock.checked).toBeFalsy();
     expect(inputs.map((item) => item.value)).toEqual(['10', '10', '10', '10']);
+  });
+
+  it('repeat lock action', () => {
+    const App = () => {
+      const [value, setValue] = useState('10px');
+      return <ComplicatedSizer label='width' value={value} onChange={setValue} />;
+    };
+    const renderResult = render(<App />);
+    const lockContainer = renderResult.getByLabelText('complicated-lock') as HTMLSpanElement;
+    const lock = lockContainer.querySelector('input[type="checkbox"]') as HTMLInputElement;
+
+    let inputs = screen.getAllByLabelText('simple-sizer') as HTMLInputElement[];
+    expect(inputs.length).toEqual(1);
+    expect(inputs[0].value).toEqual('10');
+
+    // unlock
+    act(() => {
+      lock.click();
+    });
+    inputs = screen.getAllByLabelText('simple-sizer') as HTMLInputElement[];
+    expect(inputs.length).toEqual(4);
+    expect(inputs.map((item) => item.value)).toEqual(['10', '10', '10', '10']);
+
+    // lock
+    act(() => {
+      lock.click();
+    });
+    inputs = screen.getAllByLabelText('simple-sizer') as HTMLInputElement[];
+    expect(inputs.length).toEqual(1);
+    expect(inputs[0].value).toEqual('10');
+
+    // unlock
+    act(() => {
+      lock.click();
+    });
+    inputs = screen.getAllByLabelText('simple-sizer') as HTMLInputElement[];
+    expect(inputs.length).toEqual(4);
+    expect(inputs.map((item) => item.value)).toEqual(['10', '10', '10', '10']);
+
+    // lock
+    act(() => {
+      lock.click();
+    });
+    inputs = screen.getAllByLabelText('simple-sizer') as HTMLInputElement[];
+    expect(inputs.length).toEqual(1);
+    expect(inputs[0].value).toEqual('10');
   });
 });

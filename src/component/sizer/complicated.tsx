@@ -1,5 +1,5 @@
 import { Switch } from '@nextui-org/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { isComplicatedValue, resolveLock, resolveValue } from './helper';
 import { SimpleSizer } from './simple';
 import { SizerProps } from './type';
@@ -31,16 +31,13 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
         bottom: props.value,
         left: props.value,
       });
+      props.onChange(`${values.top} ${values.right} ${values.bottom}  ${values.left}`);
+    } else {
+      props.onChange(values.top);
     }
 
     setLock(lock);
   };
-
-  useEffect(() => {
-    if (lock === false) {
-      props.onChange(`${values.top} ${values.right} ${values.bottom}  ${values.left}`);
-    }
-  }, [lock, values]);
 
   return (
     <div className='flex flex-col items-center'>
