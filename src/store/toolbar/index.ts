@@ -1,3 +1,4 @@
+import hotkeys from 'hotkeys-js';
 import { atom } from 'jotai';
 import { appStore } from '..';
 import { SchemaType } from '../../types/schema';
@@ -13,12 +14,10 @@ appStore.sub(allowSelectAtom, () => {
   const allowSelect = appStore.get(allowSelectAtom);
   if (!allowSelect) {
     appStore.set(drawingSchemaIdAtom, '');
-  }
-});
-
-window.addEventListener('keydown', (event: KeyboardEvent) => {
-  if (event.code !== 'Backspace' || !appStore.get(allowSelectAtom)) return;
-  if (appStore.get(drawingSchemaIdAtom)) {
-    appStore.set(deleteSchameAtom);
+  } else {
+    hotkeys('Backspace', function (event, _) {
+      event.preventDefault();
+      appStore.set(deleteSchameAtom);
+    });
   }
 });
