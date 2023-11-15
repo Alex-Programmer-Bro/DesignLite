@@ -1,4 +1,4 @@
-import { CSSInterface } from "./meta";
+import { CSSInterface } from './meta';
 
 export enum SchemaType {
   Block = '块',
