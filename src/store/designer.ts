@@ -1,13 +1,15 @@
 import { atom } from 'jotai';
 import { RESET, atomWithReset } from 'jotai/utils';
 import { State as TextEditorState } from '../component/textEditor';
+import { CSSInterface } from '../types/meta';
 
-export const baseStyleAtom = atomWithReset({
+export const baseStyleAtom = atomWithReset<CSSInterface>({
   display: 'inline-block',
   width: '0px',
   height: '0px',
   margin: '0px',
   padding: '0px',
+  borderRadius: '0px',
   backgroundColor: '#ffffff',
 });
 baseStyleAtom.debugLabel = '元素基础样式';

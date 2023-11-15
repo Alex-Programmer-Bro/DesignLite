@@ -4,6 +4,7 @@ import { v1 } from 'uuid';
 import { appStore } from '.';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
+import { TextAlign } from '../types/meta';
 import { Schema, SchemaType } from '../types/schema';
 import { baseStyleAtom, ImageURLAtom, resetStyleAtom, textStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
@@ -108,12 +109,12 @@ export const createSchemaAtom = atom(null, (get, set) => {
     newSchema.style = {
       ...newSchema.style,
       ...baseStyle,
-      lineHeight: 1,
+      lineHeight: '1',
       outline: '2px solid transparent',
       minWidth: '30px',
       fontSize: textStyle.size,
       color: textStyle.color,
-      fontWeight: textStyle.bold ? 800 : 400,
+      fontWeight: textStyle.bold ? '800' : '400',
       textDecoration: textStyle.underline ? 'underline' : 'auto',
       fontStyle: textStyle.italic ? 'italic' : 'inherit',
       textAlign: textStyle.align,
@@ -280,13 +281,14 @@ appStore.sub(drawingSchemaIdAtom, () => {
       padding: `${style.padding || '0px'}`,
       backgroundColor: style.backgroundColor || '#ffffff',
       display: `${style.display || 'inline-block'}`,
+      borderRadius: `${style.borderRadius || '0px'}`,
     });
     appStore.set(textStyleAtom, {
       content: content || '',
       size: `${style.fontSize || '14px'}` || '14px',
       color: style.color || '#000000',
-      align: style.textAlign || 'left',
-      bold: style.fontWeight === 800,
+      align: (style.textAlign || 'left') as TextAlign,
+      bold: Number(style.fontWeight) === 800,
       underline: style.textDecoration === 'underline',
       italic: style.fontStyle === 'italic',
     });
