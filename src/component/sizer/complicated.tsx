@@ -23,7 +23,6 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
 
   const onLock = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lock = (e.target as HTMLInputElement).checked;
-
     if (lock === false) {
       setValues({
         top: props.value,
@@ -31,12 +30,16 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
         bottom: props.value,
         left: props.value,
       });
-      props.onChange(`${values.top} ${values.right} ${values.bottom}  ${values.left}`);
     } else {
       props.onChange(values.top);
     }
-
     setLock(lock);
+  };
+
+  const onValueChange = (key: keyof typeof values, value: string) => {
+    const newValues = { ...values, [key]: value };
+    props.onChange(`${newValues.top} ${newValues.right} ${newValues.bottom}  ${newValues.left}`);
+    setValues(newValues);
   };
 
   return (
@@ -56,30 +59,20 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
         <SimpleSizer {...props} value={isComplicatedValue(props.value) ? top : props.value} labelPlacement='outside' />
       ) : (
         <div className='grid grid-cols-1 grid-rows-4 gap-2'>
-          <SimpleSizer
-            value={top}
-            onChange={(v) => setValues((pre) => ({ ...pre, top: v }))}
-            label='Top'
-            labelPlacement='inside'
-          />
+          <SimpleSizer value={top} onChange={(v) => onValueChange('top', v)} label='Top' labelPlacement='inside' />
           <SimpleSizer
             value={right}
-            onChange={(v) => setValues((pre) => ({ ...pre, right: v }))}
+            onChange={(v) => onValueChange('right', v)}
             label='Right'
             labelPlacement='inside'
           />
           <SimpleSizer
             value={bottom}
-            onChange={(v) => setValues((pre) => ({ ...pre, bottom: v }))}
+            onChange={(v) => onValueChange('bottom', v)}
             label='Bottom'
             labelPlacement='inside'
           />
-          <SimpleSizer
-            value={left}
-            onChange={(v) => setValues((pre) => ({ ...pre, left: v }))}
-            label='Left'
-            labelPlacement='inside'
-          />
+          <SimpleSizer value={left} onChange={(v) => onValueChange('left', v)} label='Left' labelPlacement='inside' />
         </div>
       )}
     </div>
