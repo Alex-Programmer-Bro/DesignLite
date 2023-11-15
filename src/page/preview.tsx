@@ -4,7 +4,7 @@ import { useTitle } from '../hook/useTitle';
 import { getCodeAtom } from '../store/schema';
 
 export const Preview = () => {
-  useTitle('DesigneLite - Preview');
+  useTitle('DesignLite - Preview');
 
   const styleTag = useRef(document.createElement('style'));
   const htmlTag = useRef(document.createElement('div'));

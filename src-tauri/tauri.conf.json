@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "DesigneLite",
+    "productName": "DesignLite",
     "version": "0.0.2-alpha"
   },
   "tauri": {
@@ -37,7 +37,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "DesignerLite",
+        "title": "DesignLite",
         "width": 1400,
         "height": 800
       }
