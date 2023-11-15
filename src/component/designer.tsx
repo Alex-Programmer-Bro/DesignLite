@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Spinner,
+  Switch,
 } from '@nextui-org/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { Suspense } from 'react';
@@ -38,10 +39,21 @@ export const Designer = () => {
             margin: result.margin,
             padding: result.padding,
             backgroundColor: result.backgroundColor,
+            display: result.display,
           },
         });
         return result;
       });
+  };
+
+  const isSingleLine = baseState.display === 'block';
+
+  const onChangeSingleLine = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      stateAdaptor('display')('block');
+    } else {
+      stateAdaptor('display')('inline-block');
+    }
   };
 
   return (
@@ -51,6 +63,34 @@ export const Designer = () => {
         <Divider />
         <CardBody className='my-4'>
           <div className='grid grid-cols-2 gap-10 mb-10'>
+            <label className='flex items-center'>
+              <span className='text-[12px] font-medium mr-4'>singleLine</span>
+              <Switch
+                aria-label='single-line'
+                size='sm'
+                color='secondary'
+                isSelected={isSingleLine}
+                onChange={onChangeSingleLine}
+              />
+            </label>
+            <label className='flex items-center'>
+              <span className='text-[12px] font-medium mr-4'>background</span>
+              <Popover placement='left-end' className='p-0'>
+                <PopoverTrigger>
+                  <Button size='sm' variant='bordered' style={{ backgroundColor: baseState.backgroundColor }}></Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <Suspense fallback={<Spinner />}>
+                    <ChromePicker
+                      color={baseState.backgroundColor}
+                      onChange={(v) => stateAdaptor('backgroundColor')(v.hex)}
+                    />
+                  </Suspense>
+                </PopoverContent>
+              </Popover>
+            </label>
+          </div>
+          <div className='grid grid-cols-2 gap-10'>
             <SimpleSizer
               labelPlacement='outside'
               label={'width'}
@@ -66,22 +106,7 @@ export const Designer = () => {
             <ComplicatedSizer label={'margin'} value={baseState.margin} onChange={stateAdaptor('margin')} />
             <ComplicatedSizer label={'padding'} value={baseState.padding} onChange={stateAdaptor('padding')} />
           </div>
-          <label className='flex items-center'>
-            <span className='text-[12px] font-medium mr-4'>background</span>
-            <Popover placement='left-end' className='p-0'>
-              <PopoverTrigger>
-                <Button size='sm' variant='bordered' style={{ backgroundColor: baseState.backgroundColor }}></Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <Suspense fallback={<Spinner />}>
-                  <ChromePicker
-                    color={baseState.backgroundColor}
-                    onChange={(v) => stateAdaptor('backgroundColor')(v.hex)}
-                  />
-                </Suspense>
-              </PopoverContent>
-            </Popover>
-          </label>
+
           <Divider className='my-10' />
           {type === SchemaType.Image ? (
             <Input type='url' label='Image URL' value={imageURL} onChange={(e) => setImageURL(e.target.value)} />

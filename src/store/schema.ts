@@ -279,6 +279,7 @@ appStore.sub(drawingSchemaIdAtom, () => {
       margin: `${style.margin || '0px'}`,
       padding: `${style.padding || '0px'}`,
       backgroundColor: style.backgroundColor || '#ffffff',
+      display: `${style.display || 'inline-block'}`,
     });
     appStore.set(textStyleAtom, {
       content: content || '',

@@ -2,6 +2,7 @@ import { atom } from 'jotai';
 import { State as TextEditorState } from '../component/textEditor';
 
 export const baseStyleAtom = atom({
+  display: 'inline-block',
   width: '0px',
   height: '0px',
   margin: '0px',
@@ -26,6 +27,7 @@ ImageURLAtom.debugLabel = 'Designer 上的图片地址';
 
 export const resetStyleAtom = atom(null, (_, set) => {
   set(baseStyleAtom, {
+    display: 'inline-block',
     width: '0px',
     height: '0px',
     margin: '0px',
