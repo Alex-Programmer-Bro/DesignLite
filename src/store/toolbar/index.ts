@@ -17,7 +17,8 @@ appStore.sub(allowSelectAtom, () => {
 });
 
 window.addEventListener('keydown', (event: KeyboardEvent) => {
-  if (event.code === 'Backspace' && appStore.get(allowSelectAtom)) {
-    appStore.get(drawingSchemaIdAtom) && appStore.set(deleteSchameAtom);
+  if (event.code !== 'Backspace' || !appStore.get(allowSelectAtom)) return;
+  if (appStore.get(drawingSchemaIdAtom)) {
+    appStore.set(deleteSchameAtom);
   }
 });
