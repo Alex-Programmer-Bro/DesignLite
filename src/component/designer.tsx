@@ -45,11 +45,7 @@ export const Designer = () => {
   };
 
   return (
-    <div
-      className='w-[400px] fixed top-0 right-0 m-4'
-      onKeyDown={(e) => e.stopPropagation()}
-      key={`designer:${drawingSchemaId}`}
-    >
+    <div className='w-[400px] fixed top-0 right-0 m-4' key={`designer:${drawingSchemaId}`}>
       <Card className='w-full max-h-[90vh] overflow-auto'>
         <CardHeader className='flex gap-3'>Designer</CardHeader>
         <Divider />
