@@ -18,7 +18,7 @@ const transferCSS = (style: React.CSSProperties) => {
 };
 export const resolveCSS = (schema: Schema) => {
   return `.${schema.id} {
-    ${transferCSS(schema.style)}
+    ${transferCSS(schema.style as React.CSSProperties)}
   }`;
 };
 
