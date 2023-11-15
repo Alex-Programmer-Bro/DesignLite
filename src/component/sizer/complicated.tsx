@@ -36,7 +36,7 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
     setLock(lock);
   };
 
-  const onValueChange = (key: 'top' | 'right' | 'bottom' | 'left', value: string) => {
+  const onValueChange = (key: keyof typeof values, value: string) => {
     const newValues = { ...values, [key]: value };
     props.onChange(`${newValues.top} ${newValues.right} ${newValues.bottom}  ${newValues.left}`);
     setValues(newValues);
