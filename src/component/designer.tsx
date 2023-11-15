@@ -31,18 +31,9 @@ export const Designer = () => {
   const stateAdaptor = (key: string) => {
     return (v: string) =>
       setBaseState((pre) => {
-        const result = { ...pre, [key]: v };
-        setDrawingSchema({
-          style: {
-            width: result.width,
-            height: result.height,
-            margin: result.margin,
-            padding: result.padding,
-            backgroundColor: result.backgroundColor,
-            display: result.display,
-          },
-        });
-        return result;
+        const style = { ...pre, [key]: v };
+        setDrawingSchema({ style });
+        return style;
       });
   };
 
