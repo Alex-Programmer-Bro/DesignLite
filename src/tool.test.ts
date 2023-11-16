@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { resolveCSS, resolveHTML } from './tool';
+import { describe, expect, it, vi } from 'vitest';
+import { resolveCSS, resolveHTML, uploadAndReadJSON } from './tool';
 import { Schema, SchemaType } from './types/schema';
 
 describe('resolve schema', () => {
@@ -48,23 +48,34 @@ export const filesProcess = (fileList: FileList) => {
 
 describe('uploadAndReadJSON', () => {
   it('should parse valid JSON file', async () => {
-    const file = new File(['foo'], 'foo.txt', {
-      type: 'text/plain',
+    const fakeJSONContent = '{"key": "value"}';
+    const fakeFile = new File([fakeJSONContent], 'test.json', {
+      type: 'application/json',
     });
-    const file2 = new File(['this is test file'], 'test.txt', {
-      type: 'text/plain',
+
+    const fakeFileList = {
+      0: fakeFile,
+      length: 1,
+      item: (index: number) => (index === 0 ? fakeFile : null),
+      [Symbol.iterator]: function* () {
+        yield this[0];
+      },
+    } as FileList;
+
+    const originalAppendChild = document.body.appendChild;
+    document.body.appendChild = vi.fn(<T extends Node>(node: T) => {
+      if (node instanceof HTMLInputElement && node.type === 'file') {
+        Object.defineProperty(node, 'files', {
+          value: fakeFileList,
+          writable: true,
+        });
+        setTimeout(() => node.dispatchEvent(new Event('change')));
+      }
+      return originalAppendChild.call(document.body, node) as T;
     });
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('name', 'file-upload');
-    input.multiple = true;
-    let mockFileList = Object.create(input.files!) as FileList;
-    mockFileList[0] = file;
-    mockFileList[1] = file2;
-    Object.defineProperty(mockFileList, 'length', { value: 2 });
-    console.log('The string representation the object: ' + Object.prototype.toString.call(mockFileList));
-    filesProcess(mockFileList);
-    expect(1).toBe(1);
+
+    await expect(uploadAndReadJSON()).resolves.toEqual({ key: 'value' });
+    document.body.appendChild = originalAppendChild;
   });
   it('should throw error for invalid JSON file', async () => {});
   it('should throw error if no file is selected', async () => {});
