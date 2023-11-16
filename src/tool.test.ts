@@ -77,6 +77,62 @@ describe('uploadAndReadJSON', () => {
     await expect(uploadAndReadJSON()).resolves.toEqual({ key: 'value' });
     document.body.appendChild = originalAppendChild;
   });
-  it('should throw error for invalid JSON file', async () => {});
-  it('should throw error if no file is selected', async () => {});
+
+  it('should throw error for invalid JSON file', async () => {
+    const fakeJSONContent = '{invalid}';
+    const fakeFile = new File([fakeJSONContent], 'test.json', {
+      type: 'application/json',
+    });
+
+    const fakeFileList = {
+      0: fakeFile,
+      length: 1,
+      item: (index: number) => (index === 0 ? fakeFile : null),
+      [Symbol.iterator]: function* () {
+        yield this[0];
+      },
+    } as FileList;
+
+    const originalAppendChild = document.body.appendChild;
+    document.body.appendChild = vi.fn(<T extends Node>(node: T) => {
+      if (node instanceof HTMLInputElement && node.type === 'file') {
+        Object.defineProperty(node, 'files', {
+          value: fakeFileList,
+          writable: true,
+        });
+        setTimeout(() => node.dispatchEvent(new Event('change')));
+      }
+      return originalAppendChild.call(document.body, node) as T;
+    });
+
+    await expect(uploadAndReadJSON()).rejects.toMatchInlineSnapshot(
+      "[SyntaxError: Expected property name or '}' in JSON at position 1]",
+    );
+    document.body.appendChild = originalAppendChild;
+  });
+
+  it('should throw error if no file is selected', async () => {
+    const fakeFileList = {
+      length: 0,
+      item: () => null,
+      [Symbol.iterator]: function* () {
+        yield this[0];
+      },
+    } as FileList;
+
+    const originalAppendChild = document.body.appendChild;
+    document.body.appendChild = vi.fn(<T extends Node>(node: T) => {
+      if (node instanceof HTMLInputElement && node.type === 'file') {
+        Object.defineProperty(node, 'files', {
+          value: fakeFileList,
+          writable: true,
+        });
+        setTimeout(() => node.dispatchEvent(new Event('change')));
+      }
+      return originalAppendChild.call(document.body, node) as T;
+    });
+
+    await expect(uploadAndReadJSON()).rejects.toMatchInlineSnapshot('[Error: No file selected!]');
+    document.body.appendChild = originalAppendChild;
+  });
 });

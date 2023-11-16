@@ -49,11 +49,6 @@ export const uploadAndReadJSON = (): Promise<Schema[]> => {
           inputElement.remove();
         };
 
-        reader.onerror = (errorEvent) => {
-          reject(errorEvent.target?.error);
-          inputElement.remove();
-        };
-
         reader.readAsText(file);
       } else {
         reject(new Error('No file selected!'));
