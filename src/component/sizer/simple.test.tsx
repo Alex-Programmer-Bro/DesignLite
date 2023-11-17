@@ -8,6 +8,8 @@ describe('simple sizer', () => {
     render(<SimpleSizer labelPlacement='inside' label='width' value='10px' onChange={(v) => v} />);
     const input = screen.getByLabelText('simple-sizer') as HTMLInputElement;
     expect(input.value).toEqual('10');
+    fireEvent.change(input, { target: { value: '23' } });
+    expect(input.value).toEqual('23');
   });
 
   it('change unit of auto', () => {
