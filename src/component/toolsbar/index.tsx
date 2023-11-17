@@ -1,15 +1,4 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Code,
-  Divider,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from '@nextui-org/react';
+import { Button, Card, CardBody, Code, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 import hotkeys from 'hotkeys-js';
 import { useAtom, useSetAtom } from 'jotai';
 import React from 'react';
@@ -104,14 +93,12 @@ export const Toolsbar: React.FC = () => {
   ];
 
   return (
-    <Card className='absolute z-10 left-4 top-4 w-[360px]'>
-      <CardHeader className='flex gap-3'>Toolbar</CardHeader>
-      <Divider />
-      <CardBody className='grid grid-cols-[1fr_1fr_80px] gap-3'>
+    <Card className='fixed z-10 left-1/2 top-4 -translate-x-1/2'>
+      <CardBody className='grid grid-cols-3 gap-2'>
         <Dropdown placement='bottom-start'>
           <DropdownTrigger>
-            <Button size='sm' variant='shadow' color='primary'>
-              操作
+            <Button size='sm' color='primary'>
+              <img src='/icon/hamburger.svg' alt='' height={24} width={24} />
             </Button>
           </DropdownTrigger>
           <DropdownMenu aria-label='ACME features'>
@@ -130,7 +117,7 @@ export const Toolsbar: React.FC = () => {
           </DropdownMenu>
         </Dropdown>
         <SelectDrawType />
-        <Button size='sm' variant={allowSelect ? 'bordered' : 'light'} onClick={() => setAllowSelect((pre) => !pre)}>
+        <Button size='sm' variant={allowSelect ? 'solid' : 'light'} onClick={() => setAllowSelect((pre) => !pre)}>
           <img src='/icon/select.svg' alt='' />
         </Button>
       </CardBody>

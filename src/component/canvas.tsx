@@ -18,7 +18,7 @@ export const Canvas = () => {
   };
 
   return (
-    <div className='overflow-auto relative flex-1' onClick={handleClick}>
+    <div className='overflow-auto relative w-screen pl-[70px] h-screen' onClick={handleClick}>
       {schemas.map((item) => (
         <SchemaRender key={item.id} {...item} />
       ))}
