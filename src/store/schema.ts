@@ -2,7 +2,7 @@ import { atom, Setter } from 'jotai';
 import { atomWithStorage, RESET } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { appStore } from '.';
-import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
+import { SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { TextAlign } from '../types/meta';
 import { Schema, SchemaType } from '../types/schema';
@@ -13,7 +13,7 @@ import { selectedDrawTypeAtom } from './toolbar';
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
 schemasAtom.debugLabel = '画布上所有的 Schema';
 
-export const drawingSchemaIdAtom = atomWithStorage<string>(DrawingSchemaKey, '');
+export const drawingSchemaIdAtom = atom<string>('');
 drawingSchemaIdAtom.debugLabel = '选中了哪个 Schema Id';
 
 export const getDrawingStyleAtom = atom((get) => {
