@@ -14,7 +14,7 @@ jobs:
       - name: Assign Reviewer
         run: |
           PR_AUTHOR=$(jq -r .pull_request.user.login "$GITHUB_EVENT_PATH")
-          REVIEWERS=$(jq -r ".reviewers.$PR_AUTHOR | join(\",\")" .github/reviewers.yml)
+          REVIEWERS=$(jq -r ".reviewers[\"$PR_AUTHOR\"] | join(\",\")" .github/reviewers.json)
           if [ -n "$REVIEWERS" ]; then
             gh pr review "$PR_NUMBER" --reviewers "$REVIEWERS"
           fi
