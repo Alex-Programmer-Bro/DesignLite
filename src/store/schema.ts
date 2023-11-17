@@ -1,12 +1,13 @@
 import { atom, Setter } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage, RESET } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { appStore } from '.';
 import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { TextAlign } from '../types/meta';
 import { Schema, SchemaType } from '../types/schema';
-import { baseStyleAtom, extraStyleAtom, ImageURLAtom, resetStyleAtom } from './designer';
+import { extraStyleAtom, ImageURLAtom } from './designer';
+import { designerStyleAtom } from './share';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -96,7 +97,7 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
   const extraStyle = get(extraStyleAtom);
-  const baseStyle = get(baseStyleAtom);
+  const baseStyle = get(designerStyleAtom);
   const imageURL = get(ImageURLAtom);
 
   const newSchema: Schema = {
@@ -128,11 +129,6 @@ export const createSchemaAtom = atom(null, (get, set) => {
   set(schemasAtom, (pre) => [...pre, newSchema]);
 });
 
-export const resetAtom = atom(null, (_, set) => {
-  set(schemasAtom, []);
-  set(drawingSchemaIdAtom, '');
-});
-
 export const useTemplateAtom = atom(null, (_, set) => {
   set(schemasAtom, [
     {
@@ -161,7 +157,7 @@ export const useTemplateAtom = atom(null, (_, set) => {
         padding: '20px',
         width: '800px',
         height: '300px',
-        background: '#ddd',
+        backgroundColor: '#ddd',
         borderRadius: '10px',
         boxShadow: '10px 10px 10px #ccc',
       },
@@ -274,15 +270,6 @@ appStore.sub(drawingSchemaIdAtom, () => {
     if (!target) return;
     const { style, content } = target;
 
-    appStore.set(baseStyleAtom, {
-      width: `${style.width || '0px'}`,
-      height: `${style.height || '0px'}`,
-      margin: `${style.margin || '0px'}`,
-      padding: `${style.padding || '0px'}`,
-      backgroundColor: style.backgroundColor || '#ffffff',
-      display: `${style.display || 'inline-block'}`,
-      borderRadius: `${style.borderRadius || '0px'}`,
-    });
     appStore.set(extraStyleAtom, {
       content: content || '',
       size: `${style.fontSize || '14px'}` || '14px',
@@ -293,6 +280,6 @@ appStore.sub(drawingSchemaIdAtom, () => {
       italic: style.fontStyle === 'italic',
     });
   } else {
-    appStore.set(resetStyleAtom);
+    appStore.set(designerStyleAtom, RESET);
   }
 });

@@ -3,20 +3,17 @@ import hotkeys from 'hotkeys-js';
 import { useAtom, useSetAtom } from 'jotai';
 import React from 'react';
 import { useDebug } from '../../hook/useDebug';
-import { resetStyleAtom } from '../../store/designer';
-import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, resetAtom, useTemplateAtom } from '../../store/schema';
+import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, useTemplateAtom } from '../../store/schema';
 import { allowSelectAtom } from '../../store/toolbar';
 import { SelectDrawType } from './selectDrawType';
 
 export const Toolsbar: React.FC = () => {
-  const resetSchema = useSetAtom(resetAtom);
   const useTemplate = useSetAtom(useTemplateAtom);
   const exportAssets = useSetAtom(exportAssetsAtom);
   const importConfig = useSetAtom(importConfigAtom);
   const deleteSchema = useSetAtom(deleteSchameAtom);
   const [allowSelect, setAllowSelect] = useAtom(allowSelectAtom);
   const debug = useDebug();
-  const resetStyle = useSetAtom(resetStyleAtom);
 
   const onPreview = async () => {
     if (isWeb) {
@@ -32,7 +29,6 @@ export const Toolsbar: React.FC = () => {
     event.preventDefault();
     if (!allowSelect) return;
     deleteSchema();
-    resetStyle();
   });
 
   const SelectOptions = [
@@ -74,7 +70,10 @@ export const Toolsbar: React.FC = () => {
       label: '重置',
       describe: '清空所有状态数据',
       icon: '/icon/reset.svg',
-      onClick: resetSchema,
+      onClick: () => {
+        localStorage.clear();
+        location.reload();
+      },
     },
     {
       label: debug ? '关闭调试' : '启动调试模式',
