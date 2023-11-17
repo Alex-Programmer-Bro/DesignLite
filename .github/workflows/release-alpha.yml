@@ -31,8 +31,8 @@ jobs:
       - name: set Environment Variables
         id: set_env_var
         run: |
-          if [ $REPOSITORY = "main" ]; then IS_PRE='false'; else IS_PRE='true'; fi
-          if [ $REPOSITORY = "main" ]; then POSTFIX=''    ; else POSTFIX='PRE';    fi
+          if [ $REPOSITORY = "release" ]; then IS_PRE='false'; else IS_PRE='true'; fi
+          if [ $REPOSITORY = "release" ]; then POSTFIX=''    ; else POSTFIX='PRE';    fi
           RELEASEBODY=$(awk -v RS='Release [0-9.]+:' '/[0-9.]+/ {print $0}' ChangeLog.h | sed 's/^[[:space:]]*Release [0-9.]\+-[^:]*:[[:space:]]*//' | sed 's/  */ /g' | sed -e 's/^ *//' -e 's/ *$//')
           echo "version: ${PACKAGE_VERSION}"
           echo "IS_PRERELEASE: ${IS_PRE}"
