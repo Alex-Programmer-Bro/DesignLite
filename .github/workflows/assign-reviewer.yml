@@ -1,23 +1,14 @@
-name: Assign Reviewers
+name: Auto Request Review
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, ready_for_review, reopened]
 
 jobs:
-  assign-reviewers:
+  auto-request-review:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Assign Reviewer
-        run: |
-          PR_AUTHOR=$(jq -r .pull_request.user.login "$GITHUB_EVENT_PATH")
-          REVIEWERS=$(jq -r ".reviewers[\"$PR_AUTHOR\"] | join(\",\")" .github/reviewers.json)
-          if [ -n "$REVIEWERS" ]; then
-            gh pr review "$PR_NUMBER" --reviewers "$REVIEWERS"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+      - name: Request review based on files changes and/or groups the author belongs to
+        uses: necojackarc/auto-request-review@v0.12.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
