@@ -39,8 +39,8 @@ describe('complicated sizer', () => {
     fireEvent.change(inputs[2], { target: { value: '3' } });
     expect(inputs.map((item) => item.value)).toEqual(['1', '2', '3', '10']);
 
-    // fireEvent.change(inputs[3], { target: { value: '4' } });
-    // expect(inputs.map((item) => item.value)).toEqual(['1', '2', '3', '4']);
+    fireEvent.change(inputs[3], { target: { value: '4' } });
+    expect(inputs.map((item) => item.value)).toEqual(['1', '2', '3', '4']);
   });
 
   it('unlock', () => {
