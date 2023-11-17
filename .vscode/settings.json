@@ -14,7 +14,7 @@
     "node_modules": true
   },
   "explorer.fileNesting.patterns": {
-    "package.json": "bun.lockb, .gitignore, .prettierignore, .prettierrc, postcss.config.js, tailwind.config.js, vite.config.ts, vitest.config.ts, vercel.json, tsconfig.json, playwright.config.ts",
+    "package.json": "bun.lockb, .gitignore, .prettierignore, .prettierrc, postcss.config.js, tailwind.config.js, vite.config.ts, vitest.config.ts, vercel.json, tsconfig.json, playwright.config.ts, RELEASE.md, README.md",
     "ChangeLog.h": "branch-rule.jpg, changelog.test.ts, resolveLog.sh, ChangeLogHistory.h",
     "*.tsx": "${capture}.test.tsx, ${capture}.stories.tsx",
     "*.ts": "${capture}.test.ts"
