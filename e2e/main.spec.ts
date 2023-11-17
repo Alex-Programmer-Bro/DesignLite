@@ -7,7 +7,7 @@ const __dirname = dirname(__filename);
 
 test('main progress', async ({ page }) => {
   await page.goto('http://localhost:1420/');
-  await page.getByRole('button', { name: '操作' }).click();
+  await page.click('#dl-toolbar-action-btn');
   await page.getByText('使用模版').click();
   const downloadPromise = page.waitForEvent('download');
   await page.getByText('导出资源').click();

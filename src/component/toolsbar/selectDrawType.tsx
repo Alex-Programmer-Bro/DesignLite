@@ -36,10 +36,15 @@ export const SelectDrawType = () => {
 
   return (
     <ButtonGroup variant='shadow' color='secondary' size='sm' className='w-full'>
-      <Button onClick={createSchema} className='text-[12px] flex-1'>
-        插入{selectedDrawType}
+      <Button onClick={createSchema} isIconOnly>
+        <img
+          src={selectedDrawType === SchemaType.Block ? '/icon/shape.svg' : '/icon/photo.svg'}
+          alt=''
+          height={24}
+          width={24}
+        />
       </Button>
-      <Dropdown placement='bottom-start'>
+      <Dropdown>
         <DropdownTrigger>
           <Button isIconOnly>
             <ChevronDownIcon />
