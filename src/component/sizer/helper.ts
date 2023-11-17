@@ -28,7 +28,7 @@ export const resolveValue = (value: Value) => {
     const v = value.toString();
     if (/\s/.test(v)) {
       const resolved = v.split(' ');
-      if (resolved.length === 4) return v;
+      if (resolved.length === 4) return resolved;
       return [resolved[0], resolved[1], resolved[0], resolved[1]];
     } else {
       return parseFloat(value.toString()).toString();

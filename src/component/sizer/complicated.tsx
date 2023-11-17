@@ -1,5 +1,5 @@
 import { Switch } from '@nextui-org/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { isComplicatedValue, resolveLock, resolveValue } from './helper';
 import { SimpleSizer } from './simple';
 import { SizerProps } from './type';
@@ -7,39 +7,53 @@ import { SizerProps } from './type';
 export type ComplicatedProps = Omit<SizerProps, 'mode'>;
 
 export const ComplicatedSizer = (props: ComplicatedProps) => {
+  const resolvedValue = useRef(resolveValue(props.value));
+  const singleValue = useRef(isComplicatedValue(props.value) ? '0px' : props.value);
+  const batchValue = useRef(
+    isComplicatedValue(props.value)
+      ? {
+          top: resolvedValue.current[0],
+          right: resolvedValue.current[1],
+          bottom: resolvedValue.current[2],
+          left: resolvedValue.current[3],
+        }
+      : {
+          top: '0px',
+          right: '0px',
+          bottom: '0px',
+          left: '0px',
+        },
+  );
+
   const [lock, setLock] = useState(resolveLock(props.value));
-  const [values, setValues] = useState(() => {
-    const locked = resolveLock(props.value);
-    const isComplicated = isComplicatedValue(props.value) && !locked;
-    const [top, right, bottom, left] = resolveValue(props.value);
-    return {
-      top: isComplicated ? top : '0px',
-      right: isComplicated ? right : '0px',
-      bottom: isComplicated ? bottom : '0px',
-      left: isComplicated ? left : '0px',
-    };
-  });
-  const { top, right, bottom, left } = values;
+  const [single, setSingle] = useState(singleValue.current);
+  const [batch, setBatch] = useState(batchValue.current);
 
   const onLock = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lock = (e.target as HTMLInputElement).checked;
+
     if (lock === false) {
-      setValues({
-        top: props.value,
-        right: props.value,
-        bottom: props.value,
-        left: props.value,
-      });
+      setBatch(batchValue.current);
+      const values = batchValue.current;
+      props.onChange(`${values.top} ${values.right} ${values.bottom} ${values.left}`);
     } else {
-      props.onChange(values.top);
+      setSingle(singleValue.current);
+      props.onChange(singleValue.current);
     }
+
     setLock(lock);
   };
 
-  const onValueChange = (key: keyof typeof values, value: string) => {
-    const newValues = { ...values, [key]: value };
+  const onSingleChange = (value: string) => {
+    singleValue.current = value;
+    setSingle(value);
+  };
+
+  const onValueChange = (key: keyof typeof batch, value: string) => {
+    const newValues = { ...batch, [key]: value };
+    batchValue.current = { ...newValues };
     props.onChange(`${newValues.top} ${newValues.right} ${newValues.bottom}  ${newValues.left}`);
-    setValues(newValues);
+    setBatch(newValues);
   };
 
   return (
@@ -56,23 +70,33 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
         ></Switch>
       </div>
       {lock ? (
-        <SimpleSizer {...props} value={isComplicatedValue(props.value) ? top : props.value} labelPlacement='outside' />
+        <SimpleSizer {...props} value={single} onChange={onSingleChange} labelPlacement='outside' />
       ) : (
         <div className='grid grid-cols-1 grid-rows-4 gap-2'>
-          <SimpleSizer value={top} onChange={(v) => onValueChange('top', v)} label='Top' labelPlacement='inside' />
           <SimpleSizer
-            value={right}
+            value={batch.top}
+            onChange={(v) => onValueChange('top', v)}
+            label='Top'
+            labelPlacement='inside'
+          />
+          <SimpleSizer
+            value={batch.right}
             onChange={(v) => onValueChange('right', v)}
             label='Right'
             labelPlacement='inside'
           />
           <SimpleSizer
-            value={bottom}
+            value={batch.bottom}
             onChange={(v) => onValueChange('bottom', v)}
             label='Bottom'
             labelPlacement='inside'
           />
-          <SimpleSizer value={left} onChange={(v) => onValueChange('left', v)} label='Left' labelPlacement='inside' />
+          <SimpleSizer
+            value={batch.left}
+            onChange={(v) => onValueChange('left', v)}
+            label='Left'
+            labelPlacement='inside'
+          />
         </div>
       )}
     </div>
