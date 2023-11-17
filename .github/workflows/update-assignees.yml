@@ -1,0 +1,21 @@
+name: Update Assignees
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  update-assignees:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - uses: actions-ecosystem/action-add-assignees@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: ${{ github.actor }}
