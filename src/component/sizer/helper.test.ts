@@ -22,5 +22,5 @@ test('resolveValue', () => {
   expect(resolveValue('10px 20px')).toEqual(['10px', '20px', '10px', '20px']);
   expect(resolveValue('1%')).toEqual('1');
   expect(resolveValue('auto')).toEqual('');
-  expect(resolveValue('10px 10px 10px 10px')).toEqual('10px 10px 10px 10px');
+  expect(resolveValue('10px 10px 10px 10px')).toEqual(['10px', '10px', '10px', '10px']);
 });
