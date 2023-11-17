@@ -13,7 +13,7 @@ import {
 } from '@nextui-org/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { Suspense } from 'react';
-import { ImageURLAtom, baseStyleAtom, textStyleAtom } from '../store/designer';
+import { ImageURLAtom, baseStyleAtom, extraStyleAtom } from '../store/designer';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
 import { SchemaType } from '../types/schema';
 import { ChromePicker } from './colorPicker';
@@ -22,7 +22,7 @@ import { TextEditor } from './textEditor';
 
 export const Designer = () => {
   const [baseState, setBaseState] = useAtom(baseStyleAtom);
-  const [textState, setTextState] = useAtom(textStyleAtom);
+  const [extraState, setExtraState] = useAtom(extraStyleAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
   const type = useAtomValue(getActionSchemaTypeAtom);
   const [imageURL, setImageURL] = useAtom(ImageURLAtom);
@@ -105,7 +105,7 @@ export const Designer = () => {
             <Input type='url' label='Image URL' value={imageURL} onChange={(e) => setImageURL(e.target.value)} />
           ) : (
             <TextEditor
-              state={textState}
+              state={extraState}
               onChangeBefore={(state) => {
                 setDrawingSchema({
                   content: state.content,
@@ -119,7 +119,7 @@ export const Designer = () => {
                   },
                 });
               }}
-              onChange={setTextState}
+              onChange={setExtraState}
             />
           )}
         </CardBody>

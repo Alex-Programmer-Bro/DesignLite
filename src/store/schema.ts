@@ -6,7 +6,7 @@ import { DrawingSchemaKey, SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { TextAlign } from '../types/meta';
 import { Schema, SchemaType } from '../types/schema';
-import { baseStyleAtom, ImageURLAtom, resetStyleAtom, textStyleAtom } from './designer';
+import { baseStyleAtom, extraStyleAtom, ImageURLAtom, resetStyleAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -95,7 +95,7 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
 
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
-  const textStyle = get(textStyleAtom);
+  const extraStyle = get(extraStyleAtom);
   const baseStyle = get(baseStyleAtom);
   const imageURL = get(ImageURLAtom);
 
@@ -112,14 +112,14 @@ export const createSchemaAtom = atom(null, (get, set) => {
       lineHeight: '1',
       outline: '2px solid transparent',
       minWidth: '30px',
-      fontSize: textStyle.size,
-      color: textStyle.color,
-      fontWeight: textStyle.bold ? '800' : '400',
-      textDecoration: textStyle.underline ? 'underline' : 'auto',
-      fontStyle: textStyle.italic ? 'italic' : 'inherit',
-      textAlign: textStyle.align,
+      fontSize: extraStyle.size,
+      color: extraStyle.color,
+      fontWeight: extraStyle.bold ? '800' : '400',
+      textDecoration: extraStyle.underline ? 'underline' : 'auto',
+      fontStyle: extraStyle.italic ? 'italic' : 'inherit',
+      textAlign: extraStyle.align,
     };
-    newSchema.content = textStyle.content;
+    newSchema.content = extraStyle.content;
   } else if (drawType === SchemaType.Image) {
     newSchema.content = imageURL;
   }
@@ -283,7 +283,7 @@ appStore.sub(drawingSchemaIdAtom, () => {
       display: `${style.display || 'inline-block'}`,
       borderRadius: `${style.borderRadius || '0px'}`,
     });
-    appStore.set(textStyleAtom, {
+    appStore.set(extraStyleAtom, {
       content: content || '',
       size: `${style.fontSize || '14px'}` || '14px',
       color: style.color || '#000000',
