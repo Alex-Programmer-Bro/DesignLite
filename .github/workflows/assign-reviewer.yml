@@ -12,17 +12,3 @@ jobs:
         uses: necojackarc/auto-request-review@v0.12.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-jobs:
-  update-assignees:
-    runs-on: ubuntu-latest
-    need: auto-request-review
-    steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-      - uses: actions-ecosystem/action-add-assignees@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: ${{ github.actor }}
