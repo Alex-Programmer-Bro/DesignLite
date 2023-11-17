@@ -2,3 +2,5 @@ reviewers:
   per_author:
     Alex-Programmer-Bro:
       - biubiujch
+    biubiujch:
+      - Alex-Programmer-Bro
