@@ -1,0 +1,23 @@
+name: Assign Reviewers
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  assign-reviewers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Assign Reviewer
+        run: |
+          PR_AUTHOR=$(jq -r .pull_request.user.login "$GITHUB_EVENT_PATH")
+          REVIEWERS=$(jq -r ".reviewers.$PR_AUTHOR | join(\",\")" .github/reviewers.yml)
+          if [ -n "$REVIEWERS" ]; then
+            gh pr review "$PR_NUMBER" --reviewers "$REVIEWERS"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
