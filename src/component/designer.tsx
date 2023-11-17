@@ -24,17 +24,12 @@ import { TextEditor } from './textEditor';
 export const Designer = () => {
   const [baseState, setBaseState] = useAtom(designerStyleAtom);
   const [extraState, setExtraState] = useAtom(extraStyleAtom);
-  const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
   const type = useAtomValue(getActionSchemaTypeAtom);
   const [imageURL, setImageURL] = useAtom(ImageURLAtom);
+  const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
 
   const stateAdaptor = (key: string) => {
-    return (v: string) =>
-      setBaseState((pre) => {
-        const style = { ...pre, [key]: v };
-        setDrawingSchema({ style });
-        return style;
-      });
+    return (v: string) => setBaseState((pre) => ({ ...pre, [key]: v }));
   };
 
   const onChangeSingleLine = (e: React.ChangeEvent<HTMLInputElement>) => {

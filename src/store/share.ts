@@ -11,3 +11,5 @@ export const designerStyleAtom = atomWithReset<CSSInterface>({
   backgroundColor: '#ffffff',
 });
 designerStyleAtom.debugLabel = 'Desinger';
+
+// Designer 变了之后，怎么去更新正在绘制的元素状态呢？
