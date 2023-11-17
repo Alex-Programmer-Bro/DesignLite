@@ -2,9 +2,7 @@ name: Auto Request Review
 
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
+    types: [opened, ready_for_review, reopened]
 
 jobs:
   auto-request-review:
@@ -15,11 +13,15 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-       - name: Set up Node.js
-        uses: actions/setup-node@v4
+jobs:
+  update-assignees:
+    runs-on: ubuntu-latest
+    need: auto-request-review
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 20
-
+          node-version: 16
       - uses: actions-ecosystem/action-add-assignees@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
