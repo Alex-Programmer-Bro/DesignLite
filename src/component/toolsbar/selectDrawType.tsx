@@ -44,7 +44,7 @@ export const SelectDrawType = () => {
           width={24}
         />
       </Button>
-      <Dropdown placement='bottom-start'>
+      <Dropdown>
         <DropdownTrigger>
           <Button isIconOnly>
             <ChevronDownIcon />
