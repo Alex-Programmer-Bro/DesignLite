@@ -97,7 +97,7 @@ export const Toolsbar: React.FC = () => {
       <CardBody className='grid grid-cols-3 gap-2'>
         <Dropdown placement='bottom-start'>
           <DropdownTrigger>
-            <Button size='sm' color='primary'>
+            <Button size='sm' color='primary' id='dl-toolbar-action-btn'>
               <img src='/icon/hamburger.svg' alt='' height={24} width={24} />
             </Button>
           </DropdownTrigger>
