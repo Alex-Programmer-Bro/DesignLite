@@ -23,7 +23,10 @@ jobs:
 
       - name: install frontend dependencies
         run: bun install
-        
+
+      - name: Pre build
+        run: npm run build:web
+
       - name: Unit Test
         run: npm run test:unit
 
