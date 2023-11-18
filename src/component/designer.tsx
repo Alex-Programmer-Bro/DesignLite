@@ -13,9 +13,8 @@ import {
 } from '@nextui-org/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { Suspense } from 'react';
-import { ImageURLAtom, extraStyleAtom } from '../store/designer';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
-import { designerStyleAtom } from '../store/share';
+import { ImageURLAtom, designerStyleAtom, extraStyleAtom } from '../store/share';
 import { SchemaType } from '../types/schema';
 import { ChromePicker } from './colorPicker';
 import { ComplicatedSizer, SimpleSizer } from './sizer';

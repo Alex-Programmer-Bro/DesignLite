@@ -6,8 +6,7 @@ import { SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { TextAlign } from '../types/meta';
 import { Schema, SchemaType } from '../types/schema';
-import { extraStyleAtom, ImageURLAtom } from './designer';
-import { designerStyleAtom } from './share';
+import { designerStyleAtom, extraStyleAtom, ImageURLAtom } from './share';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
