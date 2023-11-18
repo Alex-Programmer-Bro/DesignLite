@@ -1,7 +1,7 @@
 import { atomWithReset } from 'jotai/utils';
 import { CSSInterface } from '../types/meta';
 
-export const designerStyleAtom = atomWithReset<CSSInterface>({
+export const designerDefaultStyle = {
   display: 'inline-block',
   width: '0px',
   height: '0px',
@@ -9,7 +9,6 @@ export const designerStyleAtom = atomWithReset<CSSInterface>({
   padding: '0px',
   borderRadius: '0px',
   backgroundColor: '#ffffff',
-});
+};
+export const designerStyleAtom = atomWithReset<CSSInterface>({ ...designerDefaultStyle });
 designerStyleAtom.debugLabel = 'Desinger';
-
-// Designer 变了之后，怎么去更新正在绘制的元素状态呢？

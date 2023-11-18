@@ -160,6 +160,7 @@ export const useTemplateAtom = atom(null, (_, set) => {
         backgroundColor: '#ddd',
         borderRadius: '10px',
         boxShadow: '10px 10px 10px #ccc',
+        fontSize: '16px',
       },
     },
     {

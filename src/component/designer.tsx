@@ -14,7 +14,7 @@ import {
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { Suspense } from 'react';
 import { ImageURLAtom, extraStyleAtom } from '../store/designer';
-import { getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
+import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
 import { designerStyleAtom } from '../store/share';
 import { SchemaType } from '../types/schema';
 import { ChromePicker } from './colorPicker';
@@ -27,6 +27,7 @@ export const Designer = () => {
   const type = useAtomValue(getActionSchemaTypeAtom);
   const [imageURL, setImageURL] = useAtom(ImageURLAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
+  const selectedSchemaId = useAtomValue(drawingSchemaIdAtom);
 
   const stateAdaptor = (key: string) => {
     return (v: string) => setBaseState((pre) => ({ ...pre, [key]: v }));
@@ -41,7 +42,7 @@ export const Designer = () => {
   };
 
   return (
-    <div className='w-[400px] fixed top-0 right-0 m-4'>
+    <div className='w-[400px] fixed top-0 right-0 m-4' key={selectedSchemaId}>
       <Card className='w-full max-h-[90vh] overflow-auto'>
         <CardHeader className='flex gap-3'>Designer</CardHeader>
         <Divider />

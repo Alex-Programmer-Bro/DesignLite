@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import React from 'react';
 import { drawingSchemaIdAtom, schemasAtom } from '../store/schema';
-import { designerStyleAtom } from '../store/share';
+import { designerDefaultStyle, designerStyleAtom } from '../store/share';
 import { allowSelectAtom } from '../store/toolbar';
 import { SchemaMask } from './schemaMask';
 import { SchemaRender } from './schemaRender';
@@ -15,15 +15,13 @@ export const Canvas = () => {
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!allowSelect) return;
     const element = event.target as HTMLDivElement;
-    if (!element.id) return;
+    if (!element.id) {
+      setDrawingScheamId('');
+      return;
+    }
+    const schema = schemas.find((item) => item.id === element.id)!;
     setDrawingScheamId(element.id);
-    const schema = schemas.find((item) => item.id === element.id);
-    setDesignerStyle((pre) => {
-      return {
-        ...pre,
-        ...schema?.style,
-      };
-    });
+    setDesignerStyle({ ...designerDefaultStyle, ...schema.style });
   };
 
   return (
