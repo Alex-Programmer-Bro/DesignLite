@@ -6,7 +6,9 @@ export const Main = () => {
   return (
     <>
       <Toolsbar />
-      <Canvas />
+      <div className='hiddenScrollbar'>
+        <Canvas />
+      </div>
       <Designer />
     </>
   );

@@ -20,3 +20,7 @@ select {
 .photoshop-picker > div:last-child {
   padding: 15px !important;
 }
+
+.hiddenScrollbar > ::-webkit-scrollbar {
+  display: none;
+}
