@@ -1,22 +1,19 @@
 import { Button, Card, CardBody, Code, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 import hotkeys from 'hotkeys-js';
 import { useAtom, useSetAtom } from 'jotai';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDebug } from '../../hook/useDebug';
-import { resetStyleAtom } from '../../store/designer';
-import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, resetAtom, useTemplateAtom } from '../../store/schema';
+import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, useTemplateAtom } from '../../store/schema';
 import { allowSelectAtom } from '../../store/toolbar';
 import { SelectDrawType } from './selectDrawType';
 
 export const Toolsbar: React.FC = () => {
-  const resetSchema = useSetAtom(resetAtom);
   const useTemplate = useSetAtom(useTemplateAtom);
   const exportAssets = useSetAtom(exportAssetsAtom);
   const importConfig = useSetAtom(importConfigAtom);
   const deleteSchema = useSetAtom(deleteSchameAtom);
   const [allowSelect, setAllowSelect] = useAtom(allowSelectAtom);
   const debug = useDebug();
-  const resetStyle = useSetAtom(resetStyleAtom);
 
   const onPreview = async () => {
     if (isWeb) {
@@ -27,13 +24,6 @@ export const Toolsbar: React.FC = () => {
       await invoke('preview', { url: preview.toString() });
     }
   };
-
-  hotkeys('Backspace', function (event, _) {
-    event.preventDefault();
-    if (!allowSelect) return;
-    deleteSchema();
-    resetStyle();
-  });
 
   const SelectOptions = [
     {
@@ -69,12 +59,17 @@ export const Toolsbar: React.FC = () => {
       describe: '代码内预制的模版',
       icon: '/icon/template.svg',
       onClick: useTemplate,
+      shortcut: '⌘P',
     },
     {
       label: '重置',
       describe: '清空所有状态数据',
       icon: '/icon/reset.svg',
-      onClick: resetSchema,
+      onClick: () => {
+        localStorage.clear();
+        location.reload();
+      },
+      shortcut: '⌘⇧R',
     },
     {
       label: debug ? '关闭调试' : '启动调试模式',
@@ -92,12 +87,29 @@ export const Toolsbar: React.FC = () => {
     },
   ];
 
+  useEffect(() => {
+    hotkeys('Backspace', function (event, _) {
+      event.preventDefault();
+      if (!allowSelect) return;
+      deleteSchema();
+    });
+
+    SelectOptions.forEach((item) => {
+      if (!item.shortcut) return;
+      const keyshortcuts = item.shortcut.split('').join('+');
+      hotkeys(keyshortcuts, (e) => {
+        e.preventDefault();
+        item.onClick();
+      });
+    });
+  }, []);
+
   return (
     <Card className='fixed z-10 left-1/2 top-4 -translate-x-1/2'>
       <CardBody className='grid grid-cols-3 gap-2'>
         <Dropdown>
           <DropdownTrigger>
-            <Button size='sm' color='primary' id='dl-toolbar-action-btn'>
+            <Button size='sm' color='primary' id='dl-toolbar-action-btn' variant='shadow'>
               <img src='/icon/hamburger.svg' alt='' height={24} width={24} />
             </Button>
           </DropdownTrigger>
@@ -109,6 +121,7 @@ export const Toolsbar: React.FC = () => {
                   description={item.describe}
                   onClick={item.onClick}
                   startContent={<img className='w-4' src={item.icon} />}
+                  shortcut={item.shortcut}
                 >
                   {item.label}
                 </DropdownItem>

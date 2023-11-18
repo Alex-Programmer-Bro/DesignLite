@@ -1,9 +1,9 @@
 import { atom } from 'jotai';
-import { RESET, atomWithReset } from 'jotai/utils';
+import { atomWithReset } from 'jotai/utils';
 import { State as TextEditorState } from '../component/textEditor';
 import { CSSInterface } from '../types/meta';
 
-export const baseStyleAtom = atomWithReset<CSSInterface>({
+export const designerDefaultStyle = {
   display: 'inline-block',
   width: '0px',
   height: '0px',
@@ -11,10 +11,11 @@ export const baseStyleAtom = atomWithReset<CSSInterface>({
   padding: '0px',
   borderRadius: '0px',
   backgroundColor: '#ffffff',
-});
-baseStyleAtom.debugLabel = '元素基础样式';
+};
+export const designerStyleAtom = atomWithReset<CSSInterface>({ ...designerDefaultStyle });
+designerStyleAtom.debugLabel = 'Desinger';
 
-export const textStyleAtom = atomWithReset<TextEditorState>({
+export const extraStyleAtom = atomWithReset<TextEditorState>({
   content: '',
   size: '14px',
   color: '#000000',
@@ -23,12 +24,7 @@ export const textStyleAtom = atomWithReset<TextEditorState>({
   underline: false,
   italic: false,
 });
-textStyleAtom.debugLabel = '当前元素的文本样式';
+extraStyleAtom.debugLabel = '当前元素的文本样式';
 
 export const ImageURLAtom = atom('');
 ImageURLAtom.debugLabel = 'Designer 上的图片地址';
-
-export const resetStyleAtom = atom(null, (_, set) => {
-  set(baseStyleAtom, RESET);
-  set(textStyleAtom, RESET);
-});

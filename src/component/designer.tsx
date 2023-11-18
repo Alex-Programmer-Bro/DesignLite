@@ -13,28 +13,29 @@ import {
 } from '@nextui-org/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { Suspense } from 'react';
-import { ImageURLAtom, baseStyleAtom, textStyleAtom } from '../store/designer';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
+import { ImageURLAtom, designerStyleAtom, extraStyleAtom } from '../store/share';
 import { SchemaType } from '../types/schema';
 import { ChromePicker } from './colorPicker';
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from './textEditor';
 
 export const Designer = () => {
-  const [baseState, setBaseState] = useAtom(baseStyleAtom);
-  const [textState, setTextState] = useAtom(textStyleAtom);
-  const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
+  const [baseState, setBaseState] = useAtom(designerStyleAtom);
+  const [extraState, setExtraState] = useAtom(extraStyleAtom);
   const type = useAtomValue(getActionSchemaTypeAtom);
   const [imageURL, setImageURL] = useAtom(ImageURLAtom);
-  const drawingSchemaId = useAtomValue(drawingSchemaIdAtom);
+  const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
+  const selectedSchemaId = useAtomValue(drawingSchemaIdAtom);
 
   const stateAdaptor = (key: string) => {
-    return (v: string) =>
+    return (v: string) => {
       setBaseState((pre) => {
         const style = { ...pre, [key]: v };
         setDrawingSchema({ style });
         return style;
       });
+    };
   };
 
   const onChangeSingleLine = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +47,7 @@ export const Designer = () => {
   };
 
   return (
-    <div className='w-[400px] fixed top-0 right-0 m-4' key={`designer:${drawingSchemaId}`}>
+    <div className='w-[400px] fixed top-0 right-0 m-4' key={selectedSchemaId}>
       <Card className='w-full max-h-[90vh] overflow-auto'>
         <CardHeader className='flex gap-3'>Designer</CardHeader>
         <Divider />
@@ -97,7 +98,10 @@ export const Designer = () => {
             <ComplicatedSizer
               label={'borderRadius'}
               value={baseState.borderRadius!}
-              onChange={stateAdaptor('borderRadius')}
+              onChange={(v) => {
+                console.log(v);
+                stateAdaptor('borderRadius')(v);
+              }}
             />
           </div>
           <Divider className='my-10' />
@@ -105,7 +109,7 @@ export const Designer = () => {
             <Input type='url' label='Image URL' value={imageURL} onChange={(e) => setImageURL(e.target.value)} />
           ) : (
             <TextEditor
-              state={textState}
+              state={extraState}
               onChangeBefore={(state) => {
                 setDrawingSchema({
                   content: state.content,
@@ -119,7 +123,7 @@ export const Designer = () => {
                   },
                 });
               }}
-              onChange={setTextState}
+              onChange={setExtraState}
             />
           )}
         </CardBody>

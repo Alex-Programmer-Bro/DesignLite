@@ -47,12 +47,13 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
   const onSingleChange = (value: string) => {
     singleValue.current = value;
     setSingle(value);
+    props.onChange(value);
   };
 
   const onValueChange = (key: keyof typeof batch, value: string) => {
     const newValues = { ...batch, [key]: value };
     batchValue.current = { ...newValues };
-    props.onChange(`${newValues.top} ${newValues.right} ${newValues.bottom}  ${newValues.left}`);
+    props.onChange(`${newValues.top} ${newValues.right} ${newValues.bottom} ${newValues.left}`);
     setBatch(newValues);
   };
 
