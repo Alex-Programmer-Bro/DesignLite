@@ -30,7 +30,13 @@ export const Designer = () => {
   const selectedSchemaId = useAtomValue(drawingSchemaIdAtom);
 
   const stateAdaptor = (key: string) => {
-    return (v: string) => setBaseState((pre) => ({ ...pre, [key]: v }));
+    return (v: string) => {
+      setBaseState((pre) => {
+        const style = { ...pre, [key]: v };
+        setDrawingSchema({ style });
+        return style;
+      });
+    };
   };
 
   const onChangeSingleLine = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +99,10 @@ export const Designer = () => {
             <ComplicatedSizer
               label={'borderRadius'}
               value={baseState.borderRadius!}
-              onChange={stateAdaptor('borderRadius')}
+              onChange={(v) => {
+                console.log(v);
+                stateAdaptor('borderRadius')(v);
+              }}
             />
           </div>
           <Divider className='my-10' />
