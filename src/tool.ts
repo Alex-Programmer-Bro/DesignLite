@@ -25,6 +25,7 @@ export const resolveCSS = (schema: Schema) => {
 export const uploadAndReadJSON = (): Promise<Schema[]> => {
   return new Promise((resolve, reject) => {
     const inputElement = document.createElement('input');
+    inputElement.setAttribute('aria-label', 'import-assets');
     inputElement.type = 'file';
     inputElement.accept = '.json';
     inputElement.style.display = 'none';
