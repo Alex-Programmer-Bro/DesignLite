@@ -36,8 +36,8 @@ export const Canvas = () => {
         scaleRef.current.scale = scaleRef.current.scale < 2 ? scaleRef.current.scale + 0.01 : 2;
       }
       scaleRef.current.origin = {
-        x: e.clientX * scaleRef.current.scale,
-        y: e.clientY * scaleRef.current.scale,
+        x: e.clientX,
+        y: e.clientY,
       };
     }
   };
@@ -45,8 +45,12 @@ export const Canvas = () => {
   const render = () => {
     if (container.current) {
       const { scale, origin } = scaleRef.current;
+      const offsetX = origin.x - container.current.offsetLeft;
+      const offsetY = origin.y - container.current.offsetTop;
       container.current.style.transform = `scale(${scale})`;
-      container.current.style.transformOrigin = `${origin.x}px ${origin.y}px`;
+      container.current.style.transformOrigin = `${offsetX / scaleRef.current.scale}px ${
+        offsetY / scaleRef.current.scale
+      }px`;
     }
     requestAnimationFrame(render);
   };
