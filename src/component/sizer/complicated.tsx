@@ -53,7 +53,7 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
   const onValueChange = (key: keyof typeof batch, value: string) => {
     const newValues = { ...batch, [key]: value };
     batchValue.current = { ...newValues };
-    props.onChange(`${newValues.top} ${newValues.right} ${newValues.bottom}  ${newValues.left}`);
+    props.onChange(`${newValues.top} ${newValues.right} ${newValues.bottom} ${newValues.left}`);
     setBatch(newValues);
   };
 
