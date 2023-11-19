@@ -16,7 +16,7 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-      if (e.metaKey) {
+      if (e.ctrlKey) {
         const deltaScale = e.deltaY > 0 ? 0.95 : 1.05;
         setScale((prevScale) => Math.max(0.1, prevScale * deltaScale));
       } else {
