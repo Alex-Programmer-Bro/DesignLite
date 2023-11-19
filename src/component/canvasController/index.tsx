@@ -34,11 +34,13 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
   }, []);
 
   return (
-    <div
-      className='fixed left-0 right-0 bottom-0 top-0 m-auto w-full h-full flex justify-center items-center'
-      style={{ transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})` }}
-    >
-      {children}
+    <div className='fixed left-0 top-0 w-full h-full bg-[url("/img/bg.webp")]'>
+      <div
+        className='absolute left-0 right-0 bottom-0 top-0 m-auto w-full h-full flex justify-center items-center '
+        style={{ transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})` }}
+      >
+        {children}
+      </div>
     </div>
   );
 };
