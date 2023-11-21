@@ -8,7 +8,6 @@ import {
   Selection,
 } from '@nextui-org/react';
 import { useAtom, useSetAtom } from 'jotai';
-import { useDesignerMediator } from '../../hook/useMediator';
 import { createSchemaAtom } from '../../store/schema';
 import { selectedDrawTypeAtom } from '../../store/toolbar';
 import { SchemaType } from '../../types/schema';
@@ -30,7 +29,6 @@ const descriptionsMap = {
 export const SelectDrawType = () => {
   const createSchema = useSetAtom(createSchemaAtom);
   const [selectedDrawType, setSelectedDrawType] = useAtom(selectedDrawTypeAtom);
-  const { state } = useDesignerMediator();
 
   const onSelectionChange = (keys: Selection) => {
     setSelectedDrawType(Array.from(keys)[0] as SchemaType);
@@ -38,7 +36,7 @@ export const SelectDrawType = () => {
 
   return (
     <ButtonGroup variant='shadow' color='secondary' size='sm' className='w-full'>
-      <Button onClick={() => createSchema({ baseStyle: state })} isIconOnly>
+      <Button onClick={createSchema} isIconOnly>
         <img
           src={selectedDrawType === SchemaType.Block ? '/icon/shape.svg' : '/icon/photo.svg'}
           alt=''

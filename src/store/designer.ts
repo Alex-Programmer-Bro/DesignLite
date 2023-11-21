@@ -1,3 +1,5 @@
+import { atomWithReset } from 'jotai/utils';
+
 export const designerState = {
   display: 'inline-block',
   width: '0px',
@@ -15,3 +17,6 @@ export const designerState = {
   content: '',
   imgURL: '',
 };
+
+export const designerAtom = atomWithReset({ ...designerState });
+designerAtom.debugLabel = 'Designer';

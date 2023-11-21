@@ -1,4 +1,4 @@
-import { CSSInterface } from './meta';
+import { designerState } from '../hook/useMediator/constant';
 
 export enum SchemaType {
   Block = '块',
@@ -8,6 +8,6 @@ export enum SchemaType {
 export type Schema = {
   id: string;
   type: SchemaType;
-  style: CSSInterface;
+  style: Partial<typeof designerState>;
   content?: string;
 };

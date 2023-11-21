@@ -2,9 +2,9 @@ import { atom, Setter } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { SchemaCacheKey } from '../constant';
-import { designerState } from '../hook/useMediator/constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
+import { designerAtom } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -89,8 +89,9 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
   updateSchema(set, { id, schema });
 });
 
-export const createSchemaAtom = atom(null, (get, set, { baseStyle }: { baseStyle: typeof designerState }) => {
+export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
+  const baseStyle = get(designerAtom);
 
   const newSchema: Schema = {
     id: v1(),
@@ -102,9 +103,6 @@ export const createSchemaAtom = atom(null, (get, set, { baseStyle }: { baseStyle
     newSchema.style = {
       ...newSchema.style,
       ...baseStyle,
-      lineHeight: '1',
-      outline: '2px solid transparent',
-      minWidth: '30px',
     };
     newSchema.content = baseStyle.content;
   } else if (drawType === SchemaType.Image) {
@@ -120,23 +118,7 @@ export const useTemplateAtom = atom(null, (_, set) => {
     {
       id: 'hello-text',
       type: SchemaType.Block,
-      content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
-      <br />
-      2 业精于勤，荒于嬉。—— 韩 愈《进学解》
-      <br />
-      3 一寸光阴一寸金，寸金难买寸光阴。——《增广贤文》
-      <br />
-      4 天行健，君子以自强不息。——《周易·乾·象》
-      <br />
-      5 志不强者智不达。——《墨子·修身》名言名句
-      <br />
-      6 青，取之于蓝而青于蓝；冰，水为之而寒于水。 ——《荀子·劝学》
-      <br />
-      7 志当存高远。—— 诸葛亮《诫外生书》
-      <br />
-      8 丈夫志四海，万里犹比邻。—— 曹 植《赠白马王彪》 
-      <br />
-      9 有志者事竟成。 ——《后汉书·耿 列传》`,
+
       style: {
         display: 'block',
         margin: '20px auto',
@@ -145,8 +127,16 @@ export const useTemplateAtom = atom(null, (_, set) => {
         height: '300px',
         backgroundColor: '#ddd',
         borderRadius: '10px',
-        boxShadow: '10px 10px 10px #ccc',
         fontSize: '16px',
+        content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
+2 业精于勤，荒于嬉。—— 韩 愈《进学解》
+3 一寸光阴一寸金，寸金难买寸光阴。——《增广贤文》
+4 天行健，君子以自强不息。——《周易·乾·象》
+5 志不强者智不达。——《墨子·修身》名言名句
+6 青，取之于蓝而青于蓝；冰，水为之而寒于水。 ——《荀子·劝学》
+7 志当存高远。—— 诸葛亮《诫外生书》
+8 丈夫志四海，万里犹比邻。—— 曹 植《赠白马王彪》 
+9 有志者事竟成。 ——《后汉书·耿 列传》`,
       },
     },
     {

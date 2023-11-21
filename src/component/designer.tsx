@@ -13,10 +13,10 @@ import {
   Switch,
   Textarea,
 } from '@nextui-org/react';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { Suspense } from 'react';
-import { useDesignerMediator } from '../hook/useMediator';
 import { appStore } from '../store';
+import { designerAtom } from '../store/designer';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
 import { SchemaType } from '../types/schema';
 import { ChromePicker } from './colorPicker';
@@ -26,7 +26,7 @@ import { ComplicatedSizer, SimpleSizer } from './sizer';
 const activeColor = 'rgb(217, 217, 217)';
 
 export const Designer = () => {
-  const { state, setState } = useDesignerMediator();
+  const [state, setState] = useAtom(designerAtom);
   const type = useAtomValue(getActionSchemaTypeAtom);
   const selectedSchemaId = useAtomValue(drawingSchemaIdAtom);
 

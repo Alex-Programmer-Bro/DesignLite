@@ -1,6 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
+import { useResetAtom } from 'jotai/utils';
 import React from 'react';
-import { useDesignerMediator } from '../hook/useMediator';
+import { designerAtom, designerState } from '../store/designer';
 import { drawingSchemaIdAtom, schemasAtom } from '../store/schema';
 import { allowSelectAtom } from '../store/toolbar';
 import { SchemaMask } from './schemaMask';
@@ -10,7 +11,8 @@ export const Canvas = () => {
   const schemas = useAtomValue(schemasAtom);
   const setDrawingScheamId = useSetAtom(drawingSchemaIdAtom);
   const allowSelect = useAtomValue(allowSelectAtom);
-  const { setState, resetState } = useDesignerMediator();
+  const setState = useSetAtom(designerAtom);
+  const resetState = useResetAtom(designerAtom);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!allowSelect) return;
@@ -22,7 +24,7 @@ export const Canvas = () => {
     }
     const schema = schemas.find((item) => item.id === element.id)!;
     setDrawingScheamId(element.id);
-    setState(schema.style);
+    setState({ ...designerState, ...(schema.style as typeof designerState) });
   };
 
   return (
