@@ -3,10 +3,11 @@ import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { appStore } from '.';
 import { SchemaCacheKey } from '../constant';
+import { designerState } from '../hook/useMediator/constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { TextAlign } from '../types/meta';
 import { Schema, SchemaType } from '../types/schema';
-import { extraStyleAtom, ImageURLAtom, styleMediator } from './share';
+import { extraStyleAtom, ImageURLAtom } from './share';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -91,10 +92,9 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
   updateSchema(set, { id, schema });
 });
 
-export const createSchemaAtom = atom(null, (get, set) => {
+export const createSchemaAtom = atom(null, (get, set, { baseStyle }: { baseStyle: typeof designerState }) => {
   const drawType = get(selectedDrawTypeAtom);
   const extraStyle = get(extraStyleAtom);
-  const baseStyle = styleMediator.getState();
   const imageURL = get(ImageURLAtom);
 
   const newSchema: Schema = {
@@ -277,7 +277,5 @@ appStore.sub(drawingSchemaIdAtom, () => {
       underline: style.textDecoration === 'underline',
       italic: style.fontStyle === 'italic',
     });
-  } else {
-    styleMediator.resetState();
   }
 });

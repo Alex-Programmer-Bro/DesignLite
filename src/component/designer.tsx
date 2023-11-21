@@ -12,25 +12,26 @@ import {
   Switch,
 } from '@nextui-org/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
+import { useDesignerMediator } from '../hook/useMediator';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
-import { ImageURLAtom, extraStyleAtom, styleMediator } from '../store/share';
+import { ImageURLAtom, extraStyleAtom } from '../store/share';
 import { SchemaType } from '../types/schema';
 import { ChromePicker } from './colorPicker';
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from './textEditor';
 
 export const Designer = () => {
-  const [baseState, setBaseState] = useState(styleMediator.getState());
+  const { state, setState } = useDesignerMediator();
   const [extraState, setExtraState] = useAtom(extraStyleAtom);
   const type = useAtomValue(getActionSchemaTypeAtom);
   const [imageURL, setImageURL] = useAtom(ImageURLAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
   const selectedSchemaId = useAtomValue(drawingSchemaIdAtom);
 
-  const stateAdaptor = (key: keyof typeof baseState) => {
+  const stateAdaptor = (key: keyof typeof state) => {
     return (v: string) => {
-      styleMediator.setState({ ...baseState, [key]: v });
+      setState({ ...state, [key]: v });
     };
   };
 
@@ -41,14 +42,6 @@ export const Designer = () => {
       stateAdaptor('display')('inline-block');
     }
   };
-
-  useEffect(() => {
-    const updateState = (newState: typeof baseState) => {
-      setBaseState(newState);
-    };
-
-    return styleMediator.subscribe(updateState);
-  }, []);
 
   return (
     <div className='w-[400px] fixed top-0 right-0 m-4' key={selectedSchemaId}>
@@ -63,7 +56,7 @@ export const Designer = () => {
                 aria-label='single-line'
                 size='sm'
                 color='secondary'
-                isSelected={baseState.display === 'block'}
+                isSelected={state.display === 'block'}
                 onChange={onChangeSingleLine}
               />
             </label>
@@ -71,12 +64,12 @@ export const Designer = () => {
               <span className='text-[12px] font-medium mr-4'>background</span>
               <Popover placement='left-end' className='p-0'>
                 <PopoverTrigger>
-                  <Button size='sm' variant='bordered' style={{ backgroundColor: baseState.backgroundColor }}></Button>
+                  <Button size='sm' variant='bordered' style={{ backgroundColor: state.backgroundColor }}></Button>
                 </PopoverTrigger>
                 <PopoverContent>
                   <Suspense fallback={<Spinner />}>
                     <ChromePicker
-                      color={baseState.backgroundColor}
+                      color={state.backgroundColor}
                       onChange={(v) => stateAdaptor('backgroundColor')(v.hex)}
                     />
                   </Suspense>
@@ -88,20 +81,20 @@ export const Designer = () => {
             <SimpleSizer
               labelPlacement='outside'
               label={'width'}
-              value={baseState.width!}
+              value={state.width!}
               onChange={stateAdaptor('width')}
             />
             <SimpleSizer
               labelPlacement='outside'
               label={'height'}
-              value={baseState.height!}
+              value={state.height!}
               onChange={stateAdaptor('height')}
             />
-            <ComplicatedSizer label={'margin'} value={baseState.margin!} onChange={stateAdaptor('margin')} />
-            <ComplicatedSizer label={'padding'} value={baseState.padding!} onChange={stateAdaptor('padding')} />
+            <ComplicatedSizer label={'margin'} value={state.margin!} onChange={stateAdaptor('margin')} />
+            <ComplicatedSizer label={'padding'} value={state.padding!} onChange={stateAdaptor('padding')} />
             <ComplicatedSizer
               label={'borderRadius'}
-              value={baseState.borderRadius!}
+              value={state.borderRadius!}
               onChange={(v) => {
                 console.log(v);
                 stateAdaptor('borderRadius')(v);
