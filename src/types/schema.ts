@@ -1,4 +1,4 @@
-import { designerState } from '../hook/useMediator/constant';
+import { designerState } from '../store/designer';
 
 export enum SchemaType {
   Block = '块',
