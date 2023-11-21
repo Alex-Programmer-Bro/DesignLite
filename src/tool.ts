@@ -11,6 +11,7 @@ export const resolveHTML = (schema: Schema) => {
 
 const transferCSS = (style: React.CSSProperties) => {
   return Object.entries(style)
+    .filter(([key]) => key !== 'content')
     .map(([key, value]) => {
       return `${key.replace(/([A-Z]+)/, '-$1').toLowerCase()}:${value};`;
     })
