@@ -1,12 +1,12 @@
 import { atom, Setter } from 'jotai';
-import { atomWithStorage, RESET } from 'jotai/utils';
+import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { appStore } from '.';
 import { SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { TextAlign } from '../types/meta';
 import { Schema, SchemaType } from '../types/schema';
-import { designerStyleAtom, extraStyleAtom, ImageURLAtom } from './share';
+import { extraStyleAtom, ImageURLAtom, styleMediator } from './share';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -20,14 +20,12 @@ export const getDrawingStyleAtom = atom((get) => {
   const dom = document.getElementById(id);
   if (!dom) return null;
   const { width, height } = dom.getBoundingClientRect();
-  // 外框和元素的间距
-  const spacing = 4;
   if (id) {
     return {
-      width: width + spacing * 2,
-      height: height + spacing * 2,
-      left: dom.offsetLeft - spacing,
-      top: dom.offsetTop - spacing,
+      width: width,
+      height: height,
+      left: dom.offsetLeft,
+      top: dom.offsetTop,
       position: 'absolute',
       border: '1px solid #7272ff',
       pointerEvents: 'none',
@@ -96,7 +94,7 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
   const extraStyle = get(extraStyleAtom);
-  const baseStyle = get(designerStyleAtom);
+  const baseStyle = styleMediator.getState();
   const imageURL = get(ImageURLAtom);
 
   const newSchema: Schema = {
@@ -280,6 +278,6 @@ appStore.sub(drawingSchemaIdAtom, () => {
       italic: style.fontStyle === 'italic',
     });
   } else {
-    appStore.set(designerStyleAtom, RESET);
+    styleMediator.resetState();
   }
 });

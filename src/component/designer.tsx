@@ -12,29 +12,25 @@ import {
   Switch,
 } from '@nextui-org/react';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
-import { ImageURLAtom, designerStyleAtom, extraStyleAtom } from '../store/share';
+import { ImageURLAtom, extraStyleAtom, styleMediator } from '../store/share';
 import { SchemaType } from '../types/schema';
 import { ChromePicker } from './colorPicker';
 import { ComplicatedSizer, SimpleSizer } from './sizer';
 import { TextEditor } from './textEditor';
 
 export const Designer = () => {
-  const [baseState, setBaseState] = useAtom(designerStyleAtom);
+  const [baseState, setBaseState] = useState(styleMediator.getState());
   const [extraState, setExtraState] = useAtom(extraStyleAtom);
   const type = useAtomValue(getActionSchemaTypeAtom);
   const [imageURL, setImageURL] = useAtom(ImageURLAtom);
   const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
   const selectedSchemaId = useAtomValue(drawingSchemaIdAtom);
 
-  const stateAdaptor = (key: string) => {
+  const stateAdaptor = (key: keyof typeof baseState) => {
     return (v: string) => {
-      setBaseState((pre) => {
-        const style = { ...pre, [key]: v };
-        setDrawingSchema({ style });
-        return style;
-      });
+      styleMediator.setState({ ...baseState, [key]: v });
     };
   };
 
@@ -45,6 +41,14 @@ export const Designer = () => {
       stateAdaptor('display')('inline-block');
     }
   };
+
+  useEffect(() => {
+    const updateState = (newState: typeof baseState) => {
+      setBaseState(newState);
+    };
+
+    return styleMediator.subscribe(updateState);
+  }, []);
 
   return (
     <div className='w-[400px] fixed top-0 right-0 m-4' key={selectedSchemaId}>
