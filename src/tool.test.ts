@@ -9,8 +9,8 @@ describe('resolve schema', () => {
     style: {
       color: '#ffffff',
       backgroundColor: 'red',
+      content: 'hello world',
     },
-    content: 'hello world',
   };
 
   const imageSchema: Schema = {
@@ -23,7 +23,7 @@ describe('resolve schema', () => {
   };
 
   it('resolveHTML', () => {
-    expect(resolveHTML(textSchema)).toMatchInlineSnapshot('"<span class=\\"hello\\">hello world</span>"');
+    expect(resolveHTML(textSchema)).toMatchInlineSnapshot('"<pre class=\\"hello\\">hello world</pre>"');
     expect(resolveHTML(imageSchema)).toMatchInlineSnapshot(
       '"<img class=\\"hello-img\\" src=https://avatars.githubusercontent.com/u/115539090 alt=\\"\\" />"',
     );

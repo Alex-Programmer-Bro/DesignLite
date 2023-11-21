@@ -5,12 +5,13 @@ export const resolveHTML = (schema: Schema) => {
     case SchemaType.Image:
       return `<img class="${schema.id}" src=${schema.content} alt="" />`;
     case SchemaType.Block:
-      return `<span class="${schema.id}">${schema.content}</span>`;
+      return `<pre class="${schema.id}">${schema.style.content}</pre>`;
   }
 };
 
 const transferCSS = (style: React.CSSProperties) => {
   return Object.entries(style)
+    .filter(([key]) => key !== 'content')
     .map(([key, value]) => {
       return `${key.replace(/([A-Z]+)/, '-$1').toLowerCase()}:${value};`;
     })
