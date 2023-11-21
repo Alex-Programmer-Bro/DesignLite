@@ -1,13 +1,10 @@
 import { atom, Setter } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { v1 } from 'uuid';
-import { appStore } from '.';
 import { SchemaCacheKey } from '../constant';
 import { designerState } from '../hook/useMediator/constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
-import { TextAlign } from '../types/meta';
 import { Schema, SchemaType } from '../types/schema';
-import { extraStyleAtom, ImageURLAtom } from './share';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -94,8 +91,6 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
 
 export const createSchemaAtom = atom(null, (get, set, { baseStyle }: { baseStyle: typeof designerState }) => {
   const drawType = get(selectedDrawTypeAtom);
-  const extraStyle = get(extraStyleAtom);
-  const imageURL = get(ImageURLAtom);
 
   const newSchema: Schema = {
     id: v1(),
@@ -110,16 +105,10 @@ export const createSchemaAtom = atom(null, (get, set, { baseStyle }: { baseStyle
       lineHeight: '1',
       outline: '2px solid transparent',
       minWidth: '30px',
-      fontSize: extraStyle.size,
-      color: extraStyle.color,
-      fontWeight: extraStyle.bold ? '800' : '400',
-      textDecoration: extraStyle.underline ? 'underline' : 'auto',
-      fontStyle: extraStyle.italic ? 'italic' : 'inherit',
-      textAlign: extraStyle.align,
     };
-    newSchema.content = extraStyle.content;
+    newSchema.content = baseStyle.content;
   } else if (drawType === SchemaType.Image) {
-    newSchema.content = imageURL;
+    newSchema.content = baseStyle.imgURL;
   }
 
   set(drawingSchemaIdAtom, newSchema.id);
@@ -256,26 +245,5 @@ export const deleteSchameAtom = atom(null, (get, set) => {
       get(schemasAtom).filter((item) => item.id !== id),
     );
     set(drawingSchemaIdAtom, '');
-  }
-});
-
-appStore.sub(drawingSchemaIdAtom, () => {
-  const id = appStore.get(drawingSchemaIdAtom);
-  if (id) {
-    const schemas = appStore.get(schemasAtom);
-    const target = schemas.find((item) => item.id === id);
-
-    if (!target) return;
-    const { style, content } = target;
-
-    appStore.set(extraStyleAtom, {
-      content: content || '',
-      size: `${style.fontSize || '14px'}` || '14px',
-      color: style.color || '#000000',
-      align: (style.textAlign || 'left') as TextAlign,
-      bold: Number(style.fontWeight) === 800,
-      underline: style.textDecoration === 'underline',
-      italic: style.fontStyle === 'italic',
-    });
   }
 });

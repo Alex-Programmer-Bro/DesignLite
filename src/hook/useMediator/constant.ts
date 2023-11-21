@@ -6,4 +6,12 @@ export const designerState = {
   padding: '0px',
   borderRadius: '0px',
   backgroundColor: '#ffffff',
+  fontSize: '14px',
+  color: '#000000',
+  fontWeight: '400',
+  textDecoration: 'auto',
+  fontStyle: 'inherit',
+  textAlign: 'left',
+  content: '',
+  imgURL: '',
 };

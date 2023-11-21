@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
@@ -10,28 +11,30 @@ import {
   PopoverTrigger,
   Spinner,
   Switch,
+  Textarea,
 } from '@nextui-org/react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { Suspense } from 'react';
 import { useDesignerMediator } from '../hook/useMediator';
+import { appStore } from '../store';
 import { drawingSchemaIdAtom, getActionSchemaTypeAtom, setDrawingSchemaAtom } from '../store/schema';
-import { ImageURLAtom, extraStyleAtom } from '../store/share';
 import { SchemaType } from '../types/schema';
 import { ChromePicker } from './colorPicker';
+import { alignCenter, alignLeft, alignRight, bold, italic, underline } from './icon';
 import { ComplicatedSizer, SimpleSizer } from './sizer';
-import { TextEditor } from './textEditor';
+
+const activeColor = 'rgb(217, 217, 217)';
 
 export const Designer = () => {
   const { state, setState } = useDesignerMediator();
-  const [extraState, setExtraState] = useAtom(extraStyleAtom);
   const type = useAtomValue(getActionSchemaTypeAtom);
-  const [imageURL, setImageURL] = useAtom(ImageURLAtom);
-  const setDrawingSchema = useSetAtom(setDrawingSchemaAtom);
   const selectedSchemaId = useAtomValue(drawingSchemaIdAtom);
 
   const stateAdaptor = (key: keyof typeof state) => {
     return (v: string) => {
-      setState({ ...state, [key]: v });
+      const style = { ...state, [key]: v };
+      appStore.set(setDrawingSchemaAtom, { style });
+      setState(style);
     };
   };
 
@@ -44,7 +47,7 @@ export const Designer = () => {
   };
 
   return (
-    <div className='w-[400px] fixed top-0 right-0 m-4' key={selectedSchemaId}>
+    <div className='w-[400px] fixed top-0 right-0 m-4' key={selectedSchemaId} onWheel={(e) => e.stopPropagation()}>
       <Card className='w-full max-h-[90vh] overflow-auto'>
         <CardHeader className='flex gap-3'>Designer</CardHeader>
         <Divider />
@@ -103,25 +106,82 @@ export const Designer = () => {
           </div>
           <Divider className='my-10' />
           {type === SchemaType.Image ? (
-            <Input type='url' label='Image URL' value={imageURL} onChange={(e) => setImageURL(e.target.value)} />
-          ) : (
-            <TextEditor
-              state={extraState}
-              onChangeBefore={(state) => {
-                setDrawingSchema({
-                  content: state.content,
-                  style: {
-                    fontSize: state.size,
-                    color: state.color,
-                    fontWeight: state.bold ? '800' : '400',
-                    textDecoration: state.underline ? 'underline' : 'auto',
-                    fontStyle: state.italic ? 'italic' : 'inherit',
-                    textAlign: state.align,
-                  },
-                });
-              }}
-              onChange={setExtraState}
+            <Input
+              type='url'
+              label='Image URL'
+              value={state.imgURL}
+              onChange={(e) => stateAdaptor('imgURL')(e.target.value)}
             />
+          ) : (
+            <div className='grid grid-cols-1 gap-10'>
+              <Textarea
+                size='sm'
+                labelPlacement='outside'
+                label='content'
+                value={state.content}
+                onChange={(e) => stateAdaptor('content')(e.target.value)}
+              />
+              <div className='flex items-end'>
+                <div className='max-w-[100px]'>
+                  <SimpleSizer
+                    labelPlacement='outside'
+                    label='font'
+                    value={state.fontSize}
+                    onChange={stateAdaptor('fontSize')}
+                  />
+                </div>
+                <ButtonGroup isIconOnly className='justify-start' variant='bordered' size='sm'>
+                  <Popover placement='left-end' className='p-0'>
+                    <PopoverTrigger>
+                      <Button style={{ backgroundColor: state.color }}></Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <Suspense fallback={<Spinner />}>
+                        <ChromePicker color={state.color} onChange={(v) => stateAdaptor('color')(v.hex)} />
+                      </Suspense>
+                    </PopoverContent>
+                  </Popover>
+                  <Button
+                    style={{ backgroundColor: state.textAlign === 'left' ? activeColor : 'transparent' }}
+                    onClick={() => stateAdaptor('textAlign')('left')}
+                  >
+                    {alignLeft}
+                  </Button>
+                  <Button
+                    style={{ backgroundColor: state.textAlign === 'center' ? activeColor : 'transparent' }}
+                    onClick={() => stateAdaptor('textAlign')('center')}
+                  >
+                    {alignCenter}
+                  </Button>
+                  <Button
+                    style={{ backgroundColor: state.textAlign === 'right' ? activeColor : 'transparent' }}
+                    onClick={() => stateAdaptor('textAlign')('right')}
+                  >
+                    {alignRight}
+                  </Button>
+                  <Button
+                    style={{ backgroundColor: state.fontWeight === '800' ? activeColor : 'transparent' }}
+                    onClick={() => stateAdaptor('fontWeight')(state.fontWeight === '800' ? '400' : '800')}
+                  >
+                    {bold}
+                  </Button>
+                  <Button
+                    style={{ backgroundColor: state.textDecoration === 'underline' ? activeColor : 'transparent' }}
+                    onClick={() =>
+                      stateAdaptor('textDecoration')(state.textDecoration === 'auto' ? 'underline' : 'auto')
+                    }
+                  >
+                    {underline}
+                  </Button>
+                  <Button
+                    style={{ backgroundColor: state.fontStyle === 'italic' ? activeColor : 'transparent' }}
+                    onClick={() => stateAdaptor('fontStyle')(state.fontSize === 'italic' ? 'inherit' : 'italic')}
+                  >
+                    {italic}
+                  </Button>
+                </ButtonGroup>
+              </div>
+            </div>
           )}
         </CardBody>
       </Card>

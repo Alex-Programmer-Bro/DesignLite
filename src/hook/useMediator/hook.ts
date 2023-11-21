@@ -9,7 +9,8 @@ class Mediator<S> {
 
   initState(state: S) {
     if (!this.defaultState) {
-      this.state = this.defaultState = state;
+      this.state = { ...state };
+      this.defaultState = { ...state };
     }
   }
 
@@ -42,9 +43,9 @@ class SingletonMediator<S> extends Mediator<S> {
     super();
   }
 
-  public static getInstance<T>(initState: T): SingletonMediator<T> {
+  public static getInstance<S>(initState: S): SingletonMediator<S> {
     if (!SingletonMediator.instance) {
-      SingletonMediator.instance = new SingletonMediator<T>();
+      SingletonMediator.instance = new SingletonMediator<S>();
     }
     SingletonMediator.instance.initState(initState);
     return SingletonMediator.instance;
@@ -65,5 +66,6 @@ export const useMediator = <T>(initState: T) => {
   return {
     state,
     setState: mediator.setState.bind(mediator),
+    resetState: mediator.resetState.bind(mediator),
   };
 };
