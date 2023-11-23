@@ -1,4 +1,4 @@
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import React from 'react';
 import { designerAtom, designerState } from '../store/designer';
@@ -9,7 +9,7 @@ import { SchemaRender } from './schemaRender';
 
 export const Canvas = () => {
   const schemas = useAtomValue(schemasAtom);
-  const setDrawingScheamId = useSetAtom(drawingSchemaIdAtom);
+  const [drawingScheamId, setDrawingScheamId] = useAtom(drawingSchemaIdAtom);
   const allowSelect = useAtomValue(allowSelectAtom);
   const setState = useSetAtom(designerAtom);
   const resetState = useResetAtom(designerAtom);
@@ -32,7 +32,7 @@ export const Canvas = () => {
       {schemas.map((item) => (
         <SchemaRender key={item.id} {...item} />
       ))}
-      <SchemaMask />
+      <SchemaMask id={drawingScheamId} />
     </div>
   );
 };

@@ -4,8 +4,8 @@
   "version": "0.0.3-alpha",
   "type": "module",
   "scripts": {
-    "dev": "tauri dev",
-    "dev:web": "vite",
+    "dev": "vite",
+    "dev:tauri": "tauri dev",
     "dev:e2e": "playwright test --ui",
     "build": "tauri build",
     "build:web": "tsc && vite build",
