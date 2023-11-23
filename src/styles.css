@@ -20,3 +20,20 @@ select {
 .photoshop-picker > div:last-child {
   padding: 15px !important;
 }
+
+*,
+*::after,
+*::before {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+  cursor: default;
+}
+
+input,
+textarea {
+  user-select: initial;
+  -webkit-user-select: initial;
+  cursor: initial;
+}
