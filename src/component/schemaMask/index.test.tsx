@@ -36,9 +36,17 @@ describe('complicated sizer', () => {
     const maskElement = screen.getByLabelText('schema-mask');
 
     expect(maskElement).toBeInTheDocument();
-    expect(maskElement.style.cssText).toMatchInlineSnapshot(
-      '"position: absolute; border: 1px solid #7272ff; pointer-events: none; left: 0px; top: 0px; width: 100px; height: 100px;"',
-    );
+    expect(maskElement.style.width).toEqual('100px');
+    expect(maskElement.style.height).toEqual('100px');
+
+    await act(async () => {
+      mockElement.style.width = 'auto';
+      mockElement.style.height = 'auto';
+    });
+
+    expect(maskElement.style.width).toEqual('0px');
+    expect(maskElement.style.height).toEqual('0px');
+
     document.body.removeChild(mockElement);
   });
 });

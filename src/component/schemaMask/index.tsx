@@ -17,9 +17,10 @@ export const SchemaMask = ({ id }: SchemaMaskProps) => {
       if (!dom) return setValid(false);
 
       const updateMaskStyle = () => {
+        const { width, height } = dom.style;
         setStyle({
-          width: dom.style.width,
-          height: dom.style.height,
+          width: width === 'auto' ? dom.offsetWidth : width,
+          height: height === 'auto' ? dom.offsetHeight : height,
           left: `${dom.offsetLeft}px`,
           top: `${dom.offsetTop}px`,
         });
