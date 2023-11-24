@@ -8,8 +8,8 @@ export const Designer = () => {
   const selectedSchemaId = useAtomValue(drawingSchemaIdAtom);
 
   return (
-    <div className=' fixed top-0 right-0 m-4' key={selectedSchemaId} onWheel={(e) => e.stopPropagation()}>
-      <Card className='max-h-[90vh] overflow-auto p-4 w-[400px]'>
+    <div className='fixed top-0 right-0 m-4' key={selectedSchemaId} onWheel={(e) => e.stopPropagation()}>
+      <Card className='overflow-auto p-4 w-[400px]' style={{ maxHeight: 'calc(100vh - 32px)' }}>
         <Accordion selectionMode='multiple' defaultExpandedKeys={['layout']}>
           <AccordionItem key='layout' aria-label='Layout' title='Layout'>
             <Layout></Layout>
