@@ -18,7 +18,6 @@ export const Canvas = () => {
     if (!allowSelect) return;
     const element = event.target as HTMLDivElement;
     if (!element.id) {
-      setDrawingScheamId('');
       resetState();
       return;
     }
