@@ -91,12 +91,12 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
 
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
-  set(designerAtom, { ...designerState });
 
   const newSchema: Schema = {
     id: v1(),
     type: drawType,
     style: {
+      display: 'block',
       width: '100%',
       height: '24px',
     },
@@ -104,7 +104,7 @@ export const createSchemaAtom = atom(null, (get, set) => {
 
   set(drawingSchemaIdAtom, newSchema.id);
   set(schemasAtom, (pre) => [...pre, newSchema]);
-  set(designerAtom, { ...designerState, width: '100%', height: '24px', display: 'block' });
+  set(designerAtom, { ...designerState, ...newSchema.style });
 });
 
 export const useTemplateAtom = atom(null, (_, set) => {
