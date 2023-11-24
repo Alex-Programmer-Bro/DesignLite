@@ -5,7 +5,7 @@ import { SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
 import { designerAtom, designerState } from './designer';
-import { allowSelectAtom, selectedDrawTypeAtom } from './toolbar';
+import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
 schemasAtom.debugLabel = '画布上所有的 Schema';
@@ -105,7 +105,6 @@ export const createSchemaAtom = atom(null, (get, set) => {
   set(drawingSchemaIdAtom, newSchema.id);
   set(schemasAtom, (pre) => [...pre, newSchema]);
   set(designerAtom, { ...designerState, ...newSchema.style });
-  set(allowSelectAtom, true);
 });
 
 export const useTemplateAtom = atom(null, (_, set) => {

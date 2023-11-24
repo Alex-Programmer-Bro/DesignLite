@@ -3,19 +3,16 @@ import { useResetAtom } from 'jotai/utils';
 import React from 'react';
 import { designerAtom, designerState } from '../store/designer';
 import { drawingSchemaIdAtom, schemasAtom } from '../store/schema';
-import { allowSelectAtom } from '../store/toolbar';
 import { SchemaMask } from './schemaMask';
 import { SchemaRender } from './schemaRender';
 
 export const Canvas = () => {
   const schemas = useAtomValue(schemasAtom);
   const [drawingScheamId, setDrawingScheamId] = useAtom(drawingSchemaIdAtom);
-  const allowSelect = useAtomValue(allowSelectAtom);
   const setState = useSetAtom(designerAtom);
   const resetState = useResetAtom(designerAtom);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!allowSelect) return;
     const element = event.target as HTMLDivElement;
     if (!element.id) {
       setDrawingScheamId('');

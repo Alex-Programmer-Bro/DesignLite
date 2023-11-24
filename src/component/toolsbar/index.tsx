@@ -1,11 +1,9 @@
 import { Button, Card, CardBody, Code, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 import hotkeys from 'hotkeys-js';
-import { useAtom, useSetAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import React, { useEffect } from 'react';
 import { useDebug } from '../../hook/useDebug';
-import { appStore } from '../../store';
 import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, useTemplateAtom } from '../../store/schema';
-import { allowSelectAtom } from '../../store/toolbar';
 import { SelectDrawType } from './selectDrawType';
 
 export const Toolsbar: React.FC = () => {
@@ -13,7 +11,6 @@ export const Toolsbar: React.FC = () => {
   const exportAssets = useSetAtom(exportAssetsAtom);
   const importConfig = useSetAtom(importConfigAtom);
   const deleteSchema = useSetAtom(deleteSchameAtom);
-  const [allowSelect, setAllowSelect] = useAtom(allowSelectAtom);
   const debug = useDebug();
 
   const onPreview = async () => {
@@ -91,7 +88,6 @@ export const Toolsbar: React.FC = () => {
   useEffect(() => {
     hotkeys('Backspace', function (event, _) {
       event.preventDefault();
-      if (!appStore.get(allowSelectAtom)) return;
       deleteSchema();
     });
 
@@ -107,7 +103,7 @@ export const Toolsbar: React.FC = () => {
 
   return (
     <Card className='fixed z-10 left-1/2 top-4 -translate-x-1/2'>
-      <CardBody className='grid grid-cols-3 gap-2'>
+      <CardBody className='grid grid-cols-2 gap-2'>
         <Dropdown>
           <DropdownTrigger>
             <Button size='sm' color='primary' id='dl-toolbar-action-btn' variant='shadow'>
@@ -131,9 +127,6 @@ export const Toolsbar: React.FC = () => {
           </DropdownMenu>
         </Dropdown>
         <SelectDrawType />
-        <Button size='sm' variant={allowSelect ? 'solid' : 'light'} onClick={() => setAllowSelect((pre) => !pre)}>
-          <img src='/icon/select.svg' alt='' />
-        </Button>
       </CardBody>
     </Card>
   );
