@@ -3,6 +3,7 @@ import hotkeys from 'hotkeys-js';
 import { useAtom, useSetAtom } from 'jotai';
 import React, { useEffect } from 'react';
 import { useDebug } from '../../hook/useDebug';
+import { appStore } from '../../store';
 import { deleteSchameAtom, exportAssetsAtom, importConfigAtom, useTemplateAtom } from '../../store/schema';
 import { allowSelectAtom } from '../../store/toolbar';
 import { SelectDrawType } from './selectDrawType';
@@ -90,7 +91,7 @@ export const Toolsbar: React.FC = () => {
   useEffect(() => {
     hotkeys('Backspace', function (event, _) {
       event.preventDefault();
-      if (!allowSelect) return;
+      if (!appStore.get(allowSelectAtom)) return;
       deleteSchema();
     });
 

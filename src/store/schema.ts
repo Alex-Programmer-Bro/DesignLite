@@ -4,7 +4,7 @@ import { v1 } from 'uuid';
 import { SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
-import { designerAtom } from './designer';
+import { designerAtom, designerState } from './designer';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -91,26 +91,20 @@ export const setSchemaAtom = atom(null, (_, set, { id, schema }: { id: string; s
 
 export const createSchemaAtom = atom(null, (get, set) => {
   const drawType = get(selectedDrawTypeAtom);
-  const baseStyle = get(designerAtom);
+  set(designerAtom, { ...designerState });
 
   const newSchema: Schema = {
     id: v1(),
     type: drawType,
-    style: {},
+    style: {
+      width: '100%',
+      height: '24px',
+    },
   };
-
-  if (drawType === SchemaType.Block) {
-    newSchema.style = {
-      ...newSchema.style,
-      ...baseStyle,
-    };
-    newSchema.content = baseStyle.content;
-  } else if (drawType === SchemaType.Image) {
-    newSchema.content = baseStyle.imgURL;
-  }
 
   set(drawingSchemaIdAtom, newSchema.id);
   set(schemasAtom, (pre) => [...pre, newSchema]);
+  set(designerAtom, { ...designerState, width: '100%', height: '24px', display: 'block' });
 });
 
 export const useTemplateAtom = atom(null, (_, set) => {
@@ -235,5 +229,6 @@ export const deleteSchameAtom = atom(null, (get, set) => {
       get(schemasAtom).filter((item) => item.id !== id),
     );
     set(drawingSchemaIdAtom, '');
+    set(designerAtom, { ...designerState });
   }
 });
