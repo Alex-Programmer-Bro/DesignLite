@@ -15,7 +15,7 @@ export const Meta = () => {
 
   return (
     <>
-      <div className='fixed left-0 right-0 m-4' onWheel={(e) => e.stopPropagation()}>
+      <div className='fixed left-0 right-0 m-4 w-[300px]' onWheel={(e) => e.stopPropagation()}>
         <Card className='overflow-auto p-4 w-[300px]' style={{ maxHeight: 'calc(100vh - 32px)' }}>
           {type === SchemaType.Image ? (
             <Input
