@@ -12,8 +12,8 @@ describe('resolve schema', () => {
     },
     meta: {
       content: 'hello',
-      imageURL: ''
-    }
+      imageURL: '',
+    },
   };
 
   const imageSchema: Schema = {
@@ -24,13 +24,15 @@ describe('resolve schema', () => {
     },
     meta: {
       content: '',
-      imageURL: 'https://avatars.githubusercontent.com/u/115539090'
-    }
+      imageURL: 'https://avatars.githubusercontent.com/u/115539090',
+    },
   };
 
   it('resolveHTML', () => {
     expect(resolveHTML(textSchema)).toMatchInlineSnapshot('"<pre class=\\"hello\\">hello</pre>"');
-    expect(resolveHTML(imageSchema)).toMatchInlineSnapshot('"<img class=\\"hello-img\\" src=https://avatars.githubusercontent.com/u/115539090 alt=\\"\\" />"');
+    expect(resolveHTML(imageSchema)).toMatchInlineSnapshot(
+      '"<img class=\\"hello-img\\" src=https://avatars.githubusercontent.com/u/115539090 alt=\\"\\" />"',
+    );
   });
 
   it('resolveCSS', () => {
