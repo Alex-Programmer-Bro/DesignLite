@@ -1,6 +1,6 @@
 import { atomWithReset } from 'jotai/utils';
 
-export const designerState = {
+export const layoutState = {
   display: 'inline-block',
   width: '0px',
   height: '0px',
@@ -14,9 +14,7 @@ export const designerState = {
   textDecoration: 'auto',
   fontStyle: 'inherit',
   textAlign: 'left',
-  content: '',
-  imgURL: '',
 };
 
-export const designerAtom = atomWithReset({ ...designerState });
-designerAtom.debugLabel = 'Designer';
+export const layoutStateAtom = atomWithReset({ ...layoutState });
+layoutStateAtom.debugLabel = 'Layout';

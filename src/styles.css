@@ -37,3 +37,15 @@ textarea {
   -webkit-user-select: initial;
   cursor: initial;
 }
+
+.schema-content {
+  height: 200px;
+}
+
+.schema-content div[data-slot='input-wrapper'] {
+  height: 100% !important;
+}
+
+.schema-content textarea[data-slot='input'] {
+  height: 100% !important;
+}
