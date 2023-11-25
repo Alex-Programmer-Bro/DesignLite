@@ -1,7 +1,8 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import React from 'react';
-import { designerAtom, designerState } from '../store/designer';
+import { layoutState, layoutStateAtom } from '../store/designer';
+import { metaStateAtom } from '../store/meta';
 import { drawingSchemaIdAtom, schemasAtom } from '../store/schema';
 import { SchemaMask } from './schemaMask';
 import { SchemaRender } from './schemaRender';
@@ -9,19 +10,23 @@ import { SchemaRender } from './schemaRender';
 export const Canvas = () => {
   const schemas = useAtomValue(schemasAtom);
   const [drawingScheamId, setDrawingScheamId] = useAtom(drawingSchemaIdAtom);
-  const setState = useSetAtom(designerAtom);
-  const resetState = useResetAtom(designerAtom);
+  const setState = useSetAtom(layoutStateAtom);
+  const setMetaState = useSetAtom(metaStateAtom);
+  const resetLayoutState = useResetAtom(layoutStateAtom);
+  const resetMetaState = useResetAtom(metaStateAtom);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const element = event.target as HTMLDivElement;
     if (!element.id) {
       setDrawingScheamId('');
-      resetState();
+      resetLayoutState();
+      resetMetaState();
       return;
     }
     const schema = schemas.find((item) => item.id === element.id)!;
     setDrawingScheamId(element.id);
-    setState({ ...designerState, ...(schema.style as typeof designerState) });
+    setState({ ...layoutState, ...(schema.style as typeof layoutState) });
+    setMetaState(schema.meta);
   };
 
   return (

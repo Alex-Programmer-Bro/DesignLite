@@ -17,7 +17,7 @@ select {
   cursor: pointer;
 }
 
-.photoshop-picker > div:last-child {
+.photoshop-picker>div:last-child {
   padding: 15px !important;
 }
 
@@ -36,4 +36,17 @@ textarea {
   user-select: initial;
   -webkit-user-select: initial;
   cursor: initial;
+}
+
+
+.schema-content {
+  height: 200px;
+}
+
+.schema-content div[data-slot="input-wrapper"] {
+  height: 100% !important;
+}
+
+.schema-content textarea[data-slot="input"] {
+  height: 100% !important;
 }

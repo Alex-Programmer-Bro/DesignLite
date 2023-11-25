@@ -1,10 +1,11 @@
 import { atom, Setter } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage, RESET } from 'jotai/utils';
 import { v1 } from 'uuid';
 import { SchemaCacheKey } from '../constant';
 import { resolveCSS, resolveHTML, uploadAndReadJSON } from '../tool';
 import { Schema, SchemaType } from '../types/schema';
-import { designerAtom, designerState } from './designer';
+import { layoutState, layoutStateAtom } from './designer';
+import { metaStateAtom } from './meta';
 import { selectedDrawTypeAtom } from './toolbar';
 
 export const schemasAtom = atomWithStorage<Schema[]>(SchemaCacheKey, []);
@@ -13,26 +14,8 @@ schemasAtom.debugLabel = '画布上所有的 Schema';
 export const drawingSchemaIdAtom = atom<string>('');
 drawingSchemaIdAtom.debugLabel = '选中了哪个 Schema Id';
 
-export const getDrawingStyleAtom = atom((get) => {
-  const id = get(drawingSchemaIdAtom);
-  const dom = document.getElementById(id);
-  if (!dom) return null;
-  const { width, height } = dom.getBoundingClientRect();
-  if (id) {
-    return {
-      width: width,
-      height: height,
-      left: dom.offsetLeft,
-      top: dom.offsetTop,
-      position: 'absolute',
-      border: '1px solid #7272ff',
-      pointerEvents: 'none',
-    } as React.CSSProperties;
-  } else {
-    return null;
-  }
-});
-getDrawingStyleAtom.debugPrivate = true;
+export const selectedSchemaAtom = atom(get => Boolean(get(drawingSchemaIdAtom)))
+selectedSchemaAtom.debugPrivate = true;
 
 export const getDrawingSchema = atom((get) => {
   const id = get(drawingSchemaIdAtom);
@@ -71,7 +54,10 @@ export const updateSchema = (set: Setter, { id, schema }: { id: string; schema: 
             ...item.style,
             ...schema.style,
           },
-          content: schema.content || item.content,
+          meta: {
+            ...item.meta,
+            ...(schema.meta || {})
+          }
         };
         return result;
       }
@@ -100,11 +86,15 @@ export const createSchemaAtom = atom(null, (get, set) => {
       width: '100%',
       height: '24px',
     },
+    meta: {
+      content: '',
+      imageURL: ''
+    }
   };
 
   set(drawingSchemaIdAtom, newSchema.id);
   set(schemasAtom, (pre) => [...pre, newSchema]);
-  set(designerAtom, { ...designerState, ...newSchema.style });
+  set(layoutStateAtom, { ...layoutState, ...newSchema.style });
 });
 
 export const useTemplateAtom = atom(null, (_, set) => {
@@ -122,6 +112,9 @@ export const useTemplateAtom = atom(null, (_, set) => {
         backgroundColor: '#ddd',
         borderRadius: '10px',
         fontSize: '16px',
+
+      },
+      meta: {
         content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
 2 业精于勤，荒于嬉。—— 韩 愈《进学解》
 3 一寸光阴一寸金，寸金难买寸光阴。——《增广贤文》
@@ -131,19 +124,22 @@ export const useTemplateAtom = atom(null, (_, set) => {
 7 志当存高远。—— 诸葛亮《诫外生书》
 8 丈夫志四海，万里犹比邻。—— 曹 植《赠白马王彪》 
 9 有志者事竟成。 ——《后汉书·耿 列传》`,
-      },
+        imageURL: ''
+      }
     },
     {
       id: 'hello-img',
       type: SchemaType.Image,
-      content:
-        'https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0=',
       style: {
         display: 'block',
         margin: '40px auto',
         width: '800px',
         height: 'auto',
       },
+      meta: {
+        content: '',
+        imageURL: 'https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0='
+      }
     },
   ]);
 });
@@ -223,12 +219,13 @@ export const importConfigAtom = atom(null, async (_, set) => {
 
 export const deleteSchameAtom = atom(null, (get, set) => {
   const id = get(drawingSchemaIdAtom);
-  if (id) {
-    set(
-      schemasAtom,
-      get(schemasAtom).filter((item) => item.id !== id),
-    );
-    set(drawingSchemaIdAtom, '');
-    set(designerAtom, { ...designerState });
-  }
+  if (!id) return;
+
+  set(
+    schemasAtom,
+    get(schemasAtom).filter((item) => item.id !== id),
+  );
+  set(drawingSchemaIdAtom, '');
+  set(layoutStateAtom, RESET);
+  set(metaStateAtom, RESET);
 });

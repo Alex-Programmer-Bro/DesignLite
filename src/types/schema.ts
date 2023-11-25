@@ -1,4 +1,4 @@
-import { designerState } from '../store/designer';
+import { layoutState } from '../store/designer';
 
 export enum SchemaType {
   Block = '块',
@@ -8,6 +8,9 @@ export enum SchemaType {
 export type Schema = {
   id: string;
   type: SchemaType;
-  style: Partial<typeof designerState>;
-  content?: string;
+  style: Partial<typeof layoutState>;
+  meta: {
+    content: string;
+    imageURL: string;
+  }
 };
