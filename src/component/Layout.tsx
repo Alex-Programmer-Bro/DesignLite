@@ -57,13 +57,19 @@ export const Layout = () => {
               />
             </div>
             <ButtonGroup isIconOnly className='justify-start' variant='bordered' size='sm'>
-              <Popover placement='left-end' className='p-0'>
+              <Popover placement='left-end'>
                 <PopoverTrigger>
                   <Button style={{ backgroundColor: state.color }}></Button>
                 </PopoverTrigger>
-                <PopoverContent>
+                <PopoverContent className='p-0'>
                   <Suspense fallback={<Spinner />}>
-                    <ChromePicker color={state.color} onChange={(v) => updateState.color(v.hex)} />
+                    <ChromePicker
+                      color={state.color}
+                      onChange={(v) => {
+                        const { r, g, b, a } = v.rgb;
+                        updateState.color(`rgba(${r},${g},${b},${a || 1})`);
+                      }}
+                    />
                   </Suspense>
                 </PopoverContent>
               </Popover>
@@ -119,13 +125,19 @@ export const Layout = () => {
           </label>
           <label className='flex items-center'>
             <span className='text-[12px] font-medium mr-4'>background</span>
-            <Popover placement='left-end' className='p-0'>
+            <Popover placement='left-end'>
               <PopoverTrigger>
                 <Button size='sm' variant='bordered' style={{ backgroundColor: state.backgroundColor }}></Button>
               </PopoverTrigger>
-              <PopoverContent>
+              <PopoverContent className='p-0'>
                 <Suspense fallback={<Spinner />}>
-                  <ChromePicker color={state.backgroundColor} onChange={(v) => updateState.backgroundColor(v.hex)} />
+                  <ChromePicker
+                    color={state.backgroundColor}
+                    onChange={(v) => {
+                      const { r, g, b, a } = v.rgb;
+                      updateState.backgroundColor(`rgba(${r},${g},${b},${a || 1})`);
+                    }}
+                  />
                 </Suspense>
               </PopoverContent>
             </Popover>
