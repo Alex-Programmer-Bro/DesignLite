@@ -1,10 +1,24 @@
 import { Switch } from '@nextui-org/react';
 import { useRef, useState } from 'react';
+import { tv } from 'tailwind-variants';
 import { isComplicatedValue, resolveLock, resolveValue } from './helper';
 import { SimpleSizer } from './simple';
 import { SizerProps } from './type';
 
 export type ComplicatedProps = Omit<SizerProps, 'mode'>;
+
+const { lockStyle } = tv({
+  slots: {
+    lockStyle: 'w-full flex justify-between',
+  },
+  variants: {
+    isLock: {
+      true: {
+        lockStyle: 'absolute top-[-6px]',
+      },
+    },
+  },
+})();
 
 export const ComplicatedSizer = (props: ComplicatedProps) => {
   const resolvedValue = useRef(resolveValue(props.value));
@@ -58,8 +72,8 @@ export const ComplicatedSizer = (props: ComplicatedProps) => {
   };
 
   return (
-    <div className='flex flex-col items-center'>
-      <div className='w-full flex justify-between'>
+    <div className='flex flex-col items-center relative'>
+      <div className={lockStyle({ isLock: lock })}>
         <span className='text-[12px] font-medium'>{lock ? '' : props.label}</span>
         <Switch
           aria-label='complicated-lock'
