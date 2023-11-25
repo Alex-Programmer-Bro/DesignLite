@@ -1,6 +1,7 @@
 import { atomWithReset } from 'jotai/utils';
 
 export const layoutState = {
+  overflow: 'auto',
   display: 'inline-block',
   width: '0px',
   height: '0px',

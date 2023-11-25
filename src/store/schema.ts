@@ -82,6 +82,7 @@ export const createSchemaAtom = atom(null, (get, set) => {
     id: v1(),
     type: drawType,
     style: {
+      overflow: 'auto',
       display: 'block',
       width: '100%',
       height: '24px',
@@ -104,6 +105,7 @@ export const useTemplateAtom = atom(null, (_, set) => {
       type: SchemaType.Block,
 
       style: {
+        overflow: 'auto',
         display: 'block',
         margin: '20px auto',
         padding: '20px',
