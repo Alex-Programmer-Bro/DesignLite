@@ -9,8 +9,11 @@ describe('resolve schema', () => {
     style: {
       color: '#ffffff',
       backgroundColor: 'red',
-      content: 'hello world',
     },
+    meta: {
+      content: 'hello',
+      imageURL: ''
+    }
   };
 
   const imageSchema: Schema = {
@@ -19,14 +22,15 @@ describe('resolve schema', () => {
     style: {
       borderRadius: '10px',
     },
-    content: 'https://avatars.githubusercontent.com/u/115539090',
+    meta: {
+      content: '',
+      imageURL: 'https://avatars.githubusercontent.com/u/115539090'
+    }
   };
 
   it('resolveHTML', () => {
-    expect(resolveHTML(textSchema)).toMatchInlineSnapshot('"<pre class=\\"hello\\">hello world</pre>"');
-    expect(resolveHTML(imageSchema)).toMatchInlineSnapshot(
-      '"<img class=\\"hello-img\\" src=https://avatars.githubusercontent.com/u/115539090 alt=\\"\\" />"',
-    );
+    expect(resolveHTML(textSchema)).toMatchInlineSnapshot('"<pre class=\\"hello\\">hello</pre>"');
+    expect(resolveHTML(imageSchema)).toMatchInlineSnapshot('"<img class=\\"hello-img\\" src=https://avatars.githubusercontent.com/u/115539090 alt=\\"\\" />"');
   });
 
   it('resolveCSS', () => {

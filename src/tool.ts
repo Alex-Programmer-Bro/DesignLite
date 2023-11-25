@@ -3,9 +3,9 @@ import { Schema, SchemaType } from './types/schema';
 export const resolveHTML = (schema: Schema) => {
   switch (schema.type) {
     case SchemaType.Image:
-      return `<img class="${schema.id}" src=${schema.content} alt="" />`;
+      return `<img class="${schema.id}" src=${schema.meta.imageURL} alt="" />`;
     case SchemaType.Block:
-      return `<pre class="${schema.id}">${schema.style.content}</pre>`;
+      return `<pre class="${schema.id}">${schema.meta.content}</pre>`;
   }
 };
 
