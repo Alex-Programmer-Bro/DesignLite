@@ -18,5 +18,3 @@ export const layoutState = {
 
 export const layoutStateAtom = atomWithReset({ ...layoutState });
 layoutStateAtom.debugLabel = 'Layout';
-
-

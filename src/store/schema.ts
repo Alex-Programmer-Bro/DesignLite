@@ -14,7 +14,7 @@ schemasAtom.debugLabel = '画布上所有的 Schema';
 export const drawingSchemaIdAtom = atom<string>('');
 drawingSchemaIdAtom.debugLabel = '选中了哪个 Schema Id';
 
-export const selectedSchemaAtom = atom(get => Boolean(get(drawingSchemaIdAtom)))
+export const selectedSchemaAtom = atom((get) => Boolean(get(drawingSchemaIdAtom)));
 selectedSchemaAtom.debugPrivate = true;
 
 export const getDrawingSchema = atom((get) => {
@@ -56,8 +56,8 @@ export const updateSchema = (set: Setter, { id, schema }: { id: string; schema: 
           },
           meta: {
             ...item.meta,
-            ...(schema.meta || {})
-          }
+            ...(schema.meta || {}),
+          },
         };
         return result;
       }
@@ -88,8 +88,8 @@ export const createSchemaAtom = atom(null, (get, set) => {
     },
     meta: {
       content: '',
-      imageURL: ''
-    }
+      imageURL: '',
+    },
   };
 
   set(drawingSchemaIdAtom, newSchema.id);
@@ -112,7 +112,6 @@ export const useTemplateAtom = atom(null, (_, set) => {
         backgroundColor: '#ddd',
         borderRadius: '10px',
         fontSize: '16px',
-
       },
       meta: {
         content: `1 少壮不努力，老大徒悲伤。—— 汉乐府古辞《长歌行》
@@ -124,8 +123,8 @@ export const useTemplateAtom = atom(null, (_, set) => {
 7 志当存高远。—— 诸葛亮《诫外生书》
 8 丈夫志四海，万里犹比邻。—— 曹 植《赠白马王彪》 
 9 有志者事竟成。 ——《后汉书·耿 列传》`,
-        imageURL: ''
-      }
+        imageURL: '',
+      },
     },
     {
       id: 'hello-img',
@@ -138,8 +137,9 @@ export const useTemplateAtom = atom(null, (_, set) => {
       },
       meta: {
         content: '',
-        imageURL: 'https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0='
-      }
+        imageURL:
+          'https://media.istockphoto.com/id/1217161735/photo/roccella-jonica-city-calabria.jpg?s=2048x2048&w=is&k=20&c=tNY_66IckqAplO39CCw8y-7fnndJ-80b4QAd_d8-3G0=',
+      },
     },
   ]);
 });

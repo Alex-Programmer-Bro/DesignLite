@@ -12,5 +12,5 @@ export type Schema = {
   meta: {
     content: string;
     imageURL: string;
-  }
+  };
 };
