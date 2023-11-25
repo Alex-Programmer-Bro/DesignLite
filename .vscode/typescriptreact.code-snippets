@@ -1,0 +1,22 @@
+{
+  "Print a Storybook Component": {
+    "prefix": "sb",
+    "body": [
+      "import { StoryObj, type Meta } from '@storybook/react';",
+      "import { $1 } from '.';",
+      "",
+      "const meta = {",
+      "  title: '内置组件/$1',",
+      "  component: $1,",
+      "  tags: ['autodocs'],",
+      "} satisfies Meta<typeof $1>;",
+      "",
+      "export default meta;",
+      "type Story = StoryObj<Meta<typeof $1>>;",
+      "",
+      "export const Primary: Story = {};",
+      ""
+    ],
+    "description": "Log output to console"
+  }
+}
