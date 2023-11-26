@@ -1,5 +1,16 @@
 import react from "@vitejs/plugin-react";
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig, loadEnv, Plugin } from "vite";
+
+const addPrefix = (prefix: string): Plugin => ({
+  name: 'add-prefix-to-bundle-plugin',
+  generateBundle(options, bundle) {
+    for (const [fileName, file] of Object.entries(bundle)) {
+      if (file.type === 'chunk') {
+        file.code = file.code.replace(/\/icon\/[^"'\s]+/g, `${prefix}$&`);
+      }
+    }
+  },
+});
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -7,7 +18,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: process.env.VITE_BASENAME || '/',
-    plugins: [react()],
+    plugins: [react(), addPrefix(process.env.VITE_BASENAME)],
     build: {
       chunkSizeWarningLimit: 1024
     },
