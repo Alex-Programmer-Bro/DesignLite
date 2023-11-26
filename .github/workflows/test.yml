@@ -11,6 +11,8 @@ jobs:
       contents: write
       pull-requests: write  # 添加权限以允许评论 PR
     runs-on: ubuntu-latest
+    env:
+      VITE_BASENAME: /${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
       - name: setup node
