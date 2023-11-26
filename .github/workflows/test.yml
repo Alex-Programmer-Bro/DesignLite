@@ -1,12 +1,15 @@
 name: "Unit and E2E Test"
 
 on:
-  push
+  pull_request:
+    branches:
+      - 'v*'
 
 jobs:
   Test:
     permissions:
       contents: write
+      pull-requests: write  # 添加权限以允许评论 PR
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,4 +41,22 @@ jobs:
         run: tar -cvf dist.tar ./dist
 
       - name: Upload dist and commit hash to server
-        run: curl -X POST -F "file=@dist.tar" -F "commit_hash=${{ github.sha }}" https://3fceab4d.r1.cpolar.top/api/upload-dist
+        run: |
+          response=$(curl -X POST -F "file=@dist.tar" -F "commit_hash=${{ github.sha }}" https://3fceab4d.r1.cpolar.top/api/upload-dist)
+          echo "upload_response=$response" >> $GITHUB_ENV
+
+      - name: Comment on PR
+        if: success()  # 确保只在前面的步骤成功后执行
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const response = process.env.upload_response;
+            const prNumber = context.payload.pull_request.number;
+            const comment = `Upload result: ${response}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: comment
+            });
