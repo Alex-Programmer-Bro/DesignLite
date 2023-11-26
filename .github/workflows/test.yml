@@ -46,14 +46,14 @@ jobs:
           echo "upload_response=$response" >> $GITHUB_ENV
 
       - name: Comment on PR
-        if: success()  # 确保只在前面的步骤成功后执行
+        if: success()
         uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const response = process.env.upload_response;
             const prNumber = context.payload.pull_request.number;
-            const comment = `Upload result: ${response}`;
+            const comment = `${response}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
