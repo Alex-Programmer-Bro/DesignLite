@@ -1,9 +1,7 @@
 name: "Unit and E2E Test"
 
 on:
-  pull_request:
-    branches:
-      - 'v*'
+  push
 
 jobs:
   Test:
@@ -35,3 +33,9 @@ jobs:
 
       - name: E2E Test
         run: npm run test:e2e
+
+      - name: Package dist directory
+        run: tar -cvf dist.tar ./dist
+
+      - name: Upload dist and commit hash to server
+        run: curl -X POST -F "file=@dist.tar" -F "commit_hash=${{ github.sha }}" https://3fceab4d.r1.cpolar.top/api/upload-dist
