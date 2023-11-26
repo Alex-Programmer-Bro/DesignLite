@@ -15,7 +15,9 @@ export const Toolsbar: React.FC = () => {
 
   const onPreview = async () => {
     if (isWeb) {
-      window.open('/preview', 'blank');
+      let path = import.meta.env.VITE_BASENAME || '';
+      if (path === '/') path = '';
+      window.open(path + '/preview', 'blank');
     } else {
       const { invoke } = await import('@tauri-apps/api/tauri');
       const preview = new URL('/preview', location.origin);

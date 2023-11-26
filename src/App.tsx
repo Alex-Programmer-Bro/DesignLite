@@ -9,7 +9,7 @@ import './styles.css';
 
 export const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.VITE_BASENAME || '/'}>
       <NextUIProvider className='h-full'>
         <Provider store={appStore}>
           <Routes>

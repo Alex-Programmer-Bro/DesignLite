@@ -9,7 +9,10 @@ jobs:
   Test:
     permissions:
       contents: write
+      pull-requests: write  # 添加权限以允许评论 PR
     runs-on: ubuntu-latest
+    env:
+      VITE_BASENAME: /${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
       - name: setup node
@@ -35,3 +38,27 @@ jobs:
 
       - name: E2E Test
         run: npm run test:e2e
+
+      - name: Package dist directory
+        run: tar -cvf dist.tar ./dist
+
+      - name: Upload dist and commit hash to server
+        run: |
+          response=$(curl -X POST -F "file=@dist.tar" -F "commit_hash=${{ github.sha }}" https://3fceab4d.r1.cpolar.top/api/upload-dist)
+          echo "upload_response=$response" >> $GITHUB_ENV
+
+      - name: Comment on PR
+        if: success()
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const response = process.env.upload_response;
+            const prNumber = context.payload.pull_request.number;
+            const comment = `${response}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: comment
+            });
