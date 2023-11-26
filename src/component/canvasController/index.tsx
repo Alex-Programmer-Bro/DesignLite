@@ -16,7 +16,40 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
     scale: 1,
   });
 
+  const spacePressed = useRef<boolean>(false);
+  const mousePressed = useRef<boolean>(false);
+
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        spacePressed.current = true;
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        spacePressed.current = false;
+      }
+    };
+
+    const handleMouseDown = () => {
+      mousePressed.current = true;
+    };
+
+    const handleMouseUp = () => {
+      mousePressed.current = false;
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (spacePressed.current && mousePressed.current) {
+        const { translate } = controller.current;
+        controller.current.translate = {
+          x: translate.x + e.movementX,
+          y: translate.y + e.movementY,
+        };
+      }
+    };
+
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       const { scale, translate } = controller.current;
@@ -31,9 +64,19 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
       }
     };
 
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('wheel', handleWheel, { passive: false });
 
     return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('wheel', handleWheel);
     };
   }, []);
