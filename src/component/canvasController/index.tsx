@@ -11,10 +11,10 @@ interface Translate {
 
 export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) => {
   const container = useRef<HTMLDivElement | null>(null);
-  const controller = useRef<{ scale: number; translate: Translate; origin: Translate }>({
+  const childrenContainer = useRef<HTMLDivElement | null>(null);
+  const controller = useRef<{ scale: number; translate: Translate }>({
     translate: { x: 0, y: 0 },
     scale: 1,
-    origin: { x: 0, y: 0 },
   });
 
   const spacePressed = useRef<boolean>(false);
@@ -59,12 +59,28 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
         const newScale = Math.max(0.1, scale * deltaScale);
         controller.current.scale = newScale;
 
-        const rect = container.current?.getBoundingClientRect();
-        if (!rect) return;
-        const mouseX = (e.clientX - rect.left) / newScale;
-        const mouseY = (e.clientY - rect.top) / newScale;
-        controller.current.origin = { x: mouseX, y: mouseY };
-        
+        // if (!childrenContainer.current) return;
+        // const { clientHeight, clientWidth } = childrenContainer.current;
+
+        // const rect = childrenContainer.current.getBoundingClientRect();
+        // const offsetLeft = rect.top;
+        // const offsetTop = rect.left;
+
+        // const mouseX = e.clientX;
+        // const mouseY = e.clientY;
+
+        // const left = (mouseX - (clientWidth / 2 + offsetLeft)) * (newScale - scale);
+        // const top = (mouseY - (clientHeight / 2 + offsetTop)) * (newScale - scale);
+
+        // console.log({
+        //   x: mouseX - offsetLeft,
+        //   y: mouseY - offsetTop,
+        // });
+
+        // controller.current.translate = {
+        //   x: translate.x - left,
+        //   y: translate.y - top,
+        // };
       } else {
         controller.current.translate = {
           x: translate.x - e.deltaX,
@@ -92,9 +108,8 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
 
   const render = () => {
     if (container.current) {
-      const { scale, translate, origin } = controller.current;
+      const { scale, translate } = controller.current;
       container.current.style.transform = `translate(${translate.x}px, ${translate.y}px) scale(${scale})`;
-      container.current.style.transformOrigin = `${origin.x}px ${origin.y}px`;
     }
     requestAnimationFrame(render);
   };
@@ -107,7 +122,13 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
         className='absolute left-0 right-0 bottom-0 top-0 m-auto w-full h-full flex justify-center items-center'
         ref={container}
       >
-        {children}
+        <div ref={childrenContainer} className='relative'>
+          <div className=' absolute left-[50px] top-[50px] w-[10px] h-[10px] bg-red-500'></div>
+          <div className=' absolute right-[50px] top-[50px] w-[10px] h-[10px] bg-red-500'></div>
+          <div className=' absolute left-[50px] bottom-[50px] w-[10px] h-[10px] bg-red-500'></div>
+          <div className=' absolute right-[50px] bottom-[50px] w-[10px] h-[10px] bg-red-500'></div>
+          {children}
+        </div>
       </div>
     </div>
   );
