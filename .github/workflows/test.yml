@@ -44,7 +44,7 @@ jobs:
 
       - name: Upload dist and commit hash to server
         run: |
-          response=$(curl -X POST -F "file=@dist.tar" -F "commit_hash=${{ github.sha }}" https://3fceab4d.r1.cpolar.top/api/upload-dist)
+          response=$(curl -X POST -F "file=@dist.tar" -F "commit_hash=${{ github.sha }}" -F "token=${{ secrets.API_TOKEN }}" https://design-lite.cpolar.top/api/upload-dist)
           echo "upload_response=$response" >> $GITHUB_ENV
 
       - name: Comment on PR
