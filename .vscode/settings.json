@@ -9,7 +9,6 @@
   "files.exclude": {
     ".husky": true,
     ".storybook": true,
-    ".github": true,
     ".vscode": true,
     "node_modules": true
   },
