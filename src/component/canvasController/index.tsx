@@ -11,7 +11,6 @@ interface Translate {
 
 export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) => {
   const container = useRef<HTMLDivElement | null>(null);
-  const childrenContainer = useRef<HTMLDivElement | null>(null);
   const controller = useRef<{ scale: number; translate: Translate }>({
     translate: { x: 0, y: 0 },
     scale: 1,
@@ -54,27 +53,23 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
       const { scale, translate } = controller.current;
+      const { clientX, clientY } = e;
       if (e.ctrlKey) {
         const deltaScale = e.deltaY > 0 ? 0.95 : 1.05;
         const newScale = parseFloat(Math.max(0.1, scale * deltaScale).toFixed(2));
+
+        const { innerWidth, innerHeight } = window;
+
         controller.current.scale = newScale;
 
-        if (!childrenContainer.current) return;
-        const { clientHeight, clientWidth } = childrenContainer.current;
-
-        const rect = childrenContainer.current.getBoundingClientRect();
-        const offsetLeft = rect.left;
-        const offsetTop = rect.top;
-
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-
-        const left = (mouseX - offsetLeft - (clientWidth / 2) * newScale) * (1 - 1 / deltaScale);
-        const top = (mouseY - offsetTop - (clientHeight / 2) * newScale) * (1 - 1 / deltaScale);
+        const mouseX = clientX - innerWidth / 2 - translate.x;
+        const mouseY = innerHeight / 2 - clientY + translate.y;
+        const dx = mouseX * (1 - 1 / deltaScale);
+        const dy = mouseY * (1 - 1 / deltaScale);
 
         controller.current.translate = {
-          x: translate.x - left,
-          y: translate.y - top,
+          x: translate.x - dx,
+          y: translate.y + dy,
         };
       } else {
         controller.current.translate = {
@@ -117,7 +112,7 @@ export const CanvasController: React.FC<CanvasControllerProps> = ({ children }) 
         className='absolute left-0 right-0 bottom-0 top-0 m-auto w-full h-full flex justify-center items-center'
         ref={container}
       >
-        <div ref={childrenContainer}>{children}</div>
+        {children}
       </div>
     </div>
   );
