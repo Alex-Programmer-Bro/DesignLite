@@ -17,5 +17,6 @@
     "ChangeLog.h": "branch-rule.jpg, changelog.test.ts, resolveLog.sh, ChangeLogHistory.h",
     "*.tsx": "${capture}.test.tsx, ${capture}.stories.tsx",
     "*.ts": "${capture}.test.ts"
-  }
+  },
+  "editor.inlineSuggest.showToolbar": "onHover"
 }
