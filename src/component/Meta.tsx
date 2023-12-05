@@ -6,7 +6,7 @@ import { getDrawingSchema, setDrawingSchemaAtom } from '../store/schema';
 import { SchemaType } from '../types/schema';
 
 export const Meta = () => {
-  const { type } = useAtomValue(getDrawingSchema)!;
+  const drawingSchema = useAtomValue(getDrawingSchema)!;
   const state = useAtomValue(metaStateAtom);
   const updateDrawingSchema = useSetAtom(setDrawingSchemaAtom);
   const updateMeta = updateStateAtom(metaStateAtom, (meta) => {
@@ -17,7 +17,7 @@ export const Meta = () => {
     <>
       <div className='fixed left-0 right-0 m-4 w-[300px]' onWheel={(e) => e.stopPropagation()}>
         <Card className='overflow-auto p-4 w-[300px]' style={{ maxHeight: 'calc(100vh - 32px)' }}>
-          {type === SchemaType.Image ? (
+          {drawingSchema.type === SchemaType.Image ? (
             <Input
               type='url'
               label='Image URL'
