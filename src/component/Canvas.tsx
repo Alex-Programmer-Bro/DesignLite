@@ -22,6 +22,7 @@ export const Canvas = () => {
 
     if (!element.id) {
       debugger;
+      setShowEditor(false);
       setDrawingScheamId('');
       resetLayoutState();
       resetMetaState();
@@ -50,8 +51,8 @@ export const Canvas = () => {
       {schemas.map((item) => (
         <SchemaRender key={item.id} {...item} />
       ))}
-      <SchemaMask id={drawingScheamId} />
-      {showEditor && <SchemaEditor id={drawingScheamId} />}
+
+      {showEditor ? <SchemaEditor id={drawingScheamId} /> : <SchemaMask id={drawingScheamId} />}
     </div>
   );
 };
