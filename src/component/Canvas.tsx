@@ -19,10 +19,8 @@ export const Canvas = () => {
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const element = event.target as HTMLDivElement;
-
+    setShowEditor(false);
     if (!element.id) {
-      debugger;
-      setShowEditor(false);
       setDrawingScheamId('');
       resetLayoutState();
       resetMetaState();
@@ -35,11 +33,11 @@ export const Canvas = () => {
   };
 
   const handleShowEditor = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     const next = !showEditor;
+    next && handleClick(e);
     setShowEditor(next);
-    if (next) {
-      handleClick(e);
-    }
   };
 
   return (
@@ -51,8 +49,8 @@ export const Canvas = () => {
       {schemas.map((item) => (
         <SchemaRender key={item.id} {...item} />
       ))}
-
-      {showEditor ? <SchemaEditor id={drawingScheamId} /> : <SchemaMask id={drawingScheamId} />}
+      <SchemaMask id={drawingScheamId} />
+      {showEditor && <SchemaEditor id={drawingScheamId} />}
     </div>
   );
 };

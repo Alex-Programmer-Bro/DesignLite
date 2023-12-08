@@ -10,4 +10,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<Meta<typeof SchemaEditor>>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  args: {
+    id: 'hello',
+  },
+  render(props) {
+    return (
+      <div>
+        <div id='hello'>hello schema mask</div>
+        <SchemaEditor id={props.id} />
+      </div>
+    );
+  },
+};

@@ -1,4 +1,4 @@
-import { Input, Textarea } from '@nextui-org/react';
+import { Input, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from '@nextui-org/react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 import { updateStateAtom } from '../../store';
@@ -22,6 +22,9 @@ export const SchemaEditor = ({ id }: SchemaEditor) => {
   const updateMeta = updateStateAtom(metaStateAtom, (meta) => {
     updateDrawingSchema({ meta });
   });
+  const [effect, setEffect] = useState<React.CSSProperties>({});
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     if (id) {
@@ -29,12 +32,19 @@ export const SchemaEditor = ({ id }: SchemaEditor) => {
       if (!dom) return setValid(false);
 
       const updateMaskStyle = () => {
-        const { width, height } = dom.style;
+        const { width, height, padding, margin, backgroundColor, borderRadius, color } = dom.style;
         setStyle({
           width: width === 'auto' ? dom.offsetWidth : width,
           height: height === 'auto' ? dom.offsetHeight : height,
           left: `${dom.offsetLeft}px`,
-          top: `${dom.offsetTop}px`,
+          // top: `${dom.offsetTop}px`,
+        });
+        setEffect({
+          padding,
+          margin,
+          backgroundColor,
+          borderRadius,
+          color,
         });
       };
 
@@ -50,29 +60,44 @@ export const SchemaEditor = ({ id }: SchemaEditor) => {
     }
   }, [id]);
 
+  useEffect(() => {
+    drawingShema?.type === SchemaType.Image && onOpen();
+    return onClose;
+  }, [drawingShema]);
+
   if (id && valid) {
     return (
-      <div
-        ref={containerRef}
-        aria-label='schema-mask'
-        style={{
-          ...style,
-          position: 'absolute',
-          zIndex: 10,
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {drawingShema?.type === SchemaType.Image ? (
-          <Input type='url' value={state.imageURL} onChange={(e) => updateMeta.imageURL(e.target.value)} />
-        ) : (
-          <Textarea
-            labelPlacement='outside'
-            value={state.content}
-            style={{ backgroundColor: 'transparent', outline: 'none', border: 'none' }}
-            onChange={(e) => updateMeta.content(e.target.value)}
-          />
-        )}
-      </div>
+      <>
+        <div
+          ref={containerRef}
+          aria-label='schema-editor'
+          style={{
+            ...style,
+            position: 'absolute',
+            zIndex: 10,
+            boxSizing: 'border-box',
+            top: 0,
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {drawingShema?.type === SchemaType.Block && (
+            <textarea
+              value={state.content}
+              className='resize-none w-full h-full'
+              style={{ ...effect, outline: 'none' }}
+              onChange={(e) => updateMeta.content(e.target.value)}
+            />
+          )}
+        </div>
+        <Modal size='sm' isOpen={isOpen} onClose={onClose}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalHeader className='flex flex-col gap-1'>Image URL</ModalHeader>
+            <ModalBody>
+              <Input type='url' value={state.imageURL} onChange={(e) => updateMeta.imageURL(e.target.value)} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </>
     );
   } else {
     return null;
