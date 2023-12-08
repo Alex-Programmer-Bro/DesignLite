@@ -26,22 +26,23 @@ export const SchemaEditor = ({ id }: SchemaEditor) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const textArea = useRef<HTMLTextAreaElement | null>(null);
+
   useEffect(() => {
     if (id) {
       const dom = document.getElementById(id) as HTMLElement;
       if (!dom) return setValid(false);
 
       const updateMaskStyle = () => {
-        const { width, height, padding, margin, backgroundColor, borderRadius, color } = dom.style;
+        const { width, height, padding, backgroundColor, borderRadius, color } = dom.style;
         setStyle({
           width: width === 'auto' ? dom.offsetWidth : width,
           height: height === 'auto' ? dom.offsetHeight : height,
           left: `${dom.offsetLeft}px`,
-          // top: `${dom.offsetTop}px`,
+          top: `${dom.offsetTop}px`,
         });
         setEffect({
           padding,
-          margin,
           backgroundColor,
           borderRadius,
           color,
@@ -65,6 +66,14 @@ export const SchemaEditor = ({ id }: SchemaEditor) => {
     return onClose;
   }, [drawingShema]);
 
+  useEffect(() => {
+    if (textArea.current) {
+      textArea.current.focus();
+      const length = textArea.current.value.length;
+      textArea.current.setSelectionRange(length, length);
+    }
+  }, [textArea.current]);
+
   if (id && valid) {
     return (
       <>
@@ -76,13 +85,13 @@ export const SchemaEditor = ({ id }: SchemaEditor) => {
             position: 'absolute',
             zIndex: 10,
             boxSizing: 'border-box',
-            top: 0,
           }}
           onClick={(e) => e.stopPropagation()}
         >
           {drawingShema?.type === SchemaType.Block && (
             <textarea
               value={state.content}
+              ref={textArea}
               className='resize-none w-full h-full'
               style={{ ...effect, outline: 'none' }}
               onChange={(e) => updateMeta.content(e.target.value)}
