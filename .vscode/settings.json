@@ -1,15 +1,14 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.fixAll.eslint": true,
-    "source.organizeImports": true
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
   },
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "files.exclude": {
     ".husky": true,
     ".storybook": true,
-    ".vscode": true,
     "node_modules": true
   },
   "explorer.fileNesting.patterns": {
